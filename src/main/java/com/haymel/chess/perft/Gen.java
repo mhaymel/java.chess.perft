@@ -1,5 +1,6 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Direction.NW;
 import static com.haymel.chess.perft.File.A;
 import static com.haymel.chess.perft.File.H;
 import static com.haymel.chess.perft.Init.*;
@@ -43,26 +44,26 @@ public final class Gen {
                         GenKnight(x);
                         break;
                     case Bishop:
-                        GenBishop(x, NE);
-                        GenBishop(x, SE);
-                        GenBishop(x, SW);
-                        GenBishop(x, NW);
+                        GenBishop(x, Direction.NE);
+                        GenBishop(x, Direction.SE);
+                        GenBishop(x, Direction.SW);
+                        GenBishop(x, Direction.NW);
                         break;
                     case Rook:
-                        GenRook(x, NORTH);
-                        GenRook(x, EAST);
-                        GenRook(x, SOUTH);
-                        GenRook(x, WEST);
+                        GenRook(x, Direction.NORTH);
+                        GenRook(x, Direction.EAST);
+                        GenRook(x, Direction.SOUTH);
+                        GenRook(x, Direction.WEST);
                         break;
                     case Queen:
-                        GenQueen(x, NE);
-                        GenQueen(x, SE);
-                        GenQueen(x, SW);
-                        GenQueen(x, NW);
-                        GenQueen(x, NORTH);
-                        GenQueen(x, EAST);
-                        GenQueen(x, SOUTH);
-                        GenQueen(x, WEST);
+                        GenQueen(x, Direction.NE);
+                        GenQueen(x, Direction.SE);
+                        GenQueen(x, Direction.SW);
+                        GenQueen(x, Direction.NW);
+                        GenQueen(x, Direction.NORTH);
+                        GenQueen(x, Direction.EAST);
+                        GenQueen(x, Direction.SOUTH);
+                        GenQueen(x, Direction.WEST);
                         break;
                     case King:
                         GenKing(x);
