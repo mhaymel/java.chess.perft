@@ -1,31 +1,75 @@
 package com.haymel.chess.perft;
 
-public enum Field {
-    A1(0), B1(1), C1(2), D1(3), E1(4), F1(5), G1(6), H1(7),
-    A2(8), B2(9), C2(10), D2(11), E2(12), F2(13), G2(14), H2(15),
-    A3(16), B3(17), C3(18), D3(19), E3(20), F3(21), G3(22), H3(23),
-    A4(24), B4(25), C4(26), D4(27), E4(28), F4(29), G4(30), H4(31),
-    A5(32), B5(33), C5(34), D5(35), E5(36), F5(37), G5(38), H5(39),
-    A6(40), B6(41), C6(42), D6(43), E6(44), F6(45), G6(46), H6(47),
-    A7(48), B7(49), C7(50), D7(51), E7(52), F7(53), G7(54), H7(55),
-    A8(56), B8(57), C8(58), D8(59), E8(60), F8(61), G8(62), H8(63);
+public interface Field {
+    int A1 = 0;
+    int B1 = 1;
+    int C1 = 2;
+    int D1 = 3;
+    int E1 = 4;
+    int F1 = 5;
+    int G1 = 6;
+    int H1 = 7;
 
-    private final int index;
+    int A2 = 8;
+    int B2 = 9;
+    int C2 = 10;
+    int D2 = 11;
+    int E2 = 12;
+    int F2 = 13;
+    int G2 = 14;
+    int H2 = 15;
 
-    Field(int index) {
-        this.index = index;
-    }
+    int A3 = 16;
+    int B3 = 17;
+    int C3 = 18;
+    int D3 = 19;
+    int E3 = 20;
+    int F3 = 21;
+    int G3 = 22;
+    int H3 = 23;
 
-    public int index() {
-        return index;
-    }
+    int A4 = 24;
+    int B4 = 25;
+    int C4 = 26;
+    int D4 = 27;
+    int E4 = 28;
+    int F4 = 29;
+    int G4 = 30;
+    int H4 = 31;
 
-    public static Field fromIndex(int index) {
-        for (Field f : Field.values()) {
-            if (f.index == index) {
-                return f;
-            }
-        }
-        throw new IllegalArgumentException("Unknown index: " + index);
-    }
+    int A5 = 32;
+    int B5 = 33;
+    int C5 = 34;
+    int D5 = 35;
+    int E5 = 36;
+    int F5 = 37;
+    int G5 = 38;
+    int H5 = 39;
+
+    int A6 = 40;
+    int B6 = 41;
+    int C6 = 42;
+    int D6 = 43;
+    int E6 = 44;
+    int F6 = 45;
+    int G6 = 46;
+    int H6 = 47;
+
+    int A7 = 48;
+    int B7 = 49;
+    int C7 = 50;
+    int D7 = 51;
+    int E7 = 52;
+    int F7 = 53;
+    int G7 = 54;
+    int H7 = 55;
+
+    int A8 = 56;
+    int B8 = 57;
+    int C8 = 58;
+    int D8 = 59;
+    int E8 = 60;
+    int F8 = 61;
+    int G8 = 62;
+    int H8 = 63;
 }
