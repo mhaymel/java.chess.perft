@@ -29,6 +29,7 @@ public final class Gen {
 
    public Gen(Chess c) {
       this.c = c;
+      this.mc = 0;
    }
 
    public void execute() {
@@ -85,7 +86,7 @@ public final class Gen {
          return;
 
       Game game = c.gameList[c.hply - 1];
-      if (isPawnDoubleMove(game)) {
+      if (isPawnDoubleMove(game, c.board)) {
          int ep = game.dest;
          if (file[ep] != A && c.color[ep - 1] == c.side && c.board[ep - 1] == pawn)
             AddCapture(ep - 1, ep + ForwardSquare[c.side]);
@@ -100,29 +101,29 @@ public final class Gen {
    there are no pieces in the way. Attacked squares are looked at in MakeMove.
    */
    public static void GenCastle() {
-      if (side == 0) {
-         if (game_list[hply].castle_k[side] != 0) {
-            if (board[F1] == EMPTY && board[G1] == EMPTY) {
-               AddMove(E1, G1);
-            }
-         }
-         if (game_list[hply].castle_q[side] != 0) {
-            if (board[B1] == EMPTY && board[C1] == EMPTY && board[D1] == EMPTY) {
-               AddMove(E1, C1);
-            }
-         }
-      } else {
-         if (game_list[hply].castle_k[side] != 0) {
-            if (board[F8] == EMPTY && board[G8] == EMPTY) {
-               AddMove(E8, G8);
-            }
-         }
-         if (game_list[hply].castle_q[side] != 0) {
-            if (board[B8] == EMPTY && board[C8] == EMPTY && board[D8] == EMPTY) {
-               AddMove(E8, C8);
-            }
-         }
-      }
+//      if (side == 0) {
+//         if (game_list[hply].castle_k[side] != 0) {
+//            if (board[F1] == EMPTY && board[G1] == EMPTY) {
+//               AddMove(E1, G1);
+//            }
+//         }
+//         if (game_list[hply].castle_q[side] != 0) {
+//            if (board[B1] == EMPTY && board[C1] == EMPTY && board[D1] == EMPTY) {
+//               AddMove(E1, C1);
+//            }
+//         }
+//      } else {
+//         if (game_list[hply].castle_k[side] != 0) {
+//            if (board[F8] == EMPTY && board[G8] == EMPTY) {
+//               AddMove(E8, G8);
+//            }
+//         }
+//         if (game_list[hply].castle_q[side] != 0) {
+//            if (board[B8] == EMPTY && board[C8] == EMPTY && board[D8] == EMPTY) {
+//               AddMove(E8, C8);
+//            }
+//         }
+//      }
    }
 
    /*
@@ -130,18 +131,18 @@ public final class Gen {
    captures for a pawn.
    */
    public static void GenPawn(int x) {
-      if (board[x + ForwardSquare[side]] == EMPTY) {
-         AddMove(x, x + ForwardSquare[side]);
-         if (rank[side][x] == 1 && board[x + Double[side]] == EMPTY) {
-            AddMove(x, x + Double[side]);
-         }
-      }
-      if (file[x] > 0 && color[x + Left[side]] == OtherSide[side]) {
-         AddCapture(x, x + Left[side], px[board[x + Left[side]]]);
-      }
-      if (file[x] < 7 && color[x + Right[side]] == OtherSide[side]) {
-         AddCapture(x, x + Right[side], px[board[x + Right[side]]]);
-      }
+//      if (board[x + ForwardSquare[side]] == EMPTY) {
+//         AddMove(x, x + ForwardSquare[side]);
+//         if (rank[side][x] == 1 && board[x + Double[side]] == EMPTY) {
+//            AddMove(x, x + Double[side]);
+//         }
+//      }
+//      if (file[x] > 0 && color[x + Left[side]] == OtherSide[side]) {
+//         AddCapture(x, x + Left[side], px[board[x + Left[side]]]);
+//      }
+//      if (file[x] < 7 && color[x + Right[side]] == OtherSide[side]) {
+//         AddCapture(x, x + Right[side], px[board[x + Right[side]]]);
+//      }
    }
 
    /*
@@ -150,15 +151,15 @@ public final class Gen {
    table created in init.cpp.
    */
    public static void GenKnight(int sq) {
-      int k = 0;
-      int sq2 = knight_moves[sq][k++];
-      while (sq2 > -1) {
-         if (color[sq2] == EMPTY)
-            AddMove(sq, sq2);
-         else if (color[sq2] == xside)
-            AddCapture(sq, sq2, nx[board[sq2]]);
-         sq2 = knight_moves[sq][k++];
-      }
+//      int k = 0;
+//      int sq2 = knight_moves[sq][k++];
+//      while (sq2 > -1) {
+//         if (color[sq2] == EMPTY)
+//            AddMove(sq, sq2);
+//         else if (color[sq2] == xside)
+//            AddCapture(sq, sq2, nx[board[sq2]]);
+//         sq2 = knight_moves[sq][k++];
+//      }
    }
 
    /*
@@ -166,16 +167,16 @@ public final class Gen {
    captures for each diagonal.
    */
    public static void GenBishop(int x, int dir) {
-      int sq = qrb_moves[x][dir];
-      while (sq > -1) {
-         if (color[sq] != EMPTY) {
-            if (color[sq] == xside)
-               AddCapture(x, sq, bx[board[sq]]);
-            break;
-         }
-         AddMove(x, sq);
-         sq = qrb_moves[sq][dir];
-      }
+//      int sq = qrb_moves[x][dir];
+//      while (sq > -1) {
+//         if (color[sq] != EMPTY) {
+//            if (color[sq] == xside)
+//               AddCapture(x, sq, bx[board[sq]]);
+//            break;
+//         }
+//         AddMove(x, sq);
+//         sq = qrb_moves[sq][dir];
+//      }
    }
 
    /*
@@ -183,17 +184,17 @@ public final class Gen {
    for each rank and file.
    */
    public static void GenRook(int x, int dir) {
-      int sq = qrb_moves[x][dir];
-      while (sq > -1) {
-         if (color[sq] != EMPTY) {
-            if (color[sq] == xside) {
-               AddCapture(x, sq, rx[board[sq]]);
-            }
-            break;
-         }
-         AddMove(x, sq);
-         sq = qrb_moves[sq][dir];
-      }
+//      int sq = qrb_moves[x][dir];
+//      while (sq > -1) {
+//         if (color[sq] != EMPTY) {
+//            if (color[sq] == xside) {
+//               AddCapture(x, sq, rx[board[sq]]);
+//            }
+//            break;
+//         }
+//         AddMove(x, sq);
+//         sq = qrb_moves[sq][dir];
+//      }
    }
 
    /*
@@ -201,17 +202,17 @@ public final class Gen {
    for line.
    */
    public static void GenQueen(int x, int dir) {
-      int sq = qrb_moves[x][dir];
-      while (sq > -1) {
-         if (color[sq] != EMPTY) {
-            if (color[sq] == xside) {
-               AddCapture(x, sq, qx[board[sq]]);
-            }
-            break;
-         }
-         AddMove(x, sq);
-         sq = qrb_moves[sq][dir];
-      }
+//      int sq = qrb_moves[x][dir];
+//      while (sq > -1) {
+//         if (color[sq] != EMPTY) {
+//            if (color[sq] == xside) {
+//               AddCapture(x, sq, qx[board[sq]]);
+//            }
+//            break;
+//         }
+//         AddMove(x, sq);
+//         sq = qrb_moves[sq][dir];
+//      }
    }
 
    /*
@@ -219,16 +220,16 @@ public final class Gen {
    king_moves look up table created in init.cpp.
    */
    public static void GenKing(int x) {
-      int k = 0;
-      int sq = king_moves[x][k++];
-
-      while (sq > -1) {
-         if (color[sq] == EMPTY)
-            AddMove(x, sq);
-         else if (color[sq] == xside)
-            AddCapture(x, sq, kx[board[sq]]);
-         sq = king_moves[x][k++];
-      }
+//      int k = 0;
+//      int sq = king_moves[x][k++];
+//
+//      while (sq > -1) {
+//         if (color[sq] == EMPTY)
+//            AddMove(x, sq);
+//         else if (color[sq] == xside)
+//            AddCapture(x, sq, kx[board[sq]]);
+//         sq = king_moves[x][k++];
+//      }
    }
 
    /*
@@ -236,10 +237,10 @@ public final class Gen {
    The score is the history value.
    */
    public static void AddMove(int x, int sq) {
-      move_list[mc].start = x;
-      move_list[mc].dest = sq;
-      move_list[mc].score = history[x][sq];
-      mc++;
+//      move_list[mc].start = x;
+//      move_list[mc].dest = sq;
+//      move_list[mc].score = history[x][sq];
+//      mc++;
    }
 
    /*
@@ -250,9 +251,9 @@ public final class Gen {
    The score is also added and will be used in move ordering.
    */
    public static void AddCapture(int x, int sq) {
-      move_list[mc].start = x;
-      move_list[mc].dest = sq;
-      mc++;
+//      move_list[mc].start = x;
+//      move_list[mc].dest = sq;
+//      mc++;
    }
 
    /*
@@ -260,140 +261,139 @@ public final class Gen {
    are being generated instead of all moves.
    */
    public static void GenCaptures() {
-      first_move[ply + 1] = first_move[ply];
-      mc = first_move[ply];//
-
-      for (int x = 0; x < 64; x++) {
-         if (color[x] == side) {
-            switch (board[x]) {
-               case P:
-                  CapPawn(x);
-                  break;
-               case N:
-                  CapKnight(x);
-                  break;
-               case B:
-                  CapBishop(x, NE);
-                  CapBishop(x, SE);
-                  CapBishop(x, SW);
-                  CapBishop(x, NW);
-                  break;
-               case R:
-                  CapRook(x, EAST);
-                  CapRook(x, SOUTH);
-                  CapRook(x, WEST);
-                  CapRook(x, NORTH);
-                  break;
-               case Q:
-                  CapQueen(x, NE);
-                  CapQueen(x, SE);
-                  CapQueen(x, SW);
-                  CapQueen(x, NW);
-                  CapQueen(x, EAST);
-                  CapQueen(x, SOUTH);
-                  CapQueen(x, WEST);
-                  CapQueen(x, NORTH);
-                  break;
-               case K:
-                  CapKing(x);
-                  break;
-               default:
-                  break;
-            }
-         }
-      }
-      first_move[ply + 1] = mc;
+//      first_move[ply + 1] = first_move[ply];
+//      mc = first_move[ply];//
+//
+//      for (int x = 0; x < 64; x++) {
+//         if (color[x] == side) {
+//            switch (board[x]) {
+//               case P:
+//                  CapPawn(x);
+//                  break;
+//               case N:
+//                  CapKnight(x);
+//                  break;
+//               case B:
+//                  CapBishop(x, NE);
+//                  CapBishop(x, SE);
+//                  CapBishop(x, SW);
+//                  CapBishop(x, NW);
+//                  break;
+//               case R:
+//                  CapRook(x, EAST);
+//                  CapRook(x, SOUTH);
+//                  CapRook(x, WEST);
+//                  CapRook(x, NORTH);
+//                  break;
+//               case Q:
+//                  CapQueen(x, NE);
+//                  CapQueen(x, SE);
+//                  CapQueen(x, SW);
+//                  CapQueen(x, NW);
+//                  CapQueen(x, EAST);
+//                  CapQueen(x, SOUTH);
+//                  CapQueen(x, WEST);
+//                  CapQueen(x, NORTH);
+//                  break;
+//               case K:
+//                  CapKing(x);
+//                  break;
+//               default:
+//                  break;
+//            }
+//         }
+//      }
+//      first_move[ply + 1] = mc;
    }
 
    /*
    CapPawn generates pawn captures.
    */
    public static void CapPawn(int x) {
-
-      if (file[x] > 0 && color[x + Left[side]] == OtherSide[side]) {
-         AddCapture(x, x + Left[side], px[board[x + Left[side]]]);
-      }
-      if (file[x] < 7 && color[x + Right[side]] == OtherSide[side]) {
-         AddCapture(x, x + Right[side], px[board[x + Right[side]]]);
-      }
-
+//
+//      if (file[x] > 0 && color[x + Left[side]] == OtherSide[side]) {
+//         AddCapture(x, x + Left[side], px[board[x + Left[side]]]);
+//      }
+//      if (file[x] < 7 && color[x + Right[side]] == OtherSide[side]) {
+//         AddCapture(x, x + Right[side], px[board[x + Right[side]]]);
+//      }
+//
    }
 
    /*
    CapKnight generates knight captures.
    */
    public static void CapKnight(int x) {
-      int k = 0;
-      int sq = knight_moves[x][k++];
-      while (sq > -1) {
-         if (color[sq] == xside)
-            AddCapture(x, sq, nx[board[sq]]);
-         sq = knight_moves[x][k++];
-      }
+//      int k = 0;
+//      int sq = knight_moves[x][k++];
+//      while (sq > -1) {
+//         if (color[sq] == xside)
+//            AddCapture(x, sq, nx[board[sq]]);
+//         sq = knight_moves[x][k++];
+//      }
    }
 
    /*
    CapBishop generates bishop captures.
    */
    public static void CapBishop(int x, int dir) {
-
-      int sq = qrb_moves[x][dir];
-      while (sq > -1) {
-         if (color[sq] != EMPTY) {
-            if (color[sq] == xside)
-               AddCapture(x, sq, bx[board[sq]]);
-            break;
-         }
-         sq = qrb_moves[sq][dir];
-      }
-
+//
+//      int sq = qrb_moves[x][dir];
+//      while (sq > -1) {
+//         if (color[sq] != EMPTY) {
+//            if (color[sq] == xside)
+//               AddCapture(x, sq, bx[board[sq]]);
+//            break;
+//         }
+//         sq = qrb_moves[sq][dir];
+//      }
+//
    }
 
    /*
    CapRook generates rook captures.
    */
    public static void CapRook(int x, int dir) {
-      int sq = qrb_moves[x][dir];
-      while (sq > -1) {
-         if (color[sq] != EMPTY) {
-            if (color[sq] == xside) {
-               AddCapture(x, sq, rx[board[sq]]);
-            }
-            break;
-         }
-         sq = qrb_moves[sq][dir];
-      }
+//      int sq = qrb_moves[x][dir];
+//      while (sq > -1) {
+//         if (color[sq] != EMPTY) {
+//            if (color[sq] == xside) {
+//               AddCapture(x, sq, rx[board[sq]]);
+//            }
+//            break;
+//         }
+//         sq = qrb_moves[sq][dir];
+//      }
    }
 
    /*
    CapQueen generates queen captures.
    */
    public static void CapQueen(int x, int dir) {
-      int sq = qrb_moves[x][dir];
-      while (sq > -1) {
-         if (color[sq] != EMPTY) {
-            if (color[sq] == xside) {
-               AddCapture(x, sq, qx[board[sq]]);
-            }
-            break;
-         }
-         sq = qrb_moves[sq][dir];
-      }
-
+//      int sq = qrb_moves[x][dir];
+//      while (sq > -1) {
+//         if (color[sq] != EMPTY) {
+//            if (color[sq] == xside) {
+//               AddCapture(x, sq, qx[board[sq]]);
+//            }
+//            break;
+//         }
+//         sq = qrb_moves[sq][dir];
+//      }
    }
 
    /*
    CapKing generates king captures.
    */
    public static void CapKing(int x) {
-      int k = 0;
-      int sq = king_moves[x][k++];
-
-      while (sq > -1) {
-         if (color[sq] == xside)
-            AddCapture(x, sq, kx[board[sq]]);
-         sq = king_moves[x][k++];
-      }
+//      int k = 0;
+//      int sq = king_moves[x][k++];
+//
+//      while (sq > -1) {
+//         if (color[sq] == xside)
+//            AddCapture(x, sq, kx[board[sq]]);
+//         sq = king_moves[x][k++];
+//      }
    }
 
 }

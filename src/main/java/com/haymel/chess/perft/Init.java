@@ -40,29 +40,4 @@ public final class Init {
          A, B, C, D, E, F, G, H
    };
 
-   public static void initBoard() {
-      for (int x = 0; x < 64; ++x) {
-         color[x] = initColor[x];
-         board[x] = initBoard[x];
-//            rank[0][x] = row[x];
-//            rank[1][x] = 7 - row[x];
-      }
-
-      side = white;
-      xside = black;
-//        fifty = 0;
-      ply = 0;
-      hply = 0;
-      firstMove[0] = 0;
-//        kingloc[0] = Globals.E1;
-//        kingloc[1] = Globals.E8;
-
-//        game_list[hply].castle_q[0] = 1;
-//        game_list[hply].castle_q[1] = 1;
-//        game_list[hply].castle_k[0] = 1;
-//        game_list[hply].castle_k[1] = 1;
-   }
-
-
-
 }
