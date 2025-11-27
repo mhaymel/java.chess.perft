@@ -1,142 +1,149 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Color.black;
+import static com.haymel.chess.perft.Color.white;
+import static com.haymel.chess.perft.Piece.*;
+
 public final class Fen {
 
 
-//   public static int LoadDiagram(String ts, Chess chess) {
-//      for (int x = 0; x < 64; x++) {
-//         chess.board[x] = Piece.empty;
-//         chess.color[x] = Piece.empty;
-//      }
-//      int c = 0, i = 0, j;
-//
-//      while (ts) {
-//         if (ts[c] >= '0' && ts[c] <= '8')
-//            i += ts[c] - 48;
-//         if (ts[c] == '\\')
-//            continue;
-//         j = Flip[i];
-//
-//         switch (ts[c]) {
-//            case 'K':
-//               board[j] = K;
-//               color[j] = 0;
-//               i++;
-//               kingloc[0] = j;
-//               break;
-//            case 'Q':
-//               board[j] = Q;
-//               color[j] = 0;
-//               i++;
-//               break;
-//            case 'R':
-//               board[j] = R;
-//               color[j] = 0;
-//               i++;
-//               break;
-//            case 'B':
-//               board[j] = B;
-//               color[j] = 0;
-//               i++;
-//               break;
-//            case 'N':
-//               board[j] = N;
-//               color[j] = 0;
-//               i++;
-//               break;
-//            case 'P':
-//               board[j] = P;
-//               color[j] = 0;
-//               i++;
-//               break;
-//            case 'k':
-//               board[j] = K;
-//               color[j] = 1;
-//               i++;
-//
-//               kingloc[1] = j;
-//               break;
-//            case 'q':
-//               board[j] = Q;
-//               color[j] = 1;
-//               i++;
-//               break;
-//            case 'r':
-//               board[j] = R;
-//               color[j] = 1;
-//               i++;
-//               break;
-//            case 'b':
-//               board[j] = B;
-//               color[j] = 1;
-//               i++;
-//               break;
-//            case 'n':
-//               board[j] = N;
-//               color[j] = 1;
-//               i++;
-//               break;
-//            case 'p':
-//               board[j] = P;
-//               color[j] = 1;
-//               i++;
-//               break;
-//         }
-//         c++;
-//         if (ts[c] == ' ')
-//            break;
-//         if (i > 63)
-//            break;
-//      }
-//      if (ts[c] == ' ' && ts[c + 2] == ' ') {
-//         if (ts[c + 1] == 'w') {
-//            side = 0;
-//            xside = 1;
-//         }
-//         if (ts[c + 1] == 'b') {
-//            side = 1;
-//            xside = 0;
-//         }
-//      }
-//
-//      game_list[0].castle_q[0] = 0;
-//      game_list[0].castle_q[1] = 0;
-//      game_list[0].castle_k[0] = 0;
-//      game_list[0].castle_k[1] = 0;
-//
-//      while (ts[c]) {
-//         switch (ts[c]) {
-//            case '-':
-//               break;
-//            case 'K':
-//               if (board[E1] == 5 && color[E1] == 0) game_list[0].castle_q[0] = 1;
-//               break;
-//            case 'Q':
-//               if (board[E1] == 5 && color[E1] == 0) game_list[0].castle_q[1] = 1;
-//               break;
-//            case 'k':
-//               if (board[E8] == 5 && color[E8] == 1) game_list[0].castle_k[0] = 1;
-//               break;
-//            case 'q':
-//               if (board[E8] == 5 && color[E8] == 1) game_list[0].castle_k[1] = 1;
-//               break;
-//            default:
-//               break;
-//         }
-//         c++;
-//      }
-//
-//      CloseDiagram();
-//      DisplayBoard();
-//      NewPosition();
-//      Gen();
-//      printf(" diagram # %d \n", num + count);
-//      count++;
-//      if (side == 0)
-//         printf("White to move\n");
-//      else
-//         printf("Black to move\n");
-//      printf(" %s \n", ts);
-//      return 0;
-//   }
+   //   rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+   public static int LoadDiagram(char[] ts, Chess chess) {
+      for (int x = 0; x < 64; x++) {
+         chess.board[x] = Piece.empty;
+         chess.color[x] = Piece.empty;
+      }
+      int c = 0;
+      int i = 0;
+      int j;
+
+      while (true) {
+         if (ts[c] >= '0' && ts[c] <= '8')
+            i += ts[c] - 48;
+         if (ts[c] == '\\')
+            continue;
+         j = Flip[i];
+
+         switch (ts[c]) {
+            case 'K':
+               chess.board[j] = king;
+               chess.color[j] = white;
+               i++;
+               kingloc[0] = j;
+               break;
+            case 'Q':
+               chess.board[j] = queen;
+               chess.color[j] = white;
+               i++;
+               break;
+            case 'R':
+               chess.board[j] = rook;
+               chess.color[j] = white;
+               i++;
+               break;
+            case 'B':
+               chess.board[j] = bishop;
+               chess.color[j] = white;
+               i++;
+               break;
+            case 'N':
+               chess.board[j] = knight;
+               chess.color[j] = white;
+               i++;
+               break;
+            case 'P':
+               chess.board[j] = pawn;
+               chess.color[j] = white;
+               i++;
+               break;
+            case 'k':
+               chess.board[j] = king;
+               chess.color[j] = black;
+               i++;
+
+               kingloc[1] = j;
+               break;
+            case 'q':
+               chess.board[j] = queen;
+               chess.color[j] = black;
+               i++;
+               break;
+            case 'r':
+               chess.board[j] = rook;
+               chess.color[j] = black;
+               i++;
+               break;
+            case 'b':
+               chess.board[j] = bishop;
+               chess.color[j] = black;
+               i++;
+               break;
+            case 'n':
+               chess.board[j] = knight;
+               chess.color[j] = black;
+               i++;
+               break;
+            case 'p':
+               chess.board[j] = pawn;
+               chess.color[j] = black;
+               i++;
+               break;
+         }
+         c++;
+         if (ts[c] == ' ')
+            break;
+         if (i > 63)
+            break;
+      }
+      if (ts[c] == ' ' && ts[c + 2] == ' ') {
+         if (ts[c + 1] == 'w') {
+            chess.side = white;
+            chess.xside = black;
+         }
+         if (ts[c + 1] == 'b') {
+            chess.side = black;
+            chess.xside = white;
+         }
+      }
+
+      game_list[0].castle_q[0] = 0;
+      game_list[0].castle_q[1] = 0;
+      game_list[0].castle_k[0] = 0;
+      game_list[0].castle_k[1] = 0;
+
+      while (ts[c]) {
+         switch (ts[c]) {
+            case '-':
+               break;
+            case 'K':
+               if (board[E1] == 5 && color[E1] == 0) game_list[0].castle_q[0] = 1;
+               break;
+            case 'Q':
+               if (board[E1] == 5 && color[E1] == 0) game_list[0].castle_q[1] = 1;
+               break;
+            case 'k':
+               if (board[E8] == 5 && color[E8] == 1) game_list[0].castle_k[0] = 1;
+               break;
+            case 'q':
+               if (board[E8] == 5 && color[E8] == 1) game_list[0].castle_k[1] = 1;
+               break;
+            default:
+               break;
+         }
+         c++;
+      }
+
+      CloseDiagram();
+      DisplayBoard();
+      NewPosition();
+      Gen();
+      printf(" diagram # %d \n", num + count);
+      count++;
+      if (side == 0)
+         printf("White to move\n");
+      else
+         printf("Black to move\n");
+      printf(" %s \n", ts);
+      return 0;
+   }
 }
