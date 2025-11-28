@@ -1,0 +1,18 @@
+package com.haymel.chess.perft;
+
+import static com.haymel.chess.perft.Color.black;
+import static com.haymel.chess.perft.Color.white;
+
+public final class Castling {
+
+   public final boolean[] queenside = new boolean[]{false, false};
+   public final boolean[] kingside = new boolean[]{false, false};
+
+   public void reset() {
+      kingside[white] = false;
+      queenside[white] = false;
+      kingside[black] = false;
+      queenside[black] = false;
+   }
+
+}

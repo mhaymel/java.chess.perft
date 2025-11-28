@@ -2,6 +2,8 @@ package com.haymel.chess.perft;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
+import static com.haymel.chess.perft.Field.e1;
+import static com.haymel.chess.perft.Field.e8;
 
 public final class Chess {
 
@@ -19,6 +21,7 @@ public final class Chess {
    public final Game[] gameList = newGame(gameStackSize);
    public final int[] board = new int[64];
    public final int[] color = new int[64];
+   public final int[] kingloc = new int[2];
 
    public void initBoard() {
       for (int x = 0; x < 64; ++x) {
@@ -31,8 +34,8 @@ public final class Chess {
       ply = 0;
       hply = 0;
       firstMove[0] = 0;
-//        kingloc[0] = Globals.E1;
-//        kingloc[1] = Globals.E8;
+      kingloc[white] = e1;
+      kingloc[black] = e8;
 
 //        game_list[hply].castle_q[0] = 1;
 //        game_list[hply].castle_q[1] = 1;
