@@ -5,6 +5,8 @@ import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Piece.*;
 import static java.lang.Character.isUpperCase;
+import static java.lang.Character.isWhitespace;
+import static java.lang.String.format;
 
 public final class Fen {
 
@@ -23,24 +25,31 @@ public final class Fen {
       https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
       rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     */
-   public static int load(String fen, Chess chess, Castling castling, EnpassantHalfFullMove enpHalfFullMove) {
-      return load(fen.toCharArray(), chess, castling, enpHalfFullMove);
+   public static void load(String fen, Chess chess, Castling castling, EnpassantHalfFullMove enpHalfFullMove) {
+      load(fen.toCharArray(), chess, castling, enpHalfFullMove);
    }
 
-   private static int load(char[] fen, Chess chess, Castling castling, EnpassantHalfFullMove enpHalfFullMove) {
+   private static void load(char[] fen, Chess chess, Castling castling, EnpassantHalfFullMove enpHalfFullMove) {
       for (int x = 0; x < 64; x++) {
-         chess.board[x] = Piece.empty;
-         chess.color[x] = Piece.empty;
+         chess.board[x] = empty;
+         chess.color[x] = empty;
       }
       int c = 0;
       int i = 0;
       int j;
 
-      while (true) {
-         if (fen[c] >= '0' && fen[c] <= '8')
+      while (!isWhitespace(fen[c])) {
+         if (fen[c] >= '0' && fen[c] <= '8') {
             i += fen[c] - 48;
-         if (fen[c] == '/')
+            c++;
             continue;
+         }
+
+         if (fen[c] == '/') {
+            c++;
+            continue;
+         }
+
          j = flip[i];
 
          switch (fen[c]) {
@@ -69,14 +78,12 @@ public final class Fen {
             case 'p':
                chess.board[j] = pawn;
                break;
+            default:
+               throw new IllegalArgumentException(format("cannot handle fen '%s'", String.valueOf(fen)));
          }
          chess.color[j] = color(fen[c]);
-
+         i++;
          c++;
-         if (fen[c] == ' ')
-            break;
-         if (i > 63)
-            break;
       }
       if (fen[c] == ' ' && fen[c + 2] == ' ') {
          if (fen[c + 1] == 'w') {
@@ -88,39 +95,67 @@ public final class Fen {
             chess.xside = white;
          }
       }
+      c += 2;
+
+      while (isWhitespace(fen[c]))
+         c++;
 
       castling.reset();
-
-      while (fen[c]) {
-         switch (fen[c]) {
-            case '-':
-               break;
-            case 'K':
-            case 'k':
-               castling.kingside[color(fen[c])] = true;
-               break;
-            case 'Q':
-            case 'q':
-               castling.queenside[color(fen[c])] = true;
-               break;
-            default:
-               break;
+      if (fen[c] == '-') {
+         c++;
+      } else {
+         while (!isWhitespace(fen[c])) {
+            switch (fen[c]) {
+               case 'K':
+               case 'k':
+                  castling.kingside[color(fen[c])] = true;
+                  break;
+               case 'Q':
+               case 'q':
+                  castling.queenside[color(fen[c])] = true;
+                  break;
+               default:
+                  throw new IllegalArgumentException(
+                     format("cannot handle '%s' at '%s' in fen '%s'", fen[c], c, String.valueOf(fen)));
+            }
+            c++;
          }
+      }
+
+      while (isWhitespace(fen[c]))
+         c++;
+
+      if (fen[c] >= 'a' && fen[c] <= 'h') {
+         enpHalfFullMove.enpassantField = fen[c + 1] - '1' * 8 + fen[c] - 'a';
+         c = c + 2;
+      }
+
+      if (fen[c] == '-')
+         c++;
+
+      while (isWhitespace(fen[c]))
+         c++;
+
+      int count = 0;
+      while (isDigit(fen[c])) {
+         count = count * 10 + fen[c] - '0';
          c++;
       }
-//
-//      CloseDiagram();
-//      DisplayBoard();
-//      NewPosition();
-//      Gen();
-//      printf(" diagram # %d \n", num + count);
-//      count++;
-//      if (side == 0)
-//         printf("White to move\n");
-//      else
-//         printf("Black to move\n");
-//      printf(" %s \n", fen);
-//      return 0;
+      enpHalfFullMove.halfmoveClock = count;
+
+      while (isWhitespace(fen[c]))
+         c++;
+
+      count = 0;
+      while (c < fen.length && isDigit(fen[c])) {
+         count = count * 10 + fen[c] - '0';
+         c++;
+      }
+      enpHalfFullMove.fullmoveNumber = count;
+   }
+
+   private static boolean isDigit(char c) {
+      return c >= '0' && c <= '9';
    }
 
    private static int color(char piece) {
