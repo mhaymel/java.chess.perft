@@ -25,15 +25,23 @@ public final class Fen {
       https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
       rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     */
-   public static void load(String fen, Chess chess, Castling castling, EnpassantHalfFullMove enpHalfFullMove) {
-      load(fen.toCharArray(), chess, castling, enpHalfFullMove);
+   public static void load(String fen, Chess chess, EnpassantHalfFullMove enpHalfFullMove) {
+      load(fen.toCharArray(), chess, enpHalfFullMove);
    }
 
-   private static void load(char[] fen, Chess chess, Castling castling, EnpassantHalfFullMove enpHalfFullMove) {
+   private static void load(char[] fen, Chess chess, EnpassantHalfFullMove enpHalfFullMove) {
+      chess.ply = 0;
+      chess.hply = 0;
+      chess.side = -1;
+      chess.xside = -1;
       for (int x = 0; x < 64; x++) {
          chess.board[x] = empty;
          chess.color[x] = empty;
       }
+      enpHalfFullMove.fullmoveNumber = 0;
+      enpHalfFullMove.halfmoveClock = 0;
+      enpHalfFullMove.enpassantField = 0;
+
       int c = 0;
       int i = 0;
       int j;
@@ -100,19 +108,22 @@ public final class Fen {
       while (isWhitespace(fen[c]))
          c++;
 
-      castling.reset();
+
       if (fen[c] == '-') {
          c++;
       } else {
+         Castling castle = chess.gameList[chess.hply].castle;
+         castle.reset();
          while (!isWhitespace(fen[c])) {
+
             switch (fen[c]) {
                case 'K':
                case 'k':
-                  castling.kingside[color(fen[c])] = true;
+                  castle.kingside[color(fen[c])] = true;
                   break;
                case 'Q':
                case 'q':
-                  castling.queenside[color(fen[c])] = true;
+                  castle.queenside[color(fen[c])] = true;
                   break;
                default:
                   throw new IllegalArgumentException(
@@ -126,7 +137,7 @@ public final class Fen {
          c++;
 
       if (fen[c] >= 'a' && fen[c] <= 'h') {
-         enpHalfFullMove.enpassantField = fen[c + 1] - '1' * 8 + fen[c] - 'a';
+         enpHalfFullMove.enpassantField = fen[c] - 'a' + (fen[c+1] - '1')*8;
          c = c + 2;
       }
 

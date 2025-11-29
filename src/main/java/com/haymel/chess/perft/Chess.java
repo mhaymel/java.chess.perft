@@ -9,8 +9,8 @@ public final class Chess {
 
    public int ply;
    public int hply;
-   public int side = Color.white;
-   public int xside = Color.black;
+   public int side = white;
+   public int xside = black;
 
    public static final int maxPly = 128;
    public static final int moveStackSize = 2000;
