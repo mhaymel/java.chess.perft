@@ -1,5 +1,7 @@
 package com.haymel.chess.perft;
 
+import static java.lang.Integer.MIN_VALUE;
+
 public interface Field {
     int a1 = 0;
     int b1 = 1;
@@ -72,4 +74,6 @@ public interface Field {
     int f8 = 61;
     int g8 = 62;
     int h8 = 63;
+
+    int invalid = MIN_VALUE;
 }

@@ -25,22 +25,22 @@ public final class Fen {
       https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
       rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     */
-   public static void load(String fen, Chess chess, EnpassantHalfFullMove enpHalfFullMove) {
+   public static void load(String fen, Chess chess, HalfFullMove enpHalfFullMove) {
       load(fen.toCharArray(), chess, enpHalfFullMove);
    }
 
-   private static void load(char[] fen, Chess chess, EnpassantHalfFullMove enpHalfFullMove) {
+   private static void load(char[] fen, Chess chess, HalfFullMove enpHalfFullMove) {
       chess.ply = 0;
       chess.hply = 0;
       chess.side = -1;
       chess.xside = -1;
+      chess.enPassantField = invalid;
       for (int x = 0; x < 64; x++) {
          chess.board[x] = empty;
          chess.color[x] = empty;
       }
-      enpHalfFullMove.fullmoveNumber = 0;
-      enpHalfFullMove.halfmoveClock = 0;
-      enpHalfFullMove.enpassantField = 0;
+      enpHalfFullMove.fullMoveNumber = 0;
+      enpHalfFullMove.halfMoveClock = 0;
 
       int c = 0;
       int i = 0;
@@ -137,7 +137,7 @@ public final class Fen {
          c++;
 
       if (fen[c] >= 'a' && fen[c] <= 'h') {
-         enpHalfFullMove.enpassantField = fen[c] - 'a' + (fen[c+1] - '1')*8;
+         chess.enPassantField = fen[c] - 'a' + (fen[c+1] - '1')*8;
          c = c + 2;
       }
 
@@ -152,7 +152,7 @@ public final class Fen {
          count = count * 10 + fen[c] - '0';
          c++;
       }
-      enpHalfFullMove.halfmoveClock = count;
+      enpHalfFullMove.halfMoveClock = count;
 
       while (isWhitespace(fen[c]))
          c++;
@@ -162,7 +162,7 @@ public final class Fen {
          count = count * 10 + fen[c] - '0';
          c++;
       }
-      enpHalfFullMove.fullmoveNumber = count;
+      enpHalfFullMove.fullMoveNumber = count;
    }
 
    private static boolean isDigit(char c) {

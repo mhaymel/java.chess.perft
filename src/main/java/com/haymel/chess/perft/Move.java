@@ -2,8 +2,15 @@ package com.haymel.chess.perft;
 
 public final class Move {
 
-    public Field start;
-    public Field dest;
-    public Piece promote;
+   public int start;
+   public int dest;
 
+   public String alg() {
+      return Notation.alg(start, dest);
+   }
+
+   @Override
+   public String toString() {
+      return alg();
+   }
 }

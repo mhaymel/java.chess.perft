@@ -18,10 +18,10 @@ final class FenTest {
       //given
       String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
       Chess chess = new Chess();
-      EnpassantHalfFullMove enpassantHalfFullMove = new EnpassantHalfFullMove();
+      HalfFullMove halfFullMove = new HalfFullMove();
 
       //when
-      Fen.load(fen, chess, enpassantHalfFullMove);
+      Fen.load(fen, chess, halfFullMove);
 
       //then
       assertThat(chess.side).isEqualTo(white);
@@ -179,10 +179,10 @@ final class FenTest {
       String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
       Chess chess = new Chess();
       Castling castling = new Castling();
-      EnpassantHalfFullMove enpassantHalfFullMove = new EnpassantHalfFullMove();
+      HalfFullMove halfFullMove = new HalfFullMove();
 
       //when
-      Fen.load(fen, chess, enpassantHalfFullMove);
+      Fen.load(fen, chess, halfFullMove);
 
       //then
    }
@@ -192,10 +192,10 @@ final class FenTest {
       //given
       String fen = "8/8/3k4/8/3K4/8/8/8 w - - 0 1";
       Chess chess = new Chess();
-      EnpassantHalfFullMove enpassantHalfFullMove = new EnpassantHalfFullMove();
+      HalfFullMove halfFullMove = new HalfFullMove();
 
       //when
-      Fen.load(fen, chess, enpassantHalfFullMove);
+      Fen.load(fen, chess, halfFullMove);
 
       //then
       assertThat(chess.side).isEqualTo(white);
@@ -215,9 +215,9 @@ final class FenTest {
       assertThat(chess.board[d6]).isEqualTo(king);
       assertThat(chess.color[d6]).isEqualTo(black);
 
-      assertThat(enpassantHalfFullMove.enpassantField).isEqualTo(0);
-      assertThat(enpassantHalfFullMove.halfmoveClock).isEqualTo(0);
-      assertThat(enpassantHalfFullMove.fullmoveNumber).isEqualTo(1);
+      assertThat(chess.enPassantField).isEqualTo(invalid);
+      assertThat(halfFullMove.halfMoveClock).isEqualTo(0);
+      assertThat(halfFullMove.fullMoveNumber).isEqualTo(1);
    }
 
    @Test
@@ -225,10 +225,10 @@ final class FenTest {
       //given
       String fen = "4k3/8/8/2pP4/8/8/8/4K3 w - c6 0 1";
       Chess chess = new Chess();
-      EnpassantHalfFullMove enpassantHalfFullMove = new EnpassantHalfFullMove();
+      HalfFullMove halfFullMove = new HalfFullMove();
 
       //when
-      Fen.load(fen, chess, enpassantHalfFullMove);
+      Fen.load(fen, chess, halfFullMove);
 
       //then
       assertThat(chess.side).isEqualTo(white);
@@ -248,9 +248,9 @@ final class FenTest {
       assertThat(chess.board[e8]).isEqualTo(king);
       assertThat(chess.color[e8]).isEqualTo(black);
 
-      assertThat(enpassantHalfFullMove.enpassantField).isEqualTo(c6);
-      assertThat(enpassantHalfFullMove.halfmoveClock).isEqualTo(0);
-      assertThat(enpassantHalfFullMove.fullmoveNumber).isEqualTo(1);
+      assertThat(chess.enPassantField).isEqualTo(c6);
+      assertThat(halfFullMove.halfMoveClock).isEqualTo(0);
+      assertThat(halfFullMove.fullMoveNumber).isEqualTo(1);
    }
 }
 

@@ -1,11 +1,9 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Direction.*;
-import static com.haymel.chess.perft.File.A;
-import static com.haymel.chess.perft.File.H;
-import static com.haymel.chess.perft.Init.file;
+import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Piece.*;
-import static com.haymel.chess.perft.Util.isPawnDoubleMove;
 
 public final class Gen {
 
@@ -19,21 +17,18 @@ public final class Gen {
 //    public static final int qx[] = {-9, 1, 11, 21, 31, 0};
 //    public static final int kx[] = {0, 10, 20, 30, 40, 0};
 //
-   public static final int ForwardSquare[] = {8, -8};
+   //   public static final int ForwardSquare[] = {8, -8};
 //    public static final int Double[] = {16, -16};
 //    public static final int Left[] = {7, -9};
 //    public static final int Right[] = {9, -7};
 //    public static final int OtherSide[] = {1, 0};
 
-   private int mc;
+   public static Gen NewGen(Chess chess) { return new Gen(chess); }
 
-   public Gen(Chess c) {
-      this.c = c;
-      this.mc = 0;
-   }
+   public Gen(Chess c) { this.c = c; }
 
    public void execute() {
-      mc = c.firstMove[c.ply];
+      c.mc = c.firstMove[c.ply];
 
       genEnPassant();
 
@@ -78,21 +73,18 @@ public final class Gen {
             }
          }
       }
-      c.firstMove[c.ply + 1] = mc;
+      c.firstMove[c.ply + 1] = c.mc;
    }
 
    private void genEnPassant() {
-      if (c.hply == 0)
+      if (c.enPassantField == Field.invalid)
          return;
-
-      Game game = c.gameList[c.hply - 1];
-      if (isPawnDoubleMove(game, c.board)) {
-         int ep = game.dest;
-         if (file[ep] != A && c.color[ep - 1] == c.side && c.board[ep - 1] == pawn)
-            AddCapture(ep - 1, ep + ForwardSquare[c.side]);
-
-         if (file[ep] != H && c.color[ep + 1] == c.side && c.board[ep + 1] == pawn)
-            AddCapture(ep + 1, ep + ForwardSquare[c.side]);
+      if (c.side == white) {
+         if (c.enPassantField > a6) addCapture(c.enPassantField - 9, c.enPassantField);
+         if (c.enPassantField < h6) addCapture(c.enPassantField - 7, c.enPassantField);
+      } else {
+         if (c.enPassantField > a3) addCapture(c.enPassantField + 7, c.enPassantField);
+         if (c.enPassantField < h3) addCapture(c.enPassantField + 9, c.enPassantField);
       }
    }
 
@@ -243,17 +235,10 @@ public final class Gen {
 //      mc++;
    }
 
-   /*
-   AddCapture adds the start and dest squares of a move to the
-   movelist.
-   CAPTURE_SCORE is added to the score so that captures will be
-   looked at first.
-   The score is also added and will be used in move ordering.
-   */
-   public static void AddCapture(int x, int sq) {
-//      move_list[mc].start = x;
-//      move_list[mc].dest = sq;
-//      mc++;
+   private void addCapture(int x, int sq) {
+      c.moveList[c.mc].start = x;
+      c.moveList[c.mc].dest = sq;
+      c.mc++;
    }
 
    /*

@@ -11,6 +11,8 @@ public final class Chess {
    public int hply;
    public int side = white;
    public int xside = black;
+   public int enPassantField;
+   public int mc;
 
    public static final int maxPly = 128;
    public static final int moveStackSize = 2000;
@@ -36,6 +38,13 @@ public final class Chess {
       firstMove[0] = 0;
       kingloc[white] = e1;
       kingloc[black] = e8;
+      enPassantField = Field.invalid;
+      mc = 0;
+
+      gameList[hply].castle.kingside[white] = true;
+      gameList[hply].castle.queenside[white] = true;
+      gameList[hply].castle.kingside[black] = true;
+      gameList[hply].castle.queenside[black] = true;
 
 //        game_list[hply].castle_q[0] = 1;
 //        game_list[hply].castle_q[1] = 1;
