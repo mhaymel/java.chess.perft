@@ -7,6 +7,8 @@ import static com.haymel.chess.perft.Piece.*;
 
 public final class Gen {
 
+   public static final int[][] king_moves = new int[64][9];
+
    private final Chess c;
    //    public static move g;
 //
@@ -23,69 +25,12 @@ public final class Gen {
 //    public static final int Right[] = {9, -7};
 //    public static final int OtherSide[] = {1, 0};
 
-   public static Gen NewGen(Chess chess) { return new Gen(chess); }
-
-   public Gen(Chess c) { this.c = c; }
-
-   public void execute() {
-      c.mc = c.firstMove[c.ply];
-
-      genEnPassant();
-
-      GenCastle();
-
-      for (int x = 0; x < 64; x++) {
-         if (c.color[x] == c.side) {
-            switch (c.board[x]) {
-               case pawn:
-                  GenPawn(x);
-                  break;
-               case knight:
-                  GenKnight(x);
-                  break;
-               case bishop:
-                  GenBishop(x, NE);
-                  GenBishop(x, SE);
-                  GenBishop(x, SW);
-                  GenBishop(x, NW);
-                  break;
-               case rook:
-                  GenRook(x, NORTH);
-                  GenRook(x, EAST);
-                  GenRook(x, SOUTH);
-                  GenRook(x, WEST);
-                  break;
-               case queen:
-                  GenQueen(x, NE);
-                  GenQueen(x, SE);
-                  GenQueen(x, SW);
-                  GenQueen(x, NW);
-                  GenQueen(x, NORTH);
-                  GenQueen(x, EAST);
-                  GenQueen(x, SOUTH);
-                  GenQueen(x, WEST);
-                  break;
-               case king:
-                  GenKing(x);
-                  break;
-               default:
-                  break;
-            }
-         }
-      }
-      c.firstMove[c.ply + 1] = c.mc;
+   public Gen(Chess c) {
+      this.c = c;
    }
 
-   private void genEnPassant() {
-      if (c.enPassantField == Field.invalid)
-         return;
-      if (c.side == white) {
-         if (c.enPassantField > a6) addCapture(c.enPassantField - 9, c.enPassantField);
-         if (c.enPassantField < h6) addCapture(c.enPassantField - 7, c.enPassantField);
-      } else {
-         if (c.enPassantField > a3) addCapture(c.enPassantField + 7, c.enPassantField);
-         if (c.enPassantField < h3) addCapture(c.enPassantField + 9, c.enPassantField);
-      }
+   public static Gen NewGen(Chess chess) {
+      return new Gen(chess);
    }
 
    /*
@@ -205,40 +150,6 @@ public final class Gen {
 //         AddMove(x, sq);
 //         sq = qrb_moves[sq][dir];
 //      }
-   }
-
-   /*
-   GenKing generates king moves and captures by using the
-   king_moves look up table created in init.cpp.
-   */
-   public static void GenKing(int x) {
-//      int k = 0;
-//      int sq = king_moves[x][k++];
-//
-//      while (sq > -1) {
-//         if (color[sq] == EMPTY)
-//            AddMove(x, sq);
-//         else if (color[sq] == xside)
-//            AddCapture(x, sq, kx[board[sq]]);
-//         sq = king_moves[x][k++];
-//      }
-   }
-
-   /*
-   AddMove adds the start and dest squares of a move to the movelist.
-   The score is the history value.
-   */
-   public static void AddMove(int x, int sq) {
-//      move_list[mc].start = x;
-//      move_list[mc].dest = sq;
-//      move_list[mc].score = history[x][sq];
-//      mc++;
-   }
-
-   private void addCapture(int x, int sq) {
-      c.moveList[c.mc].start = x;
-      c.moveList[c.mc].dest = sq;
-      c.mc++;
    }
 
    /*
@@ -379,6 +290,96 @@ public final class Gen {
 //            AddCapture(x, sq, kx[board[sq]]);
 //         sq = king_moves[x][k++];
 //      }
+   }
+
+   public void execute() {
+      c.mc = c.firstMove[c.ply];
+
+      genEnPassant();
+
+      GenCastle();
+
+      for (int x = 0; x < 64; x++) {
+         if (c.color[x] == c.side) {
+            switch (c.board[x]) {
+               case pawn:
+                  GenPawn(x);
+                  break;
+               case knight:
+                  GenKnight(x);
+                  break;
+               case bishop:
+                  GenBishop(x, NE);
+                  GenBishop(x, SE);
+                  GenBishop(x, SW);
+                  GenBishop(x, NW);
+                  break;
+               case rook:
+                  GenRook(x, NORTH);
+                  GenRook(x, EAST);
+                  GenRook(x, SOUTH);
+                  GenRook(x, WEST);
+                  break;
+               case queen:
+                  GenQueen(x, NE);
+                  GenQueen(x, SE);
+                  GenQueen(x, SW);
+                  GenQueen(x, NW);
+                  GenQueen(x, NORTH);
+                  GenQueen(x, EAST);
+                  GenQueen(x, SOUTH);
+                  GenQueen(x, WEST);
+                  break;
+               case king:
+                  genKing(x);
+                  break;
+               default:
+                  break;
+            }
+         }
+      }
+      c.firstMove[c.ply + 1] = c.mc;
+   }
+
+   private void genEnPassant() {
+      if (c.enPassantField == Field.invalid)
+         return;
+      if (c.side == white) {
+         if (c.enPassantField > a6) addCapture(c.enPassantField - 9, c.enPassantField);
+         if (c.enPassantField < h6) addCapture(c.enPassantField - 7, c.enPassantField);
+      } else {
+         if (c.enPassantField > a3) addCapture(c.enPassantField + 7, c.enPassantField);
+         if (c.enPassantField < h3) addCapture(c.enPassantField + 9, c.enPassantField);
+      }
+   }
+
+   private void genKing(int x) {
+//      int k = 0;
+//      int sq = king_moves[x][k++];
+//
+//      while (sq > -1) {
+//         if (c.color[sq] == empty)
+//            addMove(x, sq);
+//         else if (c.color[sq] == c.xside)
+//            addCapture(x, sq);
+//         sq = king_moves[x][k++];
+//      }
+   }
+
+   /*
+   AddMove adds the start and dest squares of a move to the movelist.
+   The score is the history value.
+   */
+   public void addMove(int x, int sq) {
+      c.moveList[c.mc].start = x;
+      c.moveList[c.mc].dest = sq;
+      c.mc++;
+   }
+
+   private void addCapture(int x, int sq) {
+      c.moveList[c.mc].start = x;
+      c.moveList[c.mc].dest = sq;
+      c.mc++;
    }
 
 }
