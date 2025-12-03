@@ -3,11 +3,10 @@ package com.haymel.chess.perft;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Direction.*;
 import static com.haymel.chess.perft.Field.*;
+import static com.haymel.chess.perft.KingMoves.kingMoves;
 import static com.haymel.chess.perft.Piece.*;
 
 public final class Gen {
-
-   public static final int[][] king_moves = new int[64][9];
 
    private final Chess c;
    //    public static move g;
@@ -31,6 +30,78 @@ public final class Gen {
 
    public static Gen NewGen(Chess chess) {
       return new Gen(chess);
+   }
+
+   public void execute() {
+      c.mc = c.firstMove[c.ply];
+
+      genEnPassant();
+
+      GenCastle();
+
+      for (int x = 0; x < 64; x++) {
+         if (c.color[x] == c.side) {
+            switch (c.board[x]) {
+               case pawn:
+                  GenPawn(x);
+                  break;
+               case knight:
+                  GenKnight(x);
+                  break;
+               case bishop:
+                  GenBishop(x, NE);
+                  GenBishop(x, SE);
+                  GenBishop(x, SW);
+                  GenBishop(x, NW);
+                  break;
+               case rook:
+                  GenRook(x, NORTH);
+                  GenRook(x, EAST);
+                  GenRook(x, SOUTH);
+                  GenRook(x, WEST);
+                  break;
+               case queen:
+                  GenQueen(x, NE);
+                  GenQueen(x, SE);
+                  GenQueen(x, SW);
+                  GenQueen(x, NW);
+                  GenQueen(x, NORTH);
+                  GenQueen(x, EAST);
+                  GenQueen(x, SOUTH);
+                  GenQueen(x, WEST);
+                  break;
+               case king:
+                  genKing(x);
+                  break;
+               default:
+                  break;
+            }
+         }
+      }
+      c.firstMove[c.ply + 1] = c.mc;
+   }
+
+   private void genEnPassant() {
+      if (c.enPassantField == Field.invalid)
+         return;
+      if (c.side == white) {
+         if (c.enPassantField > a6) addCapture(c.enPassantField - 9, c.enPassantField);
+         if (c.enPassantField < h6) addCapture(c.enPassantField - 7, c.enPassantField);
+      } else {
+         if (c.enPassantField > a3) addCapture(c.enPassantField + 7, c.enPassantField);
+         if (c.enPassantField < h3) addCapture(c.enPassantField + 9, c.enPassantField);
+      }
+   }
+
+   private void genKing(int from) {
+      int direction = 0;
+      int to = kingMoves[from][direction++];
+
+      while (to != invalid) {
+         if (c.color[to] != c.side)
+            addMove(from, to);
+         to = kingMoves[from][direction++];
+      }
    }
 
    /*
@@ -275,94 +346,6 @@ public final class Gen {
 //            break;
 //         }
 //         sq = qrb_moves[sq][dir];
-//      }
-   }
-
-   /*
-   CapKing generates king captures.
-   */
-   public static void CapKing(int x) {
-//      int k = 0;
-//      int sq = king_moves[x][k++];
-//
-//      while (sq > -1) {
-//         if (color[sq] == xside)
-//            AddCapture(x, sq, kx[board[sq]]);
-//         sq = king_moves[x][k++];
-//      }
-   }
-
-   public void execute() {
-      c.mc = c.firstMove[c.ply];
-
-      genEnPassant();
-
-      GenCastle();
-
-      for (int x = 0; x < 64; x++) {
-         if (c.color[x] == c.side) {
-            switch (c.board[x]) {
-               case pawn:
-                  GenPawn(x);
-                  break;
-               case knight:
-                  GenKnight(x);
-                  break;
-               case bishop:
-                  GenBishop(x, NE);
-                  GenBishop(x, SE);
-                  GenBishop(x, SW);
-                  GenBishop(x, NW);
-                  break;
-               case rook:
-                  GenRook(x, NORTH);
-                  GenRook(x, EAST);
-                  GenRook(x, SOUTH);
-                  GenRook(x, WEST);
-                  break;
-               case queen:
-                  GenQueen(x, NE);
-                  GenQueen(x, SE);
-                  GenQueen(x, SW);
-                  GenQueen(x, NW);
-                  GenQueen(x, NORTH);
-                  GenQueen(x, EAST);
-                  GenQueen(x, SOUTH);
-                  GenQueen(x, WEST);
-                  break;
-               case king:
-                  genKing(x);
-                  break;
-               default:
-                  break;
-            }
-         }
-      }
-      c.firstMove[c.ply + 1] = c.mc;
-   }
-
-   private void genEnPassant() {
-      if (c.enPassantField == Field.invalid)
-         return;
-      if (c.side == white) {
-         if (c.enPassantField > a6) addCapture(c.enPassantField - 9, c.enPassantField);
-         if (c.enPassantField < h6) addCapture(c.enPassantField - 7, c.enPassantField);
-      } else {
-         if (c.enPassantField > a3) addCapture(c.enPassantField + 7, c.enPassantField);
-         if (c.enPassantField < h3) addCapture(c.enPassantField + 9, c.enPassantField);
-      }
-   }
-
-   private void genKing(int x) {
-//      int k = 0;
-//      int sq = king_moves[x][k++];
-//
-//      while (sq > -1) {
-//         if (c.color[sq] == empty)
-//            addMove(x, sq);
-//         else if (c.color[sq] == c.xside)
-//            addCapture(x, sq);
-//         sq = king_moves[x][k++];
 //      }
    }
 
