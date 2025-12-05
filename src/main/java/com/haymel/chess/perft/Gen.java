@@ -1,5 +1,6 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Direction.*;
 import static com.haymel.chess.perft.Field.*;
@@ -37,7 +38,7 @@ public final class Gen {
 
       genEnPassant();
 
-      GenCastle();
+      genCastle();
 
       for (int x = 0; x < 64; x++) {
          if (c.color[x] == c.side) {
@@ -104,23 +105,33 @@ public final class Gen {
       }
    }
 
-   /*
-   GenCastle generates a castling move if the King and Rook haven't moved and
-   there are no pieces in the way. Attacked squares are looked at in MakeMove.
-   */
-   public static void GenCastle() {
-//      if (side == 0) {
-//         if (game_list[hply].castle_k[side] != 0) {
-//            if (board[F1] == EMPTY && board[G1] == EMPTY) {
-//               AddMove(E1, G1);
-//            }
-//         }
-//         if (game_list[hply].castle_q[side] != 0) {
-//            if (board[B1] == EMPTY && board[C1] == EMPTY && board[D1] == EMPTY) {
-//               AddMove(E1, C1);
-//            }
-//         }
-//      } else {
+   private void genCastle() {
+      if (c.side == white) {
+         if (kingSideCastling(white) && isEmpty(f1) && isEmpty(g1))
+            addMove(e1, g1);
+         if (queenSideCastling(white) && isEmpty(d1) && isEmpty(c1) && isEmpty(b1))
+            addMove(e1, c1);
+      } else {
+         if (kingSideCastling(black) && isEmpty(f8) && isEmpty(g8))
+            addMove(e8, g8);
+         if (queenSideCastling(black) && isEmpty(d8) && isEmpty(c8) && isEmpty(b8))
+            addMove(e8, c8);
+      }
+   }
+
+   private boolean isEmpty(int field) {
+      return c.board[field] == empty;
+   }
+
+   private boolean queenSideCastling(int color) {
+      return c.gameList[c.hply].castle.queenside[color];
+   }
+
+   private boolean kingSideCastling(int color) {
+      return c.gameList[c.hply].castle.kingside[color];
+   }
+
+   private void genBlackCastling() {
 //         if (game_list[hply].castle_k[side] != 0) {
 //            if (board[F8] == EMPTY && board[G8] == EMPTY) {
 //               AddMove(E8, G8);
@@ -131,7 +142,6 @@ public final class Gen {
 //               AddMove(E8, C8);
 //            }
 //         }
-//      }
    }
 
    /*
