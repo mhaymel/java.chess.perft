@@ -65,6 +65,10 @@ final class GenTest {
    public static final String e5d4 = "e5d4";
    public static final String e5d5 = "e5d5";
    public static final String e5d6 = "e5d6";
+   public static final String e1g1 = "e1g1";
+   public static final String e1c1 = "e1c1";
+   public static final String e8g8 = "e8g8";
+   public static final String e8c8 = "e8c8";
 
    static Stream<Arguments> enPassantPositions() {
       return Stream.of(
@@ -122,6 +126,54 @@ final class GenTest {
    void blackKingsMoves(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
    }
+
+   static Stream<Arguments> whiteKingCastling() {
+      return Stream.of(
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", Set.of()),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", Set.of(e1g1, e1c1,/*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qkq - 0 1", Set.of(e1c1,       /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Kkq - 0 1", Set.of(e1g1,       /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1", Set.of(             /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1", Set.of(              /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3KB1R w KQkq - 0 1", Set.of(e1c1,     /*other moves*/ e1d1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K1NR w KQkq - 0 1", Set.of(e1c1,     /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QK2R w KQkq - 0 1", Set.of(e1g1,     /*other moves*/ e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1B1K2R w KQkq - 0 1", Set.of(e1g1,    /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1", Set.of(e1g1,     /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2qKb1R w KQkq - 0 1", Set.of(         /*other moves*/ e1d1, e1f1))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("whiteKingCastling")
+   void whiteKingCastling(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   static Stream<Arguments> blackKingCastling() {
+      return Stream.of(
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of()),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of(e8g8, e8c8,/*other moves*/ e8d8, e8f8)),
+
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qkq - 0 1", Set.of(e1c1,       /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Kkq - 0 1", Set.of(e1g1,       /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1", Set.of(             /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1", Set.of(              /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3KB1R w KQkq - 0 1", Set.of(e1c1,     /*other moves*/ e1d1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K1NR w KQkq - 0 1", Set.of(e1c1,     /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QK2R w KQkq - 0 1", Set.of(e1g1,     /*other moves*/ e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1B1K2R w KQkq - 0 1", Set.of(e1g1,    /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1", Set.of(e1g1,     /*other moves*/ e1d1, e1f1)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2qKb1R w KQkq - 0 1", Set.of(         /*other moves*/ e1d1, e1f1))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("blackKingCastling")
+   void blackKingCastling(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
 
    void test(String fen, Set<String> expectedMoves) {
       //given
