@@ -154,17 +154,16 @@ final class GenTest {
       return Stream.of(
          of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of()),
          of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of(e8g8, e8c8,/*other moves*/ e8d8, e8f8)),
-
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qkq - 0 1", Set.of(e1c1,       /*other moves*/ e1d1, e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Kkq - 0 1", Set.of(e1g1,       /*other moves*/ e1d1, e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1", Set.of(             /*other moves*/ e1d1, e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1", Set.of(              /*other moves*/ e1d1, e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3KB1R w KQkq - 0 1", Set.of(e1c1,     /*other moves*/ e1d1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K1NR w KQkq - 0 1", Set.of(e1c1,     /*other moves*/ e1d1, e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QK2R w KQkq - 0 1", Set.of(e1g1,     /*other moves*/ e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1B1K2R w KQkq - 0 1", Set.of(e1g1,    /*other moves*/ e1d1, e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1", Set.of(e1g1,     /*other moves*/ e1d1, e1f1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2qKb1R w KQkq - 0 1", Set.of(         /*other moves*/ e1d1, e1f1))
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQq - 0 1", Set.of(e8c8,       /*other moves*/ e8d8, e8f8)),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQk - 0 1", Set.of(e8g8,       /*other moves*/ e8d8, e8f8)),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQ - 0 1", Set.of(             /*other moves*/ e8d8, e8f8)),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 1", Set.of(              /*other moves*/ e8d8, e8f8)),
+         of("r3kb2/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of(e8c8,     /*other moves*/ e8d8)),
+         of("r3k1nr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of(e8c8,     /*other moves*/ e8d8, e8f8)),
+         of("r2qk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of(e8g8,     /*other moves*/ e8f8)),
+         of("r1b1k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of(e8g8,    /*other moves*/ e8d8, e8f8)),
+         of("rn2k2r/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR b KQkq - 0 1", Set.of(e8g8,     /*other moves*/ e8d8, e8f8)),
+         of("r2QkB1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", Set.of(         /*other moves*/ e8d8, e8f8))
       );
    }
 
@@ -173,7 +172,6 @@ final class GenTest {
    void blackKingCastling(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
    }
-
 
    void test(String fen, Set<String> expectedMoves) {
       //given
