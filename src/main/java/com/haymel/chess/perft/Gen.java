@@ -4,6 +4,8 @@ import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Direction.*;
 import static com.haymel.chess.perft.Field.*;
+import static com.haymel.chess.perft.Init.file;
+import static com.haymel.chess.perft.Init.rank;
 import static com.haymel.chess.perft.KingMoves.kingMoves;
 import static com.haymel.chess.perft.Piece.*;
 
@@ -18,12 +20,12 @@ public final class Gen {
 //    public static final int rx[] = {-5, 5, 15, 25, 35, 0};
 //    public static final int qx[] = {-9, 1, 11, 21, 31, 0};
 //    public static final int kx[] = {0, 10, 20, 30, 40, 0};
-//
-   //   public static final int ForwardSquare[] = {8, -8};
-//    public static final int Double[] = {16, -16};
-//    public static final int Left[] = {7, -9};
-//    public static final int Right[] = {9, -7};
-//    public static final int OtherSide[] = {1, 0};
+
+   public static final int[] forwardSquare = {8, -8};
+   public static final int[] doubleMove = {16, -16};
+   public static final int[] left = {7, -9};
+   public static final int[] right = {9, -7};
+   public static final int[] otherSide = {black, white};
 
    public Gen(Chess c) {
       this.c = c;
@@ -35,16 +37,14 @@ public final class Gen {
 
    public void execute() {
       c.mc = c.firstMove[c.ply];
-
       genEnPassant();
-
       genCastle();
 
       for (int x = 0; x < 64; x++) {
          if (c.color[x] == c.side) {
             switch (c.board[x]) {
                case pawn:
-                  GenPawn(x);
+                  genPawn(x);
                   break;
                case knight:
                   GenKnight(x);
@@ -83,15 +83,22 @@ public final class Gen {
    }
 
    private void genEnPassant() {
-      if (c.enPassantField == Field.invalid)
-         return;
+      if (c.enPassantField == Field.invalid) return;
       if (c.side == white) {
-         if (c.enPassantField > a6) addCapture(c.enPassantField - 9, c.enPassantField);
-         if (c.enPassantField < h6) addCapture(c.enPassantField - 7, c.enPassantField);
+         if (c.enPassantField > a6 && isWhitePawn(c.enPassantField - 9)) addMove(c.enPassantField - 9, c.enPassantField);
+         if (c.enPassantField < h6 && isWhitePawn(c.enPassantField - 7)) addMove(c.enPassantField - 7, c.enPassantField);
       } else {
-         if (c.enPassantField > a3) addCapture(c.enPassantField + 7, c.enPassantField);
-         if (c.enPassantField < h3) addCapture(c.enPassantField + 9, c.enPassantField);
+         if (c.enPassantField > a3 && isBlackPawn(c.enPassantField + 7)) addMove(c.enPassantField + 7, c.enPassantField);
+         if (c.enPassantField < h3 && isBlackPawn(c.enPassantField + 9)) addMove(c.enPassantField + 9, c.enPassantField);
       }
+   }
+
+   private boolean isWhitePawn(int field) {
+      return c.color[field] == white && c.board[field] == pawn;
+   }
+
+   private boolean isBlackPawn(int field) {
+      return c.color[field] == black && c.board[field] == pawn;
    }
 
    private void genKing(int from) {
@@ -99,28 +106,23 @@ public final class Gen {
       int to = kingMoves[from][direction++];
 
       while (to != invalid) {
-         if (c.color[to] != c.side)
-            addMove(from, to);
+         if (c.color[to] != c.side) addMove(from, to);
          to = kingMoves[from][direction++];
       }
    }
 
    private void genCastle() {
       if (c.side == white) {
-         if (kingSideCastling(white) && isEmpty(f1) && isEmpty(g1))
-            addMove(e1, g1);
-         if (queenSideCastling(white) && isEmpty(d1) && isEmpty(c1) && isEmpty(b1))
-            addMove(e1, c1);
+         if (kingSideCastling(white) && isEmpty(f1) && isEmpty(g1)) addMove(e1, g1);
+         if (queenSideCastling(white) && isEmpty(d1) && isEmpty(c1) && isEmpty(b1)) addMove(e1, c1);
       } else {
-         if (kingSideCastling(black) && isEmpty(f8) && isEmpty(g8))
-            addMove(e8, g8);
-         if (queenSideCastling(black) && isEmpty(d8) && isEmpty(c8) && isEmpty(b8))
-            addMove(e8, c8);
+         if (kingSideCastling(black) && isEmpty(f8) && isEmpty(g8)) addMove(e8, g8);
+         if (queenSideCastling(black) && isEmpty(d8) && isEmpty(c8) && isEmpty(b8)) addMove(e8, c8);
       }
    }
 
    private boolean isEmpty(int field) {
-      return c.board[field] == empty;
+      return c.board[field] == Piece.empty;
    }
 
    private boolean queenSideCastling(int color) {
@@ -131,36 +133,20 @@ public final class Gen {
       return c.gameList[c.hply].castle.kingside[color];
    }
 
-   private void genBlackCastling() {
-//         if (game_list[hply].castle_k[side] != 0) {
-//            if (board[F8] == EMPTY && board[G8] == EMPTY) {
-//               AddMove(E8, G8);
-//            }
-//         }
-//         if (game_list[hply].castle_q[side] != 0) {
-//            if (board[B8] == EMPTY && board[C8] == EMPTY && board[D8] == EMPTY) {
-//               AddMove(E8, C8);
-//            }
-//         }
-   }
-
    /*
    GenPawn generates single and double pawn moves and pawn
    captures for a pawn.
    */
-   public static void GenPawn(int x) {
-//      if (board[x + ForwardSquare[side]] == EMPTY) {
-//         AddMove(x, x + ForwardSquare[side]);
-//         if (rank[side][x] == 1 && board[x + Double[side]] == EMPTY) {
-//            AddMove(x, x + Double[side]);
-//         }
-//      }
-//      if (file[x] > 0 && color[x + Left[side]] == OtherSide[side]) {
-//         AddCapture(x, x + Left[side], px[board[x + Left[side]]]);
-//      }
-//      if (file[x] < 7 && color[x + Right[side]] == OtherSide[side]) {
-//         AddCapture(x, x + Right[side], px[board[x + Right[side]]]);
-//      }
+   private void genPawn(int from) {
+      if (isEmpty(from + forwardSquare[c.side])) {
+         addPawnMove(from, from + forwardSquare[c.side]);
+         if (rank[c.side][from] == 1 && isEmpty(from + doubleMove[c.side]))
+            addMove(from, from + doubleMove[c.side]);
+      }
+      if (file[from] > 0 && c.color[from + left[c.side]] == otherSide[c.side])
+         addPawnMove(from, from + left[c.side]);
+      if (file[from] < 7 && c.color[from + right[c.side]] == otherSide[c.side])
+         addPawnMove(from, from + right[c.side]);
    }
 
    /*
@@ -363,15 +349,28 @@ public final class Gen {
    AddMove adds the start and dest squares of a move to the movelist.
    The score is the history value.
    */
-   public void addMove(int x, int sq) {
-      c.moveList[c.mc].start = x;
-      c.moveList[c.mc].dest = sq;
+   private void addMove(int from, int to) {
+      c.moveList[c.mc].start = from;
+      c.moveList[c.mc].dest = to;
+      c.moveList[c.mc].promotion = empty;
       c.mc++;
    }
 
-   private void addCapture(int x, int sq) {
-      c.moveList[c.mc].start = x;
-      c.moveList[c.mc].dest = sq;
+   private void addPawnMove(int from, int to) {
+      if (to >= a8 || to <= h1) {
+         addPromotion(from, to, queen);
+         addPromotion(from, to, rook);
+         addPromotion(from, to, bishop);
+         addPromotion(from, to, knight);
+      }
+      else
+         addMove(from, to);
+   }
+
+   private void addPromotion(int from, int to, int piece) {
+      c.moveList[c.mc].start = from;
+      c.moveList[c.mc].dest = to;
+      c.moveList[c.mc].promotion = piece;
       c.mc++;
    }
 
