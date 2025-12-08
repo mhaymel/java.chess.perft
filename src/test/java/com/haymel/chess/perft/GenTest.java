@@ -147,6 +147,15 @@ final class GenTest {
    public static final String h7h8r = "h7h8r";
    public static final String h7h8b = "h7h8b";
    public static final String h7h8n = "h7h8n";
+   public static final String d2d1q = "d2d1q";
+   public static final String d2d1r = "d2d1r";
+   public static final String d2d1b = "d2d1b";
+   public static final String d2d1n = "d2d1n";
+
+   public static final String d1e2 = "d1e2";
+   public static final String d1e1 = "d1e1";
+   public static final String d1c1 = "d1c1";
+   public static final String d1c2 = "d1c2";
 
    private static final Set<String> whitePawnInitialMoves = Set.of(a2a3, a2a4, b2b3, b2b4, c2c3, c2c4, d2d3, d2d4, e2e3, e2e4, f2f3, f2f4, g2g3, g2g4, h2h3, h2h4);
 
@@ -286,6 +295,24 @@ final class GenTest {
    @ParameterizedTest
    @MethodSource("blackCastling")
    void blackCastling(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   static Stream<Arguments> blackPawnPromotion() {
+      return Stream.of(
+         // Black en passant
+         of("7k/8/8/8/8/8/3p4/7K b - - 0 1   ", union(Set.of(d2d1q, d2d1r, d2d1b, d2d1n), h8King)),
+         of("7k/8/8/8/8/8/3p4/3K4 b - - 0 1", h8King),
+         of("8/8/8/8/8/8/3p4/3k3K b - - 0 1", Set.of(/*other*/d1e2, d1e1, d1c1, d1c2)),
+         of("2bbb2k/3P4/8/8/8/8/8/7K w - - 0 1", union(Set.of(d7c8q, d7c8r, d7c8b, d7c8n, d7e8q, d7e8r, d7e8b, d7e8n), h1King)),
+         of("1b5k/P7/8/8/8/8/8/7K w - - 0 1", union(Set.of(a7a8q, a7a8r, a7a8b, a7a8n, a7b8q, a7b8r, a7b8b, a7b8n), h1King)),
+         of("6b1/7P/8/8/8/8/8/k6K w - - 0 1 ", union(Set.of(h7g8q, h7g8r, h7g8b, h7g8n, h7h8q, h7h8r, h7h8b, h7h8n), h1King))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("blackPawnPromotion")
+   void blackPawnPromotion(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
    }
 
