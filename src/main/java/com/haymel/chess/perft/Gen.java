@@ -21,11 +21,11 @@ public final class Gen {
 //    public static final int qx[] = {-9, 1, 11, 21, 31, 0};
 //    public static final int kx[] = {0, 10, 20, 30, 40, 0};
 
-   public static final int[] forwardSquare = {8, -8};
-   public static final int[] doubleMove = {16, -16};
+   public static final int[] singleStep = {8, -8};
+   public static final int[] doubleStep = {16, -16};
    public static final int[] left = {7, -9};
    public static final int[] right = {9, -7};
-   public static final int[] otherSide = {black, white};
+   public static final int[] opponent = {black, white};
 
    public Gen(Chess c) {
       this.c = c;
@@ -138,12 +138,16 @@ public final class Gen {
    captures for a pawn.
    */
    private void genPawn(int from) {
-      if (isEmpty(from + forwardSquare[c.side])) {
-         addPawnMove(from, from + forwardSquare[c.side]);
-         if (rank[c.side][from] == 1 && isEmpty(from + doubleMove[c.side])) addMove(from, from + doubleMove[c.side]);
+      if (isEmpty(from + singleStep[c.side])) {
+         addPawnMove(from, from + singleStep[c.side]);
+         if (rank[c.side][from] == 1 && isEmpty(from + doubleStep[c.side])) addMove(from, from + doubleStep[c.side]);
       }
-      if (file[from] > 0 && c.color[from + left[c.side]] == otherSide[c.side]) addPawnMove(from, from + left[c.side]);
-      if (file[from] < 7 && c.color[from + right[c.side]] == otherSide[c.side]) addPawnMove(from, from + right[c.side]);
+      if (file[from] > 0 && isOpponent(from + left[c.side])) addPawnMove(from, from + left[c.side]);
+      if (file[from] < 7 && isOpponent(from + right[c.side])) addPawnMove(from, from + right[c.side]);
+   }
+
+   private boolean isOpponent(int field) {
+      return c.color[field] == opponent[c.side];
    }
 
    /*
