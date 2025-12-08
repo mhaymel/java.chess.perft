@@ -140,13 +140,10 @@ public final class Gen {
    private void genPawn(int from) {
       if (isEmpty(from + forwardSquare[c.side])) {
          addPawnMove(from, from + forwardSquare[c.side]);
-         if (rank[c.side][from] == 1 && isEmpty(from + doubleMove[c.side]))
-            addMove(from, from + doubleMove[c.side]);
+         if (rank[c.side][from] == 1 && isEmpty(from + doubleMove[c.side])) addMove(from, from + doubleMove[c.side]);
       }
-      if (file[from] > 0 && c.color[from + left[c.side]] == otherSide[c.side])
-         addPawnMove(from, from + left[c.side]);
-      if (file[from] < 7 && c.color[from + right[c.side]] == otherSide[c.side])
-         addPawnMove(from, from + right[c.side]);
+      if (file[from] > 0 && c.color[from + left[c.side]] == otherSide[c.side]) addPawnMove(from, from + left[c.side]);
+      if (file[from] < 7 && c.color[from + right[c.side]] == otherSide[c.side]) addPawnMove(from, from + right[c.side]);
    }
 
    /*

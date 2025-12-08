@@ -115,11 +115,44 @@ final class GenTest {
    public static final String g4g3 = "g4g3";
    public static final String f4f3 = "f4f3";
    public static final String h4h3 = "h4h3";
+   public static final String d7d8q = "d7d8q";
+   public static final String d7d8r = "d7d8r";
+   public static final String d7d8b = "d7d8b";
+   public static final String d7d8n = "d7d8n";
+   public static final String d8e8 = "d8e8";
+   public static final String d8e7 = "d8e7";
+   public static final String d8c7 = "d8c7";
+   public static final String d8c8 = "d8c8";
+   public static final String d7c8q = "d7c8q";
+   public static final String d7c8r = "d7c8r";
+   public static final String d7c8b = "d7c8b";
+   public static final String d7c8n = "d7c8n";
+   public static final String d7e8q = "d7e8q";
+   public static final String d7e8r = "d7e8r";
+   public static final String d7e8b = "d7e8b";
+   public static final String d7e8n = "d7e8n";
+   public static final String a7a8q = "a7a8q";
+   public static final String a7a8r = "a7a8r";
+   public static final String a7a8b = "a7a8b";
+   public static final String a7a8n = "a7a8n";
+   public static final String a7b8q = "a7b8q";
+   public static final String a7b8r = "a7b8r";
+   public static final String a7b8b = "a7b8b";
+   public static final String a7b8n = "a7b8n";
+   public static final String h7g8q = "h7g8q";
+   public static final String h7g8r = "h7g8r";
+   public static final String h7g8b = "h7g8b";
+   public static final String h7g8n = "h7g8n";
+   public static final String h7h8q = "h7h8q";
+   public static final String h7h8r = "h7h8r";
+   public static final String h7h8b = "h7h8b";
+   public static final String h7h8n = "h7h8n";
 
    private static final Set<String> whitePawnInitialMoves = Set.of(a2a3, a2a4, b2b3, b2b4, c2c3, c2c4, d2d3, d2d4, e2e3, e2e4, f2f3, f2f4, g2g3, g2g4, h2h3, h2h4);
 
    private static final Set<String> blackPawnInitialMoves = Set.of(a7a6, a7a5, b7b6, b7b5, c7c6, c7c5, d7d6, d7d5, e7e6, e7e5, f7f6, f7f5, g7g6, g7g5, h7h6, h7h5);
    private static final Set<String> h1King = Set.of(h1h2, h1g1, h1g2);
+   private static final Set<String> a1King = Set.of(a1b1, a1a2, a1b2);
    private static final Set<String> h8King = Set.of(h8h7, h8g7, h8g8);
 
    static Stream<Arguments> whiteKingMoves() {
@@ -136,7 +169,6 @@ final class GenTest {
 
    static Stream<Arguments> whiteEnPassant() {
       return Stream.of(
-         // White en passant
          of("4k3/8/8/p7/8/8/8/4K3 w - a6 1 1", Set.of(       /*other*/ e1d1, e1d2, e1e2, e1f1, e1f2)),
          of("4k3/8/8/2p5/8/8/8/4K3 w - c6 1 1", Set.of(              /*other*/ e1d1, e1d2, e1e2, e1f1, e1f2)),
          of("4k3/8/8/1ppp4/8/8/8/4K3 w - c6 1 1", Set.of(           /*other*/ e1d1, e1d2, e1e2, e1f1, e1f2)),
@@ -153,9 +185,26 @@ final class GenTest {
       test(fen, expectedMoves);
    }
 
-   static Stream<Arguments> blackEnPassant() {
+   static Stream<Arguments> whitePawnPromotion() {
       return Stream.of(
          // Black en passant
+         of("7k/3P4/8/8/8/8/8/7K w - - 0 1", union(Set.of(d7d8q, d7d8r, d7d8b, d7d8n), h1King)),
+         of("3k4/3P4/8/8/8/8/8/7K w - - 0 1", h1King),
+         of("3K3k/3P4/8/8/8/8/8/8 w - - 0 1", Set.of(/*other*/d8e8, d8e7, d8c7, d8c8)),
+         of("2bbb2k/3P4/8/8/8/8/8/7K w - - 0 1", union(Set.of(d7c8q, d7c8r, d7c8b, d7c8n, d7e8q, d7e8r, d7e8b, d7e8n), h1King)),
+         of("1b5k/P7/8/8/8/8/8/7K w - - 0 1", union(Set.of(a7a8q, a7a8r, a7a8b, a7a8n, a7b8q, a7b8r, a7b8b, a7b8n), h1King)),
+         of("6b1/7P/8/8/8/8/8/k6K w - - 0 1 ", union(Set.of(h7g8q, h7g8r, h7g8b, h7g8n, h7h8q, h7h8r, h7h8b, h7h8n), h1King))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("whitePawnPromotion")
+   void whitePawnPromotion(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   static Stream<Arguments> blackEnPassant() {
+      return Stream.of(
          of("7k/8/8/8/P7/8/8/7K b - a3 1 1", h8King),
          of("7k/8/8/8/2P5/8/8/7K b - c3 1 1", h8King),
          of("7k/8/8/8/1PPP4/8/8/7K b - c3 1 1", h8King),
