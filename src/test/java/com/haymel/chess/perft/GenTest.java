@@ -164,6 +164,12 @@ final class GenTest {
    public static final String b1c3 = "b1c3";
    public static final String g1f3 = "g1f3";
    public static final String g1h3 = "g1h3";
+   public static final String b1d2 = "b1d2";
+   public static final String d1b2 = "d1b2";
+   public static final String d1f2 = "d1f2";
+   public static final String f1e3 = "f1e3";
+   public static final String f1g3 = "f1g3";
+   public static final String h1f2 = "h1f2";
 
    private static final Set<String> whitePawnInitialMoves = Set.of(a2a3, a2a4, b2b3, b2b4, c2c3, c2c4, d2d3, d2d4, e2e3, e2e4, f2f3, f2f4, g2g3, g2g4, h2h3, h2h4);
    private static final Set<String> whiteIKnightMoves = Set.of(b1a3, b1c3, g1f3, g1h3);
@@ -355,6 +361,16 @@ final class GenTest {
    void blackPawnPromotion(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
    }
+
+//   static Stream<Arguments> whiteKnight() {
+//      return Stream.of();
+//   }
+//
+//   @ParameterizedTest
+//   @MethodSource("whiteKnight")
+//   void whiteKnight(String fen, Set<String> expectedMoves) {
+//      test(fen, expectedMoves);
+//   }
 
    void test(String fen, Set<String> expectedMoves) {
       //given
