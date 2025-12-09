@@ -1,5 +1,6 @@
 package com.haymel.chess.perft;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -151,30 +152,30 @@ final class GenTest {
    public static final String d2d1r = "d2d1r";
    public static final String d2d1b = "d2d1b";
    public static final String d2d1n = "d2d1n";
-
    public static final String d1e2 = "d1e2";
    public static final String d1e1 = "d1e1";
    public static final String d1c1 = "d1c1";
    public static final String d1c2 = "d1c2";
+   public static final String g8f6 = "g8f6";
+   public static final String g8h6 = "g8h6";
+   public static final String b8a6 = "b8a6";
+   public static final String b8c6 = "b8c6";
+   public static final String b1a3 = "b1a3";
+   public static final String b1c3 = "b1c3";
+   public static final String g1f3 = "g1f3";
+   public static final String g1h3 = "g1h3";
 
    private static final Set<String> whitePawnInitialMoves = Set.of(a2a3, a2a4, b2b3, b2b4, c2c3, c2c4, d2d3, d2d4, e2e3, e2e4, f2f3, f2f4, g2g3, g2g4, h2h3, h2h4);
+   private static final Set<String> whiteIKnightMoves = Set.of(b1a3, b1c3, g1f3, g1h3);
+   private static final Set<String> whiteInitialMoves = union(whitePawnInitialMoves, whiteIKnightMoves);
 
    private static final Set<String> blackPawnInitialMoves = Set.of(a7a6, a7a5, b7b6, b7b5, c7c6, c7c5, d7d6, d7d5, e7e6, e7e5, f7f6, f7f5, g7g6, g7g5, h7h6, h7h5);
+   private static final Set<String> blackKnightInitialMoves = Set.of(b8a6, b8c6, g8f6, g8h6);
+   private static final Set<String> blackInitialMoves = union(blackPawnInitialMoves, blackKnightInitialMoves);
+
    private static final Set<String> h1King = Set.of(h1h2, h1g1, h1g2);
    private static final Set<String> a1King = Set.of(a1b1, a1a2, a1b2);
    private static final Set<String> h8King = Set.of(h8h7, h8g7, h8g8);
-
-   static Stream<Arguments> whiteKingMoves() {
-      return Stream.of(
-         of("k7/8/8/8/4K3/8/8/8 w - - 1 1", Set.of(e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5)),
-         of("k7/8/8/8/8/8/8/K7 w - - 1 1", Set.of(a1a2, a1b2, a1b1)),
-         of("k7/8/8/8/8/8/8/7K w - - 1 1", Set.of(h1h2, h1g1, h1g2)),
-         of("k6K/8/8/8/8/8/8/8 w - - 1 1", Set.of(h8h7, h8g7, h8g8)),
-         of("K7/8/8/8/8/8/8/7k w - - 1 1", Set.of(a8b8, a8b7, a8a7)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", whitePawnInitialMoves),
-         of("4k3/8/8/3ppp2/3pKp2/3ppp2/8/8 w - - 0 1", Set.of(e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5))
-      );
-   }
 
    static Stream<Arguments> whiteEnPassant() {
       return Stream.of(
@@ -186,12 +187,6 @@ final class GenTest {
          of("4k3/8/8/6Pp/8/8/8/4K3 w - h6 1 1", Set.of(g5h6,         /*other*/ g5g6, e1d1, e1d2, e1e2, e1f1, e1f2)),
          of("4k3/8/8/5PpP/8/8/8/4K3 w - g6 1 1", Set.of(f5g6, h5g6,  /*other*/ f5f6, h5h6, e1d1, e1d2, e1e2, e1f1, e1f2))
       );
-   }
-
-   @ParameterizedTest
-   @MethodSource("whiteEnPassant")
-   void whiteEnPassant(String fen, Set<String> expectedMoves) {
-      test(fen, expectedMoves);
    }
 
    static Stream<Arguments> whitePawnPromotion() {
@@ -206,12 +201,6 @@ final class GenTest {
       );
    }
 
-   @ParameterizedTest
-   @MethodSource("whitePawnPromotion")
-   void whitePawnPromotion(String fen, Set<String> expectedMoves) {
-      test(fen, expectedMoves);
-   }
-
    static Stream<Arguments> blackEnPassant() {
       return Stream.of(
          of("7k/8/8/8/P7/8/8/7K b - a3 1 1", h8King),
@@ -224,16 +213,15 @@ final class GenTest {
       );
    }
 
-   @ParameterizedTest
-   @MethodSource("blackEnPassant")
-   void blackEnPassant(String fen, Set<String> expectedMoves) {
-      test(fen, expectedMoves);
-   }
-
-   @ParameterizedTest
-   @MethodSource("whiteKingMoves")
-   void whiteKingMoves(String fen, Set<String> expectedMoves) {
-      test(fen, expectedMoves);
+   static Stream<Arguments> whiteKingMoves() {
+      return Stream.of(
+         of("k7/8/8/8/4K3/8/8/8 w - - 1 1", Set.of(e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5)),
+         of("k7/8/8/8/8/8/8/K7 w - - 1 1", Set.of(a1a2, a1b2, a1b1)),
+         of("k7/8/8/8/8/8/8/7K w - - 1 1", Set.of(h1h2, h1g1, h1g2)),
+         of("k6K/8/8/8/8/8/8/8 w - - 1 1", Set.of(h8h7, h8g7, h8g8)),
+         of("K7/8/8/8/8/8/8/7k w - - 1 1", Set.of(a8b8, a8b7, a8a7)),
+         of("4k3/8/8/3ppp2/3pKp2/3ppp2/8/8 w - - 0 1", Set.of(e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5))
+      );
    }
 
    static Stream<Arguments> blackKingMoves() {
@@ -243,59 +231,21 @@ final class GenTest {
          of("7k/8/8/8/8/8/8/K7 b - - 0 1", Set.of(h8h7, h8g7, h8g8)),
          of("8/8/8/8/8/8/8/K6k b - - 0 1 ", Set.of(h1g1, h1g2, h1h2)),
          of("7K/8/8/8/8/8/8/k7 b - - 0 1", Set.of(a1a2, a1b2, a1b1)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", blackPawnInitialMoves),
          of("7K/8/3PPP2/3PkP2/3PPP2/8/8/8 b - - 0 1", Set.of(e5e6, e5f6, e5f5, e5f4, e5e4, e5d4, e5d5, e5d6))
       );
    }
 
-   @ParameterizedTest
-   @MethodSource("blackKingMoves")
-   void blackKingMoves(String fen, Set<String> expectedMoves) {
-      test(fen, expectedMoves);
-   }
-
-   static Stream<Arguments> whiteCastling() {
-      return Stream.of(
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", whitePawnInitialMoves),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", union(Set.of(e1g1, e1c1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qkq - 0 1", union(Set.of(e1c1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Kkq - 0 1", union(Set.of(e1g1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1", union(Set.of(/*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1", union(Set.of(/*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3KB1R w KQkq - 0 1", union(Set.of(e1c1,/*other*/ e1d1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K1NR w KQkq - 0 1", union(Set.of(e1c1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QK2R w KQkq - 0 1", union(Set.of(e1g1, /*other*/ e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1B1K2R w KQkq - 0 1", union(Set.of(e1g1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1", union(Set.of(e1g1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2qKb1R w KQkq - 0 1", union(Set.of(/*other*/ e1d1, e1f1), whitePawnInitialMoves)));
-   }
-
-   @ParameterizedTest
-   @MethodSource("whiteCastling")
-   void whiteCastling(String fen, Set<String> expectedMoves) {
-      test(fen, expectedMoves);
-   }
-
    static Stream<Arguments> blackCastling() {
       return Stream.of(
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", blackPawnInitialMoves),
          of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", union(Set.of(e8g8, e8c8,/*other*/e8d8, e8f8), blackPawnInitialMoves)),
          of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQq - 0 1", union(Set.of(e8c8, /*other*/e8d8, e8f8), blackPawnInitialMoves)),
          of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQk - 0 1", union(Set.of(e8g8, /*other*/e8d8, e8f8), blackPawnInitialMoves)),
          of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQ - 0 1", union(Set.of(/*other*/e8d8, e8f8), blackPawnInitialMoves)),
          of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 1", union(Set.of(/*other*/e8d8, e8f8), blackPawnInitialMoves)),
          of("r3kb2/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", union(Set.of(e8c8, /*other*/ e8d8), blackPawnInitialMoves)),
-         of("r3k1nr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", union(Set.of(e8c8, /*other*/ e8d8, e8f8), blackPawnInitialMoves)),
          of("r2qk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", union(Set.of(e8g8, /*other*/ e8f8), blackPawnInitialMoves)),
          of("r1b1k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", union(Set.of(e8g8, /*other*/ e8d8, e8f8), blackPawnInitialMoves)),
-         of("rn2k2r/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR b KQkq - 0 1", union(Set.of(e8g8, /*other*/ e8d8, e8f8), blackPawnInitialMoves)),
          of("r2QkB1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", union(Set.of(/*other*/ e8d8, e8f8), blackPawnInitialMoves)));
-   }
-
-   @ParameterizedTest
-   @MethodSource("blackCastling")
-   void blackCastling(String fen, Set<String> expectedMoves) {
-      test(fen, expectedMoves);
    }
 
    static Stream<Arguments> blackPawnPromotion() {
@@ -308,6 +258,96 @@ final class GenTest {
          of("1b5k/P7/8/8/8/8/8/7K w - - 0 1", union(Set.of(a7a8q, a7a8r, a7a8b, a7a8n, a7b8q, a7b8r, a7b8b, a7b8n), h1King)),
          of("6b1/7P/8/8/8/8/8/k6K w - - 0 1 ", union(Set.of(h7g8q, h7g8r, h7g8b, h7g8n, h7h8q, h7h8r, h7h8b, h7h8n), h1King))
       );
+   }
+
+   @ParameterizedTest
+   @MethodSource("whiteEnPassant")
+   void whiteEnPassant(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   @ParameterizedTest
+   @MethodSource("whitePawnPromotion")
+   void whitePawnPromotion(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   @ParameterizedTest
+   @MethodSource("blackEnPassant")
+   void blackEnPassant(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   @ParameterizedTest
+   @MethodSource("whiteKingMoves")
+   void whiteKingMoves(String fen, Set<String> expectedMoves) {
+      test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", whiteInitialMoves);
+   }
+
+   @ParameterizedTest
+   @MethodSource("blackKingMoves")
+   void blackKingMoves(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   @Test
+   void blackKingMove1() {
+      test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", blackInitialMoves);
+   }
+
+   static Stream<Arguments> whiteCastling() {
+      return Stream.of(
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", union(Set.of(e1g1, e1c1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qkq - 0 1", union(Set.of(e1c1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Kkq - 0 1", union(Set.of(e1g1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1", union(Set.of(/*other*/ e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1", union(Set.of(/*other*/ e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3KB1R w KQkq - 0 1", union(Set.of(e1c1,/*other*/ e1d1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QK2R w KQkq - 0 1", union(Set.of(e1g1, /*other*/ e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1B1K2R w KQkq - 0 1", union(Set.of(e1g1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2qKb1R w KQkq - 0 1", union(Set.of(/*other*/ e1d1, e1f1), whitePawnInitialMoves)));
+   }
+
+   @ParameterizedTest
+   @MethodSource("whiteCastling")
+   void whiteCastling(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   @Test
+   void whiteCastling1() {
+      test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1",
+         union(Set.of(e1g1, /*other*/ e1d1, e1f1, b1a3, b1c3), whitePawnInitialMoves));
+   }
+
+   @Test
+   void whiteCastling2() {
+      test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1",
+         union(Set.of(e1g1, /*other*/ e1d1, e1f1, b1a3, b1c3), whitePawnInitialMoves));
+   }
+
+   @Test
+   void whiteCastling3() {
+      test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K1NR w KQkq - 0 1",
+         union(Set.of(e1c1, /*other*/ e1d1, e1f1, g1f3, g1h3), whitePawnInitialMoves));
+   }
+
+   @ParameterizedTest
+   @MethodSource("blackCastling")
+   void blackCastling(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
+   @Test
+   void blackCastling1() {
+      test("r3k1nr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1",
+         union(Set.of(e8c8, /*other*/ e8d8, e8f8, g8f6, g8h6), blackPawnInitialMoves));
+   }
+
+   @Test
+   void blackCastling2() {
+      test("rn2k2r/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR b KQkq - 0 1",
+         union(Set.of(e8g8, /*other*/ e8d8, e8f8, b8a6, b8c6), blackPawnInitialMoves));
    }
 
    @ParameterizedTest
