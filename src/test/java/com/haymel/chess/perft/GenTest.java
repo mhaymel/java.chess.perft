@@ -372,7 +372,7 @@ final class GenTest {
 //      test(fen, expectedMoves);
 //   }
 
-   void test(String fen, Set<String> expectedMoves) {
+   public static void test(String fen, Set<String> expectedMoves) {
       //given
       Chess chess = new Chess();
       Fen.load(fen, chess, NewHalfFullMove());

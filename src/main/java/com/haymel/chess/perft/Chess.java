@@ -1,7 +1,6 @@
 package com.haymel.chess.perft;
 
-import static com.haymel.chess.perft.Color.black;
-import static com.haymel.chess.perft.Color.white;
+import static com.haymel.chess.perft.Color.*;
 import static com.haymel.chess.perft.Field.e1;
 import static com.haymel.chess.perft.Field.e8;
 
@@ -25,6 +24,28 @@ public final class Chess {
    public final int[] color = new int[64];
    public final int[] kingloc = new int[2];
 
+   public void emptyBoard() {
+      for (int x = 0; x < 64; ++x) {
+         color[x] = empty;
+         board[x] = empty;
+      }
+
+      side = white;
+      xside = black;
+      ply = 0;
+      hply = 0;
+      firstMove[0] = 0;
+      kingloc[white] = Field.invalid;
+      kingloc[black] = Field.invalid;
+      enPassantField = Field.invalid;
+      mc = 0;
+
+      gameList[hply].castle.kingside[white] = false;
+      gameList[hply].castle.queenside[white] = false;
+      gameList[hply].castle.kingside[black] = false;
+      gameList[hply].castle.queenside[black] = false;
+   }
+
    public void initBoard() {
       for (int x = 0; x < 64; ++x) {
          color[x] = Init.initColor[x];
@@ -45,11 +66,6 @@ public final class Chess {
       gameList[hply].castle.queenside[white] = true;
       gameList[hply].castle.kingside[black] = true;
       gameList[hply].castle.queenside[black] = true;
-
-//        game_list[hply].castle_q[0] = 1;
-//        game_list[hply].castle_q[1] = 1;
-//        game_list[hply].castle_k[0] = 1;
-//        game_list[hply].castle_k[1] = 1;
    }
 
    private static Move[] newMove(int size) {
