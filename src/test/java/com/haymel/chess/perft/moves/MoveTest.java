@@ -1,5 +1,6 @@
-package com.haymel.chess.perft;
+package com.haymel.chess.perft.moves;
 
+import com.haymel.chess.perft.Move;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -7,9 +8,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Field.*;
-import static com.haymel.chess.perft.GenTest.e2e4;
-import static com.haymel.chess.perft.GenTest.e7e8;
 import static com.haymel.chess.perft.Piece.*;
+import static com.haymel.chess.perft.moves.Moves.e2e4;
+import static com.haymel.chess.perft.moves.Moves.e7e8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 

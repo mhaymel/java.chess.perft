@@ -1,14 +1,15 @@
-package com.haymel.chess.perft;
+package com.haymel.chess.perft.moves;
 
+import com.haymel.chess.perft.Castling;
+import com.haymel.chess.perft.Chess;
+import com.haymel.chess.perft.Fen;
+import com.haymel.chess.perft.HalfFullMove;
 import org.junit.jupiter.api.Test;
 
 import static com.haymel.chess.perft.Color.*;
 import static com.haymel.chess.perft.Color.empty;
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Piece.*;
-import static com.haymel.chess.perft.Piece.king;
-import static com.haymel.chess.perft.Piece.pawn;
-import static com.haymel.chess.perft.Piece.queen;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class FenTest {

@@ -1,6 +1,7 @@
-package com.haymel.chess.perft;
+package com.haymel.chess.perft.moves;
 
-import org.junit.jupiter.api.Test;
+import com.haymel.chess.perft.Notation;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -8,10 +9,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Field.*;
-import static com.haymel.chess.perft.GenTest.e2e4;
-import static com.haymel.chess.perft.GenTest.e7e8;
-import static com.haymel.chess.perft.Notation.algebraic;
 import static com.haymel.chess.perft.Piece.*;
+import static com.haymel.chess.perft.moves.Moves.e2e4;
+import static com.haymel.chess.perft.moves.Moves.e7e8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
@@ -36,18 +36,6 @@ final class NotationTest {
       );
    }
 
-   @ParameterizedTest
-   @MethodSource("uciFromTo")
-   void uciFromTo(int from, int to, String s) {
-      assertThat(Notation.uci(from, to)).isEqualTo(s);
-   }
-
-   @ParameterizedTest
-   @MethodSource("uciFromToPromotion")
-   void uciFromToPromotion(int from, int to, int piece, String s) {
-      assertThat(Notation.uci(from, to, piece)).isEqualTo(s);
-   }
-
    static Stream<Arguments> uciFrom() {
       return Stream.of(
          of(a1, "a1"),
@@ -57,6 +45,18 @@ final class NotationTest {
          of(e4, "e4"),
          of(d4, "d4")
       );
+   }
+
+   @ParameterizedTest
+   @MethodSource("uciFromTo")
+   void uciFromTo(int from, int to, String s) {
+      Assertions.assertThat(Notation.uci(from, to)).isEqualTo(s);
+   }
+
+   @ParameterizedTest
+   @MethodSource("uciFromToPromotion")
+   void uciFromToPromotion(int from, int to, int piece, String s) {
+      assertThat(Notation.uci(from, to, piece)).isEqualTo(s);
    }
 
    @ParameterizedTest
