@@ -25,9 +25,14 @@ public final class PawnTest {
       );
    }
 
+   @ParameterizedTest
+   @MethodSource("whiteEnPassant")
+   void whiteEnPassant(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
    static Stream<Arguments> whitePawnPromotion() {
       return Stream.of(
-         // Black en passant
          of("8/3P4/8/8/8/8/8/8 w - - 0 1", m(d7d8q, d7d8r, d7d8b, d7d8n)),
          of("3k4/3P4/8/8/8/8/8/8 w - - 0 1", no),
          of("3K3k/3P4/8/8/8/8/8/8 w - - 0 1", m(/*other*/d8e8, d8e7, d8c7, d8c8)),
@@ -38,14 +43,28 @@ public final class PawnTest {
    }
 
    @ParameterizedTest
-   @MethodSource("whiteEnPassant")
-   void whiteEnPassant(String fen, Set<String> expectedMoves) {
+   @MethodSource("whitePawnPromotion")
+   void whitePawnPromotion(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
    }
 
+   static Stream<Arguments> whitePawn() {
+      return Stream.of(
+         of("8/8/8/8/8/8/4P3/8 w - - 0 1", m(e2e3, e2e4)),
+         of("8/8/8/8/8/4K3/4P3/8 w - - 0 1", m(e3e4, e3f4, e3f3, e3f2, e3d2, e3d3, e3d4)),
+         of("8/8/8/8/4K3/8/4P3/8 w - - 0 1", m(e2e3, e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5)),
+         of("8/8/8/8/8/4k3/4P3/8 w - - 0 1", m()),
+         of("8/8/8/8/4k3/8/4P3/8 w - - 0 1", m(e2e3)),
+         of("8/8/8/8/8/3p4/4P3/8 w - - 0 1", m(e2e4,e2e3,e2d3)),
+         of("8/8/8/8/8/5p2/4P3/8 w - - 0 1", m(e2e4,e2e3, e2f3)),
+         of("8/8/8/8/8/3p1p2/4P3/8 w - - 0 1", m(e2e4,e2e3, e2f3, e2d3)),
+         of("8/8/8/8/8/3P1P2/4P3/8 w - - 0 1", m(e2e3, e2e4,d3d4, f3f4))
+      );
+   }
+
    @ParameterizedTest
-   @MethodSource("whitePawnPromotion")
-   void whitePawnPromotion(String fen, Set<String> expectedMoves) {
+   @MethodSource("whitePawn")
+   void whitePawn(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
    }
 

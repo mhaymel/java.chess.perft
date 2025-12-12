@@ -26,17 +26,6 @@ public final class PawnTest {
       );
    }
 
-   static Stream<Arguments> whiteKingMoves() {
-      return Stream.of(
-         of("k7/8/8/8/4K3/8/8/8 w - - 1 1", m(e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5)),
-         of("k7/8/8/8/8/8/8/K7 w - - 1 1", m(a1a2, a1b2, a1b1)),
-         of("k7/8/8/8/8/8/8/7K w - - 1 1", m(h1h2, h1g1, h1g2)),
-         of("k6K/8/8/8/8/8/8/8 w - - 1 1", m(h8h7, h8g7, h8g8)),
-         of("K7/8/8/8/8/8/8/7k w - - 1 1", m(a8b8, a8b7, a8a7)),
-         of("4k3/8/8/3ppp2/3pKp2/3ppp2/8/8 w - - 0 1", m(e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5))
-      );
-   }
-
    static Stream<Arguments> blackPawnPromotion() {
       return Stream.of(
          // Black en passant
@@ -60,4 +49,26 @@ public final class PawnTest {
    void blackPawnPromotion(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
    }
+
+   static Stream<Arguments> BlackPawn() {
+      return Stream.of(
+         // Black en passant
+         of("8/4p3/8/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5)),
+         of("8/4p3/4k3/8/8/8/8/8 b - - 0 1", m(e6f7, e6f6, e6f5, e6e5, e6d5, e6d6, e6d7)),
+         of("8/4p3/8/4k3/8/8/8/8 b - - 0 1", m(e7e6, e5e6, e5f6, e5f5, e5f4, e5e4, e5d4, e5d5, e5d6)),
+         of("8/4p3/4K3/8/8/8/8/8 b - - 0 1", m()),
+         of("8/4p3/8/4K3/8/8/8/8 b - - 0 1", m(e7e6)),
+         of("8/4p3/3P4/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5, e7d6)),
+         of("8/4p3/5P2/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5, e7f6)),
+         of("8/4p3/3P1P2/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5, e7f6, e7d6)),
+         of("8/4p3/3p1p2/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5, d6d5, f6f5))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("BlackPawn")
+   void whitePawn(String fen, Set<String> expectedMoves) {
+      test(fen, expectedMoves);
+   }
+
 }
