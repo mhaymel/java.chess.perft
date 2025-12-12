@@ -2,8 +2,8 @@ package com.haymel.chess.perft.moves;
 
 import com.google.common.collect.Sets;
 import com.haymel.chess.perft.Chess;
+import com.haymel.chess.perft.Color;
 import com.haymel.chess.perft.Fen;
-import com.haymel.chess.perft.Gen;
 import com.haymel.chess.perft.Piece;
 
 import java.util.Set;
@@ -43,7 +43,7 @@ public final class TestUtil {
       Chess chess = new Chess();
       chess.emptyBoard();
       chess.side = color;
-      chess.xside = Gen.opponent[color];
+      chess.xside = color == Color.white ? Color.black : Color.white;
       chess.color[field] = color;
       chess.board[field] = Piece.knight;
       //when

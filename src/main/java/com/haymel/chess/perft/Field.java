@@ -75,4 +75,8 @@ public interface Field {
 
    int invalid = -1;
    int iv = invalid;
+
+   static boolean isValid(int field) { return field != invalid; }
+   static boolean isInvalid(int field) { return field == invalid; }
+
 }
