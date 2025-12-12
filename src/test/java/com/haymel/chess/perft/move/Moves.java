@@ -1,8 +1,8 @@
-package com.haymel.chess.perft.moves;
+package com.haymel.chess.perft.move;
 
 import java.util.Set;
 
-import static com.haymel.chess.perft.moves.TestUtil.m;
+import static com.haymel.chess.perft.move.TestUtil.m;
 
 public final class Moves {
 

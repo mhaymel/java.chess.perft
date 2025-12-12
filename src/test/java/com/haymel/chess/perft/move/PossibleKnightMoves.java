@@ -1,16 +1,15 @@
-package com.haymel.chess.perft.moves;
+package com.haymel.chess.perft.move;
 
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Field.*;
-import static com.haymel.chess.perft.moves.Moves.*;
-import static com.haymel.chess.perft.moves.TestUtil.m;
+import static com.haymel.chess.perft.move.Moves.*;
+import static com.haymel.chess.perft.move.TestUtil.m;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
-public final class KnightMoves {
-
+public final class PossibleKnightMoves {
 
    public static Stream<Arguments> knightMoves() {
       return Stream.of(

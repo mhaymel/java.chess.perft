@@ -1,4 +1,4 @@
-package com.haymel.chess.perft;
+package com.haymel.chess.perft.move;
 
 import static com.haymel.chess.perft.Field.*;
 

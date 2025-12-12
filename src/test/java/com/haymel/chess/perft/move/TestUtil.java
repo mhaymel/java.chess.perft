@@ -1,4 +1,4 @@
-package com.haymel.chess.perft.moves;
+package com.haymel.chess.perft.move;
 
 import com.google.common.collect.Sets;
 import com.haymel.chess.perft.Chess;
@@ -8,7 +8,7 @@ import com.haymel.chess.perft.Piece;
 
 import java.util.Set;
 
-import static com.haymel.chess.perft.Gen.NewGen;
+import static com.haymel.chess.perft.move.Generator.NewGen;
 import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
 import static com.haymel.chess.perft.help.MoveList.NewMoveList;
 import static org.assertj.core.api.Assertions.assertThat;

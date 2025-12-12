@@ -1,4 +1,4 @@
-package com.haymel.chess.perft.moves.white;
+package com.haymel.chess.perft.move.white;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.haymel.chess.perft.moves.Moves.*;
-import static com.haymel.chess.perft.moves.TestUtil.*;
+import static com.haymel.chess.perft.move.Moves.*;
+import static com.haymel.chess.perft.move.TestUtil.*;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 public final class KingTest {

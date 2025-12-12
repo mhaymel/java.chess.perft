@@ -1,4 +1,4 @@
-package com.haymel.chess.perft.moves.black;
+package com.haymel.chess.perft.move.black;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.Sets.union;
-import static com.haymel.chess.perft.moves.Moves.*;
-import static com.haymel.chess.perft.moves.TestUtil.*;
+import static com.haymel.chess.perft.move.Moves.*;
+import static com.haymel.chess.perft.move.TestUtil.*;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 public final class PawnTest {

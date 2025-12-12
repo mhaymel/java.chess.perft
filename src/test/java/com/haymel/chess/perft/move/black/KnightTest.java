@@ -1,6 +1,6 @@
-package com.haymel.chess.perft.moves.black;
+package com.haymel.chess.perft.move.black;
 
-import com.haymel.chess.perft.moves.KnightMoves;
+import com.haymel.chess.perft.move.PossibleKnightMoves;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -10,13 +10,13 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Color.black;
-import static com.haymel.chess.perft.moves.Moves.*;
-import static com.haymel.chess.perft.moves.TestUtil.*;
+import static com.haymel.chess.perft.move.Moves.*;
+import static com.haymel.chess.perft.move.TestUtil.*;
 
 public final class KnightTest {
 
    public static Stream<Arguments> knightMoves() {
-      return KnightMoves.knightMoves();
+      return PossibleKnightMoves.knightMoves();
    }
 
    @ParameterizedTest

@@ -1,4 +1,4 @@
-package com.haymel.chess.perft.moves;
+package com.haymel.chess.perft.move;
 
 import com.haymel.chess.perft.Notation;
 import org.assertj.core.api.Assertions;
@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Piece.*;
-import static com.haymel.chess.perft.moves.Moves.e2e4;
-import static com.haymel.chess.perft.moves.Moves.e7e8;
+import static com.haymel.chess.perft.move.Moves.e2e4;
+import static com.haymel.chess.perft.move.Moves.e7e8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
 

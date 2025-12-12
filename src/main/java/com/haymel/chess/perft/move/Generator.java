@@ -1,4 +1,7 @@
-package com.haymel.chess.perft;
+package com.haymel.chess.perft.move;
+
+import com.haymel.chess.perft.Chess;
+import com.haymel.chess.perft.Piece;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
@@ -6,11 +9,12 @@ import static com.haymel.chess.perft.Direction.*;
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Init.file;
 import static com.haymel.chess.perft.Init.rank;
-import static com.haymel.chess.perft.KingMoves.kingMoves;
-import static com.haymel.chess.perft.KnightMoves.knightMoves;
+import static com.haymel.chess.perft.move.BishopMoves.bishopMoves;
+import static com.haymel.chess.perft.move.KingMoves.kingMoves;
+import static com.haymel.chess.perft.move.KnightMoves.knightMoves;
 import static com.haymel.chess.perft.Piece.*;
 
-public final class Gen {
+public final class Generator {
 
    private final Chess c;
 
@@ -20,62 +24,61 @@ public final class Gen {
    public static final int[] left = {7, -9};
    public static final int[] right = {9, -7};
 
-   public Gen(Chess c) {
+   public Generator(Chess c) {
       this.c = c;
    }
 
-   public static Gen NewGen(Chess chess) {
-      return new Gen(chess);
+   public static Generator NewGen(Chess chess) {
+      return new Generator(chess);
    }
 
    public void execute() {
       c.mc = c.firstMove[c.ply];
-      genEnPassant();
-      genCastle();
+      enPassant();
+      castling();
 
-      for (int x = 0; x < 64; x++) {
-         if (c.color[x] == c.side) {
-            switch (c.board[x]) {
-               case pawn:
-                  genPawn(x);
-                  break;
-               case knight:
-                  GenKnight(x);
-                  break;
-               case bishop:
-                  GenBishop(x, NE);
-                  GenBishop(x, SE);
-                  GenBishop(x, SW);
-                  GenBishop(x, NW);
-                  break;
-               case rook:
-                  GenRook(x, NORTH);
-                  GenRook(x, EAST);
-                  GenRook(x, SOUTH);
-                  GenRook(x, WEST);
-                  break;
-               case queen:
-                  GenQueen(x, NE);
-                  GenQueen(x, SE);
-                  GenQueen(x, SW);
-                  GenQueen(x, NW);
-                  GenQueen(x, NORTH);
-                  GenQueen(x, EAST);
-                  GenQueen(x, SOUTH);
-                  GenQueen(x, WEST);
-                  break;
-               case king:
-                  genKing(x);
-                  break;
-               default:
-                  break;
+      for (int from = 0; from < 64; from++) {
+         if (c.color[from] == c.side) {
+            switch (c.board[from]) {
+               case pawn:     pawn(from);    break;
+               case knight:   knight(from);  break;
+               case bishop:   bishop(from);  break;
+               case rook:     rook(from);    break;
+               case queen:    queen(from);   break;
+               case king:     king(from);    break;
+               default:                      break;
             }
          }
       }
       c.firstMove[c.ply + 1] = c.mc;
    }
 
-   private void genEnPassant() {
+   private void bishop(int from) {
+      GenBishop(from, NE);
+      GenBishop(from, SE);
+      GenBishop(from, SW);
+      GenBishop(from, NW);
+   }
+
+   private void rook(int from) {
+      GenRook(from, NORTH);
+      GenRook(from, EAST);
+      GenRook(from, SOUTH);
+      GenRook(from, WEST);
+   }
+
+   private void queen(int from) {
+      GenQueen(from, NE);
+      GenQueen(from, SE);
+      GenQueen(from, SW);
+      GenQueen(from, NW);
+      GenQueen(from, NORTH);
+      GenQueen(from, EAST);
+      GenQueen(from, SOUTH);
+      GenQueen(from, WEST);
+   }
+
+   private void enPassant() {
       if (isInvalid(c.enPassantField)) return;
       if (c.side == white) {
          if (c.enPassantField > a6 && isWhitePawn(c.enPassantField - 9)) addMove(c.enPassantField - 9, c.enPassantField);
@@ -86,25 +89,15 @@ public final class Gen {
       }
    }
 
-   private boolean isWhitePawn(int field) {
-      return c.color[field] == white && c.board[field] == pawn;
+   private void knight(int from) {
+      knightOrKing(from, knightMoves);
    }
 
-   private boolean isBlackPawn(int field) {
-      return c.color[field] == black && c.board[field] == pawn;
+   private void king(int from) {
+      knightOrKing(from, kingMoves);
    }
 
-   private void genKing(int from) {
-      int direction = 0;
-      int to = kingMoves[from][direction++];
-
-      while (isValid(to)) {
-         if (isEmptyOrOpponent(to)) addMove(from, to);
-         to = kingMoves[from][direction++];
-      }
-   }
-
-   private void genCastle() {
+   private void castling() {
       if (itsWhitesTurn()) {
          if (kingSideCastling(white) && isEmpty(f1) && isEmpty(g1)) addMove(e1, g1);
          if (queenSideCastling(white) && isEmpty(d1) && isEmpty(c1) && isEmpty(b1)) addMove(e1, c1);
@@ -114,7 +107,7 @@ public final class Gen {
       }
    }
 
-   private void genPawn(int from) {
+   private void pawn(int from) {
       if (isEmpty(from + singleStep[c.side])) {
          addPawnMove(from, from + singleStep[c.side]);
          if (rank[c.side][from] == 1 && isEmpty(from + doubleStep[c.side])) addMove(from, from + doubleStep[c.side]);
@@ -123,30 +116,16 @@ public final class Gen {
       if (file[from] < 7 && isOpponent(from + right[c.side])) addPawnMove(from, from + right[c.side]);
    }
 
-   private void GenKnight(int from) {
-      int k = 0;
-      int to = knightMoves[from][k++];
-      while (isValid(to)) {
-         if (isEmptyOrOpponent(to))
-            addMove(from, to);
-         to = knightMoves[from][k++];
-      }
-   }
-
-   /*
-   GenBishop generates bishop moves and
-   captures for each diagonal.
-   */
-   public static void GenBishop(int x, int dir) {
-//      int sq = qrb_moves[x][dir];
-//      while (sq > -1) {
-//         if (color[sq] != EMPTY) {
-//            if (color[sq] == xside)
-//               AddCapture(x, sq, bx[board[sq]]);
+   public void GenBishop(int from, int direction) {
+//      int to = bishopMoves[from][direction];
+//      while (to > -1) {
+//         if (c.color[to] != empty) {
+//            if (c.color[to] == c.xside)
+//               addMove(from, to);
 //            break;
 //         }
-//         AddMove(x, sq);
-//         sq = qrb_moves[sq][dir];
+//         addMove(from, to);
+//         to = bishopMoves[to][direction];
 //      }
    }
 
@@ -219,6 +198,14 @@ public final class Gen {
       c.mc++;
    }
 
+   private void knightOrKing(int from, int[][] moves) {
+      int to = moves[from][NORTH];
+      for(int direction = NORTH + 1; isValid(to); direction++) {
+         if (isEmptyOrOpponent(to)) addMove(from, to);
+         to = moves[from][direction];
+      }
+   }
+
    private boolean itsWhitesTurn() { return c.side == white; }
 
    private boolean isOpponent(int field) { return c.color[field] == c.xside; }
@@ -230,4 +217,13 @@ public final class Gen {
    private boolean isEmptyOrOpponent(int field) {
       return c.color[field] == c.xside || c.board[field] == Piece.empty;
    }
+
+   private boolean isWhitePawn(int field) {
+      return c.color[field] == white && c.board[field] == pawn;
+   }
+
+   private boolean isBlackPawn(int field) {
+      return c.color[field] == black && c.board[field] == pawn;
+   }
+
 }
