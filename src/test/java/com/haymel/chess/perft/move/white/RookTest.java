@@ -16,7 +16,7 @@ public final class RookTest {
 
    @Test
    void whiteRook2() {
-      test("rnbqkbnr/pppppppp/8/8/8/8/P7/R3K3 w Qkq - 0 1 ",
+      test("rnbqkbnr/pppppppp/8/8/8/8/P7/R3K3 w Qkq - 0 1",
          m(a2a3, a2a4, e1c1, e1d1, e1d2, e1e2, e1f2, e1f1, a1b1, a1c1, a1d1));
    }
 

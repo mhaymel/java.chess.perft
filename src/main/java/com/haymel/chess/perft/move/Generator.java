@@ -129,13 +129,11 @@ public final class Generator {
 
    private void genDirection(int from, int direction) {
       int to = queenRookBishopMoves[from][direction];
-      while (to > -1) {
-         if (c.color[to] != empty) {
-            if (c.color[to] == c.xside)
-               addMove(from, to);
-            break;
-         }
-         addMove(from, to);
+      while (isValid(to)) {
+         if (isEmpty(to)) addMove(from, to);
+         else if (isOpponent(to))
+            addMove(from, to);
+         else return;
          to = queenRookBishopMoves[to][direction];
       }
    }
@@ -193,7 +191,7 @@ public final class Generator {
    }
 
    private boolean isEmptyOrOpponent(int field) {
-      return c.color[field] == c.xside || c.board[field] == Piece.empty;
+      return isEmpty(field) || isOpponent(field);
    }
 
    private boolean isWhitePawn(int field) {
@@ -203,5 +201,4 @@ public final class Generator {
    private boolean isBlackPawn(int field) {
       return c.color[field] == black && c.board[field] == pawn;
    }
-
 }
