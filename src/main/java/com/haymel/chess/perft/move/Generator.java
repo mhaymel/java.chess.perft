@@ -53,27 +53,23 @@ public final class Generator {
          case rook:     genRook(from);    break;
          case queen:    genQueen(from);   break;
          case king:     genKing(from);    break;
-         default:                         break;
+         default:       break;
       }
    }
 
    private void genBishop(int from) {
-      genDirection(from, NE);
-      genDirection(from, SE);
-      genDirection(from, SW);
-      genDirection(from, NW);
+      for(int direction = NE; direction <= NW; direction+=2)
+         genDirection(from, direction);
    }
 
    private void genRook(int from) {
-      genDirection(from, NORTH);
-      genDirection(from, EAST);
-      genDirection(from, SOUTH);
-      genDirection(from, WEST);
+      for(int direction = NORTH; direction <= WEST; direction+=2)
+         genDirection(from, direction);
    }
 
    private void genQueen(int from) {
-      genRook(from);
-      genBishop(from);
+      for(int direction = NORTH; direction <= NW; direction++)
+         genDirection(from, direction);
    }
 
    private void genEnPassant() {
@@ -91,13 +87,9 @@ public final class Generator {
       }
    }
 
-   private void genKnight(int from) {
-      genKnightOrKing(from, knightMoves);
-   }
+   private void genKnight(int from) { genKnightOrKing(from, knightMoves); }
 
-   private void genKing(int from) {
-      genKnightOrKing(from, kingMoves);
-   }
+   private void genKing(int from) { genKnightOrKing(from, kingMoves); }
 
    private void genCastling() {
       if (itsWhitesTurn()) {
@@ -137,14 +129,6 @@ public final class Generator {
       }
    }
 
-   private boolean queenSideCastling(int color) {
-      return c.gameList[c.hply].castle.queenside[color];
-   }
-
-   private boolean kingSideCastling(int color) {
-      return c.gameList[c.hply].castle.kingside[color];
-   }
-
    private void addMove(int from, int to) {
       c.moveList[c.mc].start = from;
       c.moveList[c.mc].dest = to;
@@ -153,7 +137,7 @@ public final class Generator {
    }
 
    private void addPawnMove(int from, int to) {
-      if (to >= a8 || to <= h1) {
+      if (isPromotion(to)) {
          addPromotion(from, to, queen);
          addPromotion(from, to, rook);
          addPromotion(from, to, bishop);
@@ -162,34 +146,29 @@ public final class Generator {
          addMove(from, to);
    }
 
-   private void addPromotion(int from, int to, int piece) {
+    private void addPromotion(int from, int to, int piece) {
       c.moveList[c.mc].start = from;
       c.moveList[c.mc].dest = to;
       c.moveList[c.mc].promotion = piece;
       c.mc++;
    }
 
-   private boolean itsWhitesTurn() {
-      return c.side == white;
-   }
+   private boolean isPromotion(int to) { return to >= a8 || to <= h1; }
 
-   private boolean isOpponent(int field) {
-      return c.color[field] == c.xside;
-   }
+   private boolean itsWhitesTurn() { return c.side == white; }
 
-   private boolean isEmpty(int field) {
-      return c.board[field] == Piece.empty;
-   }
+   private boolean isOpponent(int field) { return c.color[field] == c.xside; }
 
-   private boolean isEmptyOrOpponent(int field) {
-      return isEmpty(field) || isOpponent(field);
-   }
+   private boolean isEmpty(int field) { return c.board[field] == Piece.empty; }
 
-   private boolean isWhitePawn(int field) {
-      return c.color[field] == white && c.board[field] == pawn;
-   }
+   private boolean isEmptyOrOpponent(int field) { return isEmpty(field) || isOpponent(field); }
 
-   private boolean isBlackPawn(int field) {
-      return c.color[field] == black && c.board[field] == pawn;
-   }
+   private boolean isWhitePawn(int field) { return c.color[field] == white && c.board[field] == pawn; }
+
+   private boolean isBlackPawn(int field) { return c.color[field] == black && c.board[field] == pawn; }
+
+   private boolean queenSideCastling(int color) { return c.gameList[c.hply].castle.queenside[color]; }
+
+   private boolean kingSideCastling(int color) { return c.gameList[c.hply].castle.kingside[color]; }
+
 }
