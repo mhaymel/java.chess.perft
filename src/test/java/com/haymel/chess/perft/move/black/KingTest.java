@@ -31,15 +31,15 @@ public final class KingTest {
 
    static Stream<Arguments> blackCastling() {
       return Stream.of(
-         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8g8, e8c8,/*other*/e8d8, e8f8), blackPawnInitialMoves)),
-         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQq - 0 1", u(m(e8c8, /*other*/e8d8, e8f8), blackPawnInitialMoves)),
-         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQk - 0 1", u(m(e8g8, /*other*/e8d8, e8f8), blackPawnInitialMoves)),
-         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQ - 0 1", u(m(/*other*/e8d8, e8f8), blackPawnInitialMoves)),
-         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 1", u(m(/*other*/e8d8, e8f8), blackPawnInitialMoves)),
-         of("r3kb2/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8c8, /*other*/ e8d8), blackPawnInitialMoves)),
-         of("r2qk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8g8, /*other*/ e8f8), blackPawnInitialMoves)),
-         of("r1b1k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8g8, /*other*/ e8d8, e8f8), blackPawnInitialMoves)),
-         of("r2QkB1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(/*other*/ e8d8, e8f8), blackPawnInitialMoves)));
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8g8, e8c8,/*other*/e8d8, e8f8, a8b8, a8c8, a8d8, h8g8, h8f8), blackPawnInitialMoves)),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQq - 0 1", u(m(e8c8, /*other*/e8d8, e8f8, a8b8, a8c8, a8d8, h8g8, h8f8), blackPawnInitialMoves)),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQk - 0 1", u(m(e8g8, /*other*/e8d8, e8f8, a8b8, a8c8, a8d8, h8g8, h8f8), blackPawnInitialMoves)),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQ - 0 1", u(m(/*other*/e8d8, e8f8, a8b8, a8c8, a8d8, h8g8, h8f8), blackPawnInitialMoves)),
+         of("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 1", u(m(/*other*/e8d8, e8f8, a8b8, a8c8, a8d8, h8g8, h8f8), blackPawnInitialMoves)),
+         of("r3kb2/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8c8, /*other*/ e8d8, a8b8, a8c8, a8d8), blackPawnInitialMoves)),
+         of("r2qk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8g8, /*other*/ e8f8, a8b8, a8c8, h8g8, h8f8, d8c8, d8b8), blackPawnInitialMoves)),
+         of("r1b1k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(e8g8, /*other*/ e8d8, e8f8, a8b8, h8g8, h8f8), blackPawnInitialMoves)),
+         of("r2QkB1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1", u(m(/*other*/ e8d8, e8f8, a8b8, a8c8, a8d8, h8g8, h8f8), blackPawnInitialMoves)));
    }
 
    @ParameterizedTest
@@ -62,13 +62,13 @@ public final class KingTest {
    @Test
    void blackCastling1() {
       test("r3k1nr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1",
-         u(m(e8c8, /*other*/ e8d8, e8f8, g8f6, g8h6), blackPawnInitialMoves));
+         u(m(e8c8, /*other*/ a8b8, a8c8, a8d8, e8d8, e8f8, g8f6, g8h6), blackPawnInitialMoves));
    }
 
    @Test
    void blackCastling2() {
       test("rn2k2r/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR b KQkq - 0 1",
-         u(m(e8g8, /*other*/ e8d8, e8f8, b8a6, b8c6), blackPawnInitialMoves));
+         u(m(e8g8, /*other*/ h8g8, h8f8, e8d8, e8f8, b8a6, b8c6), blackPawnInitialMoves));
    }
 
 }
