@@ -36,34 +36,25 @@ public final class Generator {
       c.mc = c.firstMove[c.ply];
       genEnPassant();
       genCastling();
-
-      for (int from = 0; from < 64; from++) {
-         if (c.color[from] == c.side) {
-            switch (c.board[from]) {
-               case pawn:
-                  genPawn(from);
-                  break;
-               case knight:
-                  genKnight(from);
-                  break;
-               case bishop:
-                  genBishop(from);
-                  break;
-               case rook:
-                  genRook(from);
-                  break;
-               case queen:
-                  genQueen(from);
-                  break;
-               case king:
-                  genKing(from);
-                  break;
-               default:
-                  break;
-            }
-         }
-      }
+      genPieces();
       c.firstMove[c.ply + 1] = c.mc;
+   }
+
+   private void genPieces() {
+      for (int from = 0; from < 64; from++)
+         if (c.color[from] == c.side) generate(from);
+   }
+
+   private void generate(int from) {
+      switch (c.board[from]) {
+         case pawn:     genPawn(from);    break;
+         case knight:   genKnight(from);  break;
+         case bishop:   genBishop(from);  break;
+         case rook:     genRook(from);    break;
+         case queen:    genQueen(from);   break;
+         case king:     genKing(from);    break;
+         default:                         break;
+      }
    }
 
    private void genBishop(int from) {
