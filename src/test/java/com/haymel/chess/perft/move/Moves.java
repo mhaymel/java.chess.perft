@@ -507,6 +507,24 @@ public final class Moves {
    public static final String f3f4 = "f3f4";
    public static final String d6d5 = "d6d5";
    public static final String f6f5 = "f6f5";
+   public static final String h1f1 = "h1f1";
+   public static final String a1c1 = "a1c1";
+   public static final String a1d1 = "a1d1";
+   public static final String a1e1 = "a1e1";
+   public static final String a1f1 = "a1f1";
+   public static final String a1g1 = "a1g1";
+   public static final String a1h1 = "a1h1";
+   public static final String a1a3 = "a1a3";
+   public static final String a1a4 = "a1a4";
+   public static final String a1a5 = "a1a5";
+   public static final String a1a6 = "a1a6";
+   public static final String a1a7 = "a1a7";
+   public static final String a1a8 = "a1a8";
+   public static final String a8c8 = "a8c8";
+   public static final String a8d8 = "a8d8";
+   public static final String h8f8 = "h8f8";
+   public static final String d8b8 = "d8b8";
+   public static final String d1b1 = "d1b1";
 
    public static final Set<String> h1King = m(h1h2, h1g1, h1g2);
    public static final Set<String> h8King = m(h8h7, h8g7, h8g8);

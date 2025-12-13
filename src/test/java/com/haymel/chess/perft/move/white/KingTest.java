@@ -14,7 +14,7 @@ import static org.junit.jupiter.params.provider.Arguments.of;
 
 public final class KingTest {
 
-   private static final Set<String> whitePawnInitialMoves = m(a2a3, a2a4, b2b3, b2b4, c2c3, c2c4, d2d3, d2d4, e2e3, e2e4, f2f3, f2f4, g2g3, g2g4, h2h3, h2h4);
+   public static final Set<String> whitePawnInitialMoves = m(a2a3, a2a4, b2b3, b2b4, c2c3, c2c4, d2d3, d2d4, e2e3, e2e4, f2f3, f2f4, g2g3, g2g4, h2h3, h2h4);
    private static final Set<String> whiteIKnightMoves = m(b1a3, b1c3, g1f3, g1h3);
    private static final Set<String> whiteInitialMoves = u(whitePawnInitialMoves, whiteIKnightMoves);
 
@@ -31,15 +31,15 @@ public final class KingTest {
 
    static Stream<Arguments> whiteCastling() {
       return Stream.of(
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", u(m(e1g1, e1c1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qkq - 0 1", u(m(e1c1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Kkq - 0 1", u(m(e1g1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1", u(m(/*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1", u(m(/*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3KB1R w KQkq - 0 1", u(m(e1c1,/*other*/ e1d1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QK2R w KQkq - 0 1", u(m(e1g1, /*other*/ e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1B1K2R w KQkq - 0 1", u(m(e1g1, /*other*/ e1d1, e1f1), whitePawnInitialMoves)),
-         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2qKb1R w KQkq - 0 1", u(m(/*other*/ e1d1, e1f1), whitePawnInitialMoves)));
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1", u(m(e1g1, e1c1, /*other*/ e1d1, e1f1, a1b1, a1c1, a1d1, h1g1, h1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qkq - 0 1", u(m(e1c1, /*other*/ e1d1, e1f1, a1b1, a1c1, a1d1, h1g1, h1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Kkq - 0 1", u(m(e1g1, /*other*/ e1d1, e1f1, a1b1, a1c1, a1d1, h1g1, h1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1", u(m(/*other*/ a1b1, a1c1, a1d1, h1g1, h1f1, e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w - - 0 1", u(m(/*other*/ a1b1, a1c1, a1d1, h1g1, h1f1, e1d1, e1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3KB1R w KQkq - 0 1", u(m(e1c1,/*other*/ e1d1, a1b1, a1c1, a1d1, h1g1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2QK2R w KQkq - 0 1", u(m(e1g1, /*other*/ e1f1, a1b1, a1c1, d1c1, d1b1, h1g1, h1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1B1K2R w KQkq - 0 1", u(m(e1g1, /*other*/ e1d1, e1f1, a1b1, h1g1, h1f1), whitePawnInitialMoves)),
+         of("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R2qKb1R w KQkq - 0 1", u(m(/*other*/ e1d1, e1f1, a1b1, a1c1, a1d1, h1g1, h1f1), whitePawnInitialMoves)));
    }
 
    @ParameterizedTest
@@ -57,19 +57,19 @@ public final class KingTest {
    @Test
    void whiteCastling1() {
       test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1",
-         u(m(e1g1, /*other*/ e1d1, e1f1, b1a3, b1c3), whitePawnInitialMoves));
+         u(m(e1g1, /*other*/ h1g1, h1f1, e1d1, e1f1, b1a3, b1c3), whitePawnInitialMoves));
    }
 
    @Test
    void whiteCastling2() {
       test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RN2K2R w KQkq - 0 1",
-         u(m(e1g1, /*other*/ e1d1, e1f1, b1a3, b1c3), whitePawnInitialMoves));
+         u(m(e1g1, /*other*/ h1g1, h1f1, e1d1, e1f1, b1a3, b1c3), whitePawnInitialMoves));
    }
 
    @Test
    void whiteCastling3() {
       test("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K1NR w KQkq - 0 1",
-         u(m(e1c1, /*other*/ e1d1, e1f1, g1f3, g1h3), whitePawnInitialMoves));
+         u(m(e1c1, /*other*/ e1d1, e1f1, g1f3, g1h3, a1b1, a1c1, a1d1), whitePawnInitialMoves));
    }
 
 }
