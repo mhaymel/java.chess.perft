@@ -47,13 +47,13 @@ public final class Generator {
 
    private void generate(int from) {
       switch (c.board[from]) {
-         case pawn:     genPawn(from);    break;
-         case knight:   genKnight(from);  break;
-         case bishop:   genBishop(from);  break;
-         case rook:     genRook(from);    break;
-         case queen:    genQueen(from);   break;
-         case king:     genKing(from);    break;
-         default:       break;
+         case pawn:     genPawn(from);          break;
+         case knight:   gen(knightMoves, from); break;
+         case bishop:   genBishop(from);        break;
+         case rook:     genRook(from);          break;
+         case queen:    genQueen(from);         break;
+         case king:     gen(kingMoves, from);   break;
+         default:                               break;
       }
    }
 
@@ -87,10 +87,6 @@ public final class Generator {
       }
    }
 
-   private void genKnight(int from) { genKnightOrKing(from, knightMoves); }
-
-   private void genKing(int from) { genKnightOrKing(from, kingMoves); }
-
    private void genCastling() {
       if (itsWhitesTurn()) {
          if (kingSideCastling(white) && isEmpty(f1) && isEmpty(g1)) addMove(e1, g1);
@@ -121,7 +117,7 @@ public final class Generator {
       }
    }
 
-   private void genKnightOrKing(int from, int[][] moves) {
+   private void gen(int[][] moves, int from) {
       int to = moves[from][NORTH];
       for (int direction = NORTH + 1; isValid(to); direction++) {
          if (isEmptyOrOpponent(to)) addMove(from, to);
