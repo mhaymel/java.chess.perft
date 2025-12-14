@@ -5,14 +5,15 @@ import com.haymel.chess.perft.Piece;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
-import static com.haymel.chess.perft.Direction.*;
+import static com.haymel.chess.perft.Direction.NORTH;
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Init.file;
 import static com.haymel.chess.perft.Init.rank;
 import static com.haymel.chess.perft.Piece.*;
+import static com.haymel.chess.perft.move.BishopMoves.bishopMoves;
 import static com.haymel.chess.perft.move.KingMoves.kingMoves;
 import static com.haymel.chess.perft.move.KnightMoves.knightMoves;
-import static com.haymel.chess.perft.move.QueenRookBishopMoves.queenRookBishopMoves;
+import static com.haymel.chess.perft.move.RookMoves.rookMoves;
 
 public final class Generator {
 
@@ -47,29 +48,15 @@ public final class Generator {
 
    private void generate(int from) {
       switch (c.board[from]) {
-         case pawn:     genPawn(from);          break;
-         case knight:   gen(knightMoves, from); break;
-         case bishop:   genBishop(from);        break;
-         case rook:     genRook(from);          break;
-         case queen:    genQueen(from);         break;
-         case king:     gen(kingMoves, from);   break;
-         default:                               break;
+         case pawn:     genPawn(from);             break;
+         case knight:   gen(knightMoves, from);    break;
+         case bishop:   genQrb(bishopMoves, from); break;
+         case rook:     genQrb(rookMoves, from);   break;
+         case queen:    genQrb(bishopMoves, from);
+                        genQrb(rookMoves, from);   break;
+         case king:     gen(kingMoves, from);      break;
+         default:                                  break;
       }
-   }
-
-   private void genBishop(int from) {
-      for(int direction = NE; direction <= NW; direction+=2)
-         genDirection(from, direction);
-   }
-
-   private void genRook(int from) {
-      for(int direction = NORTH; direction <= WEST; direction+=2)
-         genDirection(from, direction);
-   }
-
-   private void genQueen(int from) {
-      for(int direction = NORTH; direction <= NW; direction++)
-         genDirection(from, direction);
    }
 
    private void genEnPassant() {
@@ -106,14 +93,19 @@ public final class Generator {
       if (file[from] < 7 && isOpponent(from + right[c.side])) addPawnMove(from, from + right[c.side]);
    }
 
-   private void genDirection(int from, int direction) {
-      int to = queenRookBishopMoves[from][direction];
+   private void genQrb(int[][] moves, int from) {
+      for(int i = 0; i < 4; i++)
+         genDirection(from, i, moves);
+   }
+
+   private void genDirection(int from, int direction, int[][] moves) {
+      int to = moves[from][direction];
       while (isValid(to)) {
          if (isEmpty(to)) addMove(from, to);
          else if (isOpponent(to))
             addMove(from, to);
          else return;
-         to = queenRookBishopMoves[to][direction];
+         to = moves[to][direction];
       }
    }
 
