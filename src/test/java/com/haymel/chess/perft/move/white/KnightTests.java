@@ -10,9 +10,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Color.white;
+import static com.haymel.chess.perft.Piece.knight;
 import static com.haymel.chess.perft.move.Moves.*;
 import static com.haymel.chess.perft.move.TestUtil.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public final class KnightTests {
 
@@ -23,7 +23,7 @@ public final class KnightTests {
    @ParameterizedTest
    @MethodSource("knightMoves")
    void knightMoves(int field, Set<String> expectedMoves) {
-      knightMoveTest(field, white, expectedMoves);
+      moveTest(field, white, expectedMoves, knight);
    }
 
    @Test
