@@ -8,6 +8,8 @@ import com.haymel.chess.perft.Piece;
 
 import java.util.Set;
 
+import static com.haymel.chess.perft.Color.black;
+import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.move.Generator.NewGen;
 import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
 import static com.haymel.chess.perft.help.MoveList.NewMoveList;
@@ -38,14 +40,14 @@ public final class TestUtil {
       assertThat(moves).isEqualTo(expectedMoves);
    }
 
-   public static void knightMoveTest(int field, int color, Set<String> expectedMoves) {
+   public static void moveTest(int field, int color, Set<String> expectedMoves, int piece) {
       //given
       Chess chess = new Chess();
       chess.emptyBoard();
       chess.side = color;
-      chess.xside = color == Color.white ? Color.black : Color.white;
+      chess.xside = color == white ? black : white;
       chess.color[field] = color;
-      chess.board[field] = Piece.knight;
+      chess.board[field] = piece;
       //when
       NewGen(chess).execute();
       //then

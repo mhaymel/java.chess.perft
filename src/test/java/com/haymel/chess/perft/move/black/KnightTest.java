@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Color.black;
+import static com.haymel.chess.perft.Piece.knight;
 import static com.haymel.chess.perft.move.Moves.*;
 import static com.haymel.chess.perft.move.TestUtil.*;
 
@@ -22,7 +23,7 @@ public final class KnightTest {
    @ParameterizedTest
    @MethodSource("knightMoves")
    void blackKnightMovest(int field, Set<String> expectedMoves) {
-      knightMoveTest(field, black, expectedMoves);
+      moveTest(field, black, expectedMoves, knight);
    }
 
    @Test

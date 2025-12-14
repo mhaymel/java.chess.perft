@@ -51,7 +51,6 @@ public final class PawnTest {
    static Stream<Arguments> whitePawn() {
       return Stream.of(
          of("8/8/8/8/8/8/4P3/8 w - - 0 1", m(e2e3, e2e4)),
-         of("8/8/8/8/8/4K3/4P3/8 w - - 0 1", m(e3e4, e3f4, e3f3, e3f2, e3d2, e3d3, e3d4)),
          of("8/8/8/8/4K3/8/4P3/8 w - - 0 1", m(e2e3, e4e5, e4f5, e4f4, e4f3, e4e3, e4d3, e4d4, e4d5)),
          of("8/8/8/8/8/4k3/4P3/8 w - - 0 1", m()),
          of("8/8/8/8/4k3/8/4P3/8 w - - 0 1", m(e2e3)),

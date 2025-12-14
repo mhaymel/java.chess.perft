@@ -1,6 +1,6 @@
 package com.haymel.chess.perft.move.white;
 
-import com.haymel.chess.perft.move.PossibleRookMoves;
+import com.haymel.chess.perft.move.PossibleBishopMoves;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -10,21 +10,21 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Color.white;
-import static com.haymel.chess.perft.Piece.rook;
+import static com.haymel.chess.perft.Piece.bishop;
 import static com.haymel.chess.perft.move.Moves.*;
 import static com.haymel.chess.perft.move.TestUtil.*;
 import static com.haymel.chess.perft.move.white.KingTest.whitePawnInitialMoves;
 
-public final class RookTest {
+public final class BishopTest {
 
    public static Stream<Arguments> move() {
-      return PossibleRookMoves.moves();
+      return PossibleBishopMoves.moves();
    }
 
    @ParameterizedTest
    @MethodSource("move")
    void move(int field, Set<String> expectedMoves) {
-      moveTest(field, white, expectedMoves, rook);
+      moveTest(field, white, expectedMoves, bishop);
    }
 
    @Test
