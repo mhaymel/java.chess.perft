@@ -3,6 +3,7 @@ package com.haymel.chess.perft;
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Direction.*;
+import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Piece.knight;
 import static com.haymel.chess.perft.Piece.pawn;
 import static com.haymel.chess.perft.move.KnightMoves.knightMoves;
@@ -14,21 +15,17 @@ public final class Attack {
 
    public Attack(Chess c) { this.c = c; }
 
-   /*
-   Attack returns true if one side attacks a given square and false if it doesn't.
-   It is used to tell if a King is in check, but can have other uses.
-   */
    public boolean attack(int side, int x) {
-//        if (side == white) {
-//            if (row[x] > 1) {
+//        if (isWhite(side)) {
+//            if (x > h2) {
 //                if (col[x] < 7 && isWhitePawn(x - 7)) return true;
 //                if (col[x] > 0 && isWhitePawn(x - 9)) return true;
 //            }
-//        } else if (row[x] < 6) {
+//        } else if (x < h7) {
 //            if (col[x] > 0 && isBlackPawn(x + 7)) return true;
 //            if (col[x] < 7 && isBlackPawn(x + 9)) return true;
 //        }
-//
+////
 //        int k = 0;
 //        int sq = knightMoves[x][k];
 //        while (sq > -1) {
@@ -53,11 +50,15 @@ public final class Attack {
       return false;
    }
 
-    /*
-    LowestAttacker is similar to Attack. It returns the square the weakest attacker of the given side and given square.
-    It returns -1 if there are no attackers.
-    It is used to find the next piece that will recapture, but can have other uses.
-    */
+   private static boolean isWhite(int side) {
+      return side == white;
+   }
+
+   /*
+   LowestAttacker is similar to Attack. It returns the square the weakest attacker of the given side and given square.
+   It returns -1 if there are no attackers.
+   It is used to find the next piece that will recapture, but can have other uses.
+   */
 //    public static int LowestAttacker(int s, int x) {
 //        if (s == 0) {
 //            if (row[x] > 1) {

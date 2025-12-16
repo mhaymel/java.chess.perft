@@ -68,6 +68,8 @@ public final class Chess {
       gameList[hply].castle.queenside[black] = true;
    }
 
+   public boolean itsWhitesTurn() { return side == white; }
+
    private static Move[] newMove(int size) {
       Move[] moves = new Move[size];
       for (int i = 0; i < moves.length; i++)

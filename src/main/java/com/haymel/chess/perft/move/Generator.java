@@ -61,21 +61,27 @@ public final class Generator {
 
    private void genEnPassant() {
       if (isInvalid(c.enPassantField)) return;
-      if (itsWhitesTurn()) {
-         if (c.enPassantField > a6 && isWhitePawn(c.enPassantField - 9))
-            addMove(c.enPassantField - 9, c.enPassantField);
-         if (c.enPassantField < h6 && isWhitePawn(c.enPassantField - 7))
-            addMove(c.enPassantField - 7, c.enPassantField);
+      if (c.itsWhitesTurn()) {
+         if (c.enPassantField > a6) whiteEnPassant(right[white]);
+         if (c.enPassantField < h6) whiteEnPassant(left[white]);
       } else {
-         if (c.enPassantField > a3 && isBlackPawn(c.enPassantField + 7))
-            addMove(c.enPassantField + 7, c.enPassantField);
-         if (c.enPassantField < h3 && isBlackPawn(c.enPassantField + 9))
-            addMove(c.enPassantField + 9, c.enPassantField);
+         if (c.enPassantField > a3) blackEnPassant(right[black]);
+         if (c.enPassantField < h3) blackEnPassant(left[black]);
       }
    }
 
+   private void whiteEnPassant(int direction) {
+      int from = c.enPassantField - direction;
+      if (isWhitePawn(from)) addMove(from, c.enPassantField);
+   }
+
+   private void blackEnPassant(int direction) {
+      int from = c.enPassantField - direction;
+      if (isBlackPawn(from)) addMove(from, c.enPassantField);
+   }
+
    private void genCastling() {
-      if (itsWhitesTurn()) {
+      if (c.itsWhitesTurn()) {
          if (kingSideCastling(white) && isEmpty(f1) && isEmpty(g1)) addMove(e1, g1);
          if (queenSideCastling(white) && isEmpty(d1) && isEmpty(c1) && isEmpty(b1)) addMove(e1, c1);
       } else {
@@ -142,8 +148,6 @@ public final class Generator {
    }
 
    private boolean isPromotion(int to) { return to >= a8 || to <= h1; }
-
-   private boolean itsWhitesTurn() { return c.side == white; }
 
    private boolean isOpponent(int field) { return c.color[field] == c.xside; }
 
