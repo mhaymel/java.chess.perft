@@ -95,18 +95,23 @@ public final class Generator {
       if (c.itsWhitesTurn()) {
          if (c.isEmpty(from + up)) {
             addPawnMove(from, from + up);
-            if (from <= h2 && c.isEmpty(from + upUp)) addMove(from, from + upUp);
+            if (from <= h2) pawnDoubleStep(from, upUp);
          }
          if (file[from] > 0) pawnCapture(from, leftUp);
          if (file[from] < 7) pawnCapture(from, rightUp);
       } else {
          if (c.isEmpty(from + down)) {
             addPawnMove(from, from + down);
-            if (from >= a7 && c.isEmpty(from + downDown)) addMove(from, from + downDown);
+            if (from >= a7) pawnDoubleStep(from, downDown);
          }
          if (file[from] > 0) pawnCapture(from, leftDown);
          if (file[from] < 7) pawnCapture(from, rightDown);
       }
+   }
+
+   private void pawnDoubleStep(int from, int direction) {
+      int to = from + direction;
+      if (c.isEmpty(to)) addMove(from, to);
    }
 
    private void pawnCapture(int from, int direction) {
