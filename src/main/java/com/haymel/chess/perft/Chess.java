@@ -70,6 +70,12 @@ public final class Chess {
 
    public boolean itsWhitesTurn() { return side == white; }
 
+   public boolean isOpponent(int field) { return color[field] == xside; }
+
+   public boolean isEmpty(int field) { return board[field] == Piece.empty; }
+
+   public boolean isEmptyOrOpponent(int field) { return isEmpty(field) || isOpponent(field); }
+
    private static Move[] newMove(int size) {
       Move[] moves = new Move[size];
       for (int i = 0; i < moves.length; i++)

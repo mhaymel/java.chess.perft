@@ -1,14 +1,12 @@
 package com.haymel.chess.perft.move;
 
 import com.haymel.chess.perft.Chess;
-import com.haymel.chess.perft.Piece;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Direction.NORTH;
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Init.file;
-import static com.haymel.chess.perft.Init.rank;
 import static com.haymel.chess.perft.Piece.*;
 import static com.haymel.chess.perft.move.BishopMoves.bishopMoves;
 import static com.haymel.chess.perft.move.KingMoves.kingMoves;
@@ -20,10 +18,13 @@ public final class Generator {
    private final Chess c;
 
    private static final int up = 8;
-   private static final int[] singleStep = {up, -up};
-   private static final int[] doubleStep = {2 * up, -2 * up};
-   private static final int[] left = {7, -9};
-   private static final int[] right = {9, -7};
+   private static final int upUp = up + up;
+   private static final int down = -up;
+   private static final int downDown = down + down;
+   private static final int rightDown = 1 + down;
+   private static final int leftDown = -1 + down;
+   private static final int leftUp = -1 + up;
+   private static final int rightUp = 1 + up;
 
    public Generator(Chess c) {
       this.c = c;
@@ -62,41 +63,55 @@ public final class Generator {
    private void genEnPassant() {
       if (isInvalid(c.enPassantField)) return;
       if (c.itsWhitesTurn()) {
-         if (c.enPassantField > a6) whiteEnPassant(right[white]);
-         if (c.enPassantField < h6) whiteEnPassant(left[white]);
+         if (c.enPassantField > a6) whiteEnPassant(leftDown);
+         if (c.enPassantField < h6) whiteEnPassant(rightDown);
       } else {
-         if (c.enPassantField > a3) blackEnPassant(right[black]);
-         if (c.enPassantField < h3) blackEnPassant(left[black]);
+         if (c.enPassantField > a3) blackEnPassant(leftUp);
+         if (c.enPassantField < h3) blackEnPassant(rightUp);
       }
    }
 
    private void whiteEnPassant(int direction) {
-      int from = c.enPassantField - direction;
+      int from = c.enPassantField + direction;
       if (isWhitePawn(from)) addMove(from, c.enPassantField);
    }
 
    private void blackEnPassant(int direction) {
-      int from = c.enPassantField - direction;
+      int from = c.enPassantField + direction;
       if (isBlackPawn(from)) addMove(from, c.enPassantField);
    }
 
    private void genCastling() {
       if (c.itsWhitesTurn()) {
-         if (kingSideCastling(white) && isEmpty(f1) && isEmpty(g1)) addMove(e1, g1);
-         if (queenSideCastling(white) && isEmpty(d1) && isEmpty(c1) && isEmpty(b1)) addMove(e1, c1);
+         if (kingSideCastling(white) && c.isEmpty(f1) && c.isEmpty(g1)) addMove(e1, g1);
+         if (queenSideCastling(white) && c.isEmpty(d1) && c.isEmpty(c1) && c.isEmpty(b1)) addMove(e1, c1);
       } else {
-         if (kingSideCastling(black) && isEmpty(f8) && isEmpty(g8)) addMove(e8, g8);
-         if (queenSideCastling(black) && isEmpty(d8) && isEmpty(c8) && isEmpty(b8)) addMove(e8, c8);
+         if (kingSideCastling(black) && c.isEmpty(f8) && c.isEmpty(g8)) addMove(e8, g8);
+         if (queenSideCastling(black) && c.isEmpty(d8) && c.isEmpty(c8) && c.isEmpty(b8)) addMove(e8, c8);
       }
    }
 
    private void genPawn(int from) {
-      if (isEmpty(from + singleStep[c.side])) {
-         addPawnMove(from, from + singleStep[c.side]);
-         if (rank[c.side][from] == 1 && isEmpty(from + doubleStep[c.side])) addMove(from, from + doubleStep[c.side]);
+      if (c.itsWhitesTurn()) {
+         if (c.isEmpty(from + up)) {
+            addPawnMove(from, from + up);
+            if (from <= h2 && c.isEmpty(from + upUp)) addMove(from, from + upUp);
+         }
+         if (file[from] > 0) pawnCapture(from, leftUp);
+         if (file[from] < 7) pawnCapture(from, rightUp);
+      } else {
+         if (c.isEmpty(from + down)) {
+            addPawnMove(from, from + down);
+            if (from >= a7 && c.isEmpty(from + downDown)) addMove(from, from + downDown);
+         }
+         if (file[from] > 0) pawnCapture(from, leftDown);
+         if (file[from] < 7) pawnCapture(from, rightDown);
       }
-      if (file[from] > 0 && isOpponent(from + left[c.side])) addPawnMove(from, from + left[c.side]);
-      if (file[from] < 7 && isOpponent(from + right[c.side])) addPawnMove(from, from + right[c.side]);
+   }
+
+   private void pawnCapture(int from, int direction) {
+      int to = from + direction;
+      if (c.isOpponent(to)) addPawnMove(from, to);
    }
 
    private void genQrb(int[][] moves, int from) {
@@ -107,9 +122,8 @@ public final class Generator {
    private void genDirection(int from, int direction, int[][] moves) {
       int to = moves[from][direction];
       while (isValid(to)) {
-         if (isEmpty(to)) addMove(from, to);
-         else if (isOpponent(to))
-            addMove(from, to);
+         if (c.isEmpty(to)) addMove(from, to);
+         else if (c.isOpponent(to)) addMove(from, to);
          else return;
          to = moves[to][direction];
       }
@@ -118,7 +132,7 @@ public final class Generator {
    private void gen(int[][] moves, int from) {
       int to = moves[from][NORTH];
       for (int direction = NORTH + 1; isValid(to); direction++) {
-         if (isEmptyOrOpponent(to)) addMove(from, to);
+         if (c.isEmptyOrOpponent(to)) addMove(from, to);
          to = moves[from][direction];
       }
    }
@@ -148,12 +162,6 @@ public final class Generator {
    }
 
    private boolean isPromotion(int to) { return to >= a8 || to <= h1; }
-
-   private boolean isOpponent(int field) { return c.color[field] == c.xside; }
-
-   private boolean isEmpty(int field) { return c.board[field] == Piece.empty; }
-
-   private boolean isEmptyOrOpponent(int field) { return isEmpty(field) || isOpponent(field); }
 
    private boolean isWhitePawn(int field) { return c.color[field] == white && c.board[field] == pawn; }
 
