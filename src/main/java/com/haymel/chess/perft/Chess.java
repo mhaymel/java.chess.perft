@@ -3,6 +3,7 @@ package com.haymel.chess.perft;
 import static com.haymel.chess.perft.Color.*;
 import static com.haymel.chess.perft.Field.e1;
 import static com.haymel.chess.perft.Field.e8;
+import static com.haymel.chess.perft.Piece.pawn;
 
 public final class Chess {
 
@@ -75,6 +76,14 @@ public final class Chess {
    public boolean isEmpty(int field) { return board[field] == Piece.empty; }
 
    public boolean isEmptyOrOpponent(int field) { return isEmpty(field) || isOpponent(field); }
+
+   public boolean isWhitePawn(int field) { return color[field] == white && board[field] == pawn; }
+
+   public boolean isBlackPawn(int field) { return color[field] == black && board[field] == pawn; }
+
+   public boolean queenSideCastling(int color) { return gameList[hply].castle.queenside[color]; }
+
+   public boolean kingSideCastling(int color) { return gameList[hply].castle.kingside[color]; }
 
    private static Move[] newMove(int size) {
       Move[] moves = new Move[size];

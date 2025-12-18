@@ -1,5 +1,6 @@
 package com.haymel.chess.perft.move.black;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -48,6 +49,11 @@ public final class PawnTest {
    @MethodSource("blackPawnPromotion")
    void blackPawnPromotion(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
+   }
+
+   @Test
+   void blackPawnPromotion1() {
+      test("7k/8/8/8/8/8/3p4/7K b - - 0 1", u(m(d2d1q, d2d1r, d2d1b, d2d1n), h8King));
    }
 
    static Stream<Arguments> BlackPawn() {
