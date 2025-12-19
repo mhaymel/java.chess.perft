@@ -1,13 +1,24 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Field.*;
+import static com.haymel.chess.perft.Piece.king;
+import static com.haymel.chess.perft.Piece.rook;
+import static java.lang.Math.abs;
+
 public final class Update {
 
    private static final int[] ReverseSquare = {-8, 8};
 
    private final Chess c;
+   private final Attack a;
 
    public Update(Chess c) {
+      this(c, new Attack(c));
+   }
+
+   public Update(Chess c, Attack attack) {
       this.c = c;
+      this.a = attack;
    }
 
    public void AddPiece(int s, int p, int sq) {
@@ -15,33 +26,36 @@ public final class Update {
       c.color[sq] = s;
    }
 
-   public boolean MakeMove(int start, int dest) {
-//      if (abs(start - dest) == 2 && c.board[start] == Piece.king) {
-//         if (attack(c.xside, start))
-//            return false;
-//         if (dest == g1) {
-//            if (attack(c.xside, f1))
-//               return false;
-//            UpdatePiece(c.side, rook, h1, f1);
-//         } else if (dest == c1) {
-//            if (attack(c.xside, d1))
-//               return false;
-//            UpdatePiece(c.side, rook, a1, d1);
-//         } else if (dest == g8) {
-//            if (attack(c.xside, f8))
-//               return false;
-//            UpdatePiece(c.side,rook, h8, f8);
-//         } else if (dest == c8) {
-//            if (attack(c.xside, d8))
-//               return false;
-//            UpdatePiece(c.side, rook, a8,d8);
-//         }
-//      }
+   private boolean isCastleMove(int from, int to) {
+      return c.board[from] == king && abs(from - to) == 2;
+   }
+
+   private boolean isAttacked(int field) {
+      return a.attack(c.xside, field);
+   }
+
+   public boolean MakeMove(int from, int to) {
+      if (isCastleMove(from, to)) {
+         if (isAttacked(from)) return false;
+         if (to == g1) {
+            if (isAttacked(f1)) return false;
+            UpdatePiece(c.side, rook, h1, f1);
+         } else if (to == c1) {
+            if (isAttacked(d1)) return false;
+            UpdatePiece(c.side, rook, a1, d1);
+         } else if (to == g8) {
+            if (isAttacked(f8)) return false;
+            UpdatePiece(c.side,rook, h8, f8);
+         } else if (to == c8) {
+            if (isAttacked(d8)) return false;
+            UpdatePiece(c.side, rook, a8,d8);
+         }
+      }
 //
 //      g = game_list[hply];
-//      g.start = start;
-//      g.dest = dest;
-//      g.capture = c.board[dest];
+//      g.from = from;
+//      g.to = to;
+//      g.capture = c.board[to];
 //      g.fifty = fifty;
 //
 //      ply++;
@@ -55,42 +69,42 @@ public final class Update {
 //
 //      fifty++;
 //
-//      if (board[start] == P) {
+//      if (board[from] == P) {
 //         fifty = 0;
-//         if (board[dest] == EMPTY && col[start] != col[dest]) {
-//            RemovePiece(xside, P, dest + ReverseSquare[side]);
+//         if (board[to] == EMPTY && col[from] != col[to]) {
+//            RemovePiece(xside, P, to + ReverseSquare[side]);
 //         }
 //      }
 //
-//      if (board[dest] < 6) {
+//      if (board[to] < 6) {
 //         fifty = 0;
-//         RemovePiece(xside, board[dest], dest);
+//         RemovePiece(xside, board[to], to);
 //      }
 //
-//      if (board[start] == P && (row[dest] == 0 || row[dest] == 7))//promotion
+//      if (board[from] == P && (row[to] == 0 || row[to] == 7))//promotion
 //      {
-//         RemovePiece(side, P, start);
-//         AddPiece(side, Q, dest);
+//         RemovePiece(side, P, from);
+//         AddPiece(side, Q, to);
 //         g.promote = Q;
 //      } else {
 //         g.promote = 0;
-//         UpdatePiece(side, board[start], start, dest);
+//         UpdatePiece(side, board[from], from, to);
 //      }
 //
-//      if (dest == A1 || start == A1)
+//      if (to == A1 || from == A1)
 //         g.castle_q[0] = 0;
-//      else if (dest == H1 || start == H1)
+//      else if (to == H1 || from == H1)
 //         g.castle_k[0] = 0;
-//      else if (start == E1) {
+//      else if (from == E1) {
 //         g.castle_q[0] = 0;
 //         g.castle_k[0] = 0;
 //      }
 //
-//      if (dest == A8 || start == A8)
+//      if (to == A8 || from == A8)
 //         g.castle_q[1] = 0;
-//      else if (dest == H8 || start == H8)
+//      else if (to == H8 || from == H8)
 //         g.castle_k[1] = 0;
-//      else if (start == E8) {
+//      else if (from == E8) {
 //         g.castle_q[1] = 0;
 //         g.castle_k[1] = 0;
 //      }

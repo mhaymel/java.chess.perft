@@ -2,15 +2,13 @@ package com.haymel.chess.perft.move;
 
 import com.google.common.collect.Sets;
 import com.haymel.chess.perft.Chess;
-import com.haymel.chess.perft.Color;
 import com.haymel.chess.perft.Fen;
-import com.haymel.chess.perft.Piece;
 
 import java.util.Set;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
-import static com.haymel.chess.perft.move.Generator.NewGen;
+import static com.haymel.chess.perft.move.Generator.NewGenerator;
 import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
 import static com.haymel.chess.perft.help.MoveList.NewMoveList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +31,7 @@ public final class TestUtil {
       Fen.load(fen, chess, NewHalfFullMove());
 
       //when
-      NewGen(chess).execute();
+      NewGenerator(chess).execute();
 
       //then
       Set<String> moves = NewMoveList(chess).moveStrings();
@@ -49,7 +47,7 @@ public final class TestUtil {
       chess.color[field] = color;
       chess.board[field] = piece;
       //when
-      NewGen(chess).execute();
+      NewGenerator(chess).execute();
       //then
       Set<String> moves = NewMoveList(chess).moveStrings();
       assertThat(moves).isEqualTo(expectedMoves);

@@ -21,16 +21,16 @@ public final class Generator {
    private static final int up = 8;
    private static final int down = -up;
    private static final int right = 1;
-   private static final int rightDown = right + down;
+   public static final int rightDown = right + down;
    private static final int left = -right;
-   private static final int leftDown = left + down;
-   private static final int leftUp = left + up;
-   private static final int rightUp = right + up;
+   public static final int leftDown = left + down;
+   public static final int leftUp = left + up;
+   public static final int rightUp = right + up;
    private final Chess c;
 
    public Generator(Chess c) { this.c = c; }
 
-   public static Generator NewGen(Chess chess) { return new Generator(chess); }
+   public static Generator NewGenerator(Chess chess) { return new Generator(chess); }
 
    public void execute() {
       c.mc = c.firstMove[c.ply];
