@@ -1,6 +1,4 @@
-package com.haymel.chess.perft.move;
-
-import com.haymel.chess.perft.Chess;
+package com.haymel.chess.perft;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
@@ -11,10 +9,10 @@ import static com.haymel.chess.perft.File.H;
 import static com.haymel.chess.perft.Init.file;
 import static com.haymel.chess.perft.Init.rank;
 import static com.haymel.chess.perft.Piece.*;
-import static com.haymel.chess.perft.move.BishopMoves.bishopMoves;
-import static com.haymel.chess.perft.move.KingMoves.kingMoves;
-import static com.haymel.chess.perft.move.KnightMoves.knightMoves;
-import static com.haymel.chess.perft.move.RookMoves.rookMoves;
+import static com.haymel.chess.perft.MoveTables.knightMoves;
+import static com.haymel.chess.perft.MoveTables.bishopMoves;
+import static com.haymel.chess.perft.MoveTables.rookMoves;
+import static com.haymel.chess.perft.MoveTables.kingMoves;
 
 public final class Generator {
 

@@ -14,7 +14,6 @@ import static com.haymel.chess.perft.Field.a1;
 import static com.haymel.chess.perft.Field.b2;
 import static com.haymel.chess.perft.Piece.rook;
 import static com.haymel.chess.perft.move.Moves.*;
-import static com.haymel.chess.perft.move.Moves.a1h1;
 import static com.haymel.chess.perft.move.TestUtil.m;
 import static com.haymel.chess.perft.move.TestUtil.moveTest;
 

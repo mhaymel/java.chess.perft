@@ -8,7 +8,7 @@ import java.util.Set;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
-import static com.haymel.chess.perft.move.Generator.NewGenerator;
+import static com.haymel.chess.perft.Generator.NewGenerator;
 import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
 import static com.haymel.chess.perft.help.MoveList.NewMoveList;
 import static org.assertj.core.api.Assertions.assertThat;

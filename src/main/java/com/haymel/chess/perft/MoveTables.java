@@ -1,0 +1,334 @@
+package com.haymel.chess.perft;
+
+import static com.haymel.chess.perft.Field.a1;
+import static com.haymel.chess.perft.Field.a2;
+import static com.haymel.chess.perft.Field.a3;
+import static com.haymel.chess.perft.Field.a4;
+import static com.haymel.chess.perft.Field.a5;
+import static com.haymel.chess.perft.Field.a6;
+import static com.haymel.chess.perft.Field.a7;
+import static com.haymel.chess.perft.Field.a8;
+import static com.haymel.chess.perft.Field.b1;
+import static com.haymel.chess.perft.Field.b2;
+import static com.haymel.chess.perft.Field.b3;
+import static com.haymel.chess.perft.Field.b4;
+import static com.haymel.chess.perft.Field.b5;
+import static com.haymel.chess.perft.Field.b6;
+import static com.haymel.chess.perft.Field.b7;
+import static com.haymel.chess.perft.Field.b8;
+import static com.haymel.chess.perft.Field.c1;
+import static com.haymel.chess.perft.Field.c2;
+import static com.haymel.chess.perft.Field.c3;
+import static com.haymel.chess.perft.Field.c4;
+import static com.haymel.chess.perft.Field.c5;
+import static com.haymel.chess.perft.Field.c6;
+import static com.haymel.chess.perft.Field.c7;
+import static com.haymel.chess.perft.Field.c8;
+import static com.haymel.chess.perft.Field.d1;
+import static com.haymel.chess.perft.Field.d2;
+import static com.haymel.chess.perft.Field.d3;
+import static com.haymel.chess.perft.Field.d4;
+import static com.haymel.chess.perft.Field.d5;
+import static com.haymel.chess.perft.Field.d6;
+import static com.haymel.chess.perft.Field.d7;
+import static com.haymel.chess.perft.Field.d8;
+import static com.haymel.chess.perft.Field.e1;
+import static com.haymel.chess.perft.Field.e2;
+import static com.haymel.chess.perft.Field.e3;
+import static com.haymel.chess.perft.Field.e4;
+import static com.haymel.chess.perft.Field.e5;
+import static com.haymel.chess.perft.Field.e6;
+import static com.haymel.chess.perft.Field.e7;
+import static com.haymel.chess.perft.Field.e8;
+import static com.haymel.chess.perft.Field.f1;
+import static com.haymel.chess.perft.Field.f2;
+import static com.haymel.chess.perft.Field.f3;
+import static com.haymel.chess.perft.Field.f4;
+import static com.haymel.chess.perft.Field.f5;
+import static com.haymel.chess.perft.Field.f6;
+import static com.haymel.chess.perft.Field.f7;
+import static com.haymel.chess.perft.Field.f8;
+import static com.haymel.chess.perft.Field.g1;
+import static com.haymel.chess.perft.Field.g2;
+import static com.haymel.chess.perft.Field.g3;
+import static com.haymel.chess.perft.Field.g4;
+import static com.haymel.chess.perft.Field.g5;
+import static com.haymel.chess.perft.Field.g6;
+import static com.haymel.chess.perft.Field.g7;
+import static com.haymel.chess.perft.Field.g8;
+import static com.haymel.chess.perft.Field.h1;
+import static com.haymel.chess.perft.Field.h2;
+import static com.haymel.chess.perft.Field.h3;
+import static com.haymel.chess.perft.Field.h4;
+import static com.haymel.chess.perft.Field.h5;
+import static com.haymel.chess.perft.Field.h6;
+import static com.haymel.chess.perft.Field.h7;
+import static com.haymel.chess.perft.Field.h8;
+import static com.haymel.chess.perft.Field.iv;
+
+public final class MoveTables {
+   public static final int[][] bishopMoves = {
+/*  0: a1 */ {b2, iv, iv, iv},
+/*  1: b1 */ {c2, iv, iv, a2},
+/*  2: c1 */ {d2, iv, iv, b2},
+/*  3: d1 */ {e2, iv, iv, c2},
+/*  4: e1 */ {f2, iv, iv, d2},
+/*  5: f1 */ {g2, iv, iv, e2},
+/*  6: g1 */ {h2, iv, iv, f2},
+/*  7: h1 */ {iv, iv, iv, g2},
+/*  8: a2 */ {b3, b1, iv, iv},
+/*  9: b2 */ {c3, c1, a1, a3},
+/* 10: c2 */ {d3, d1, b1, b3},
+/* 11: d2 */ {e3, e1, c1, c3},
+/* 12: e2 */ {f3, f1, d1, d3},
+/* 13: f2 */ {g3, g1, e1, e3},
+/* 14: g2 */ {h3, h1, f1, f3},
+/* 15: h2 */ {iv, iv, g1, g3},
+/* 16: a3 */ {b4, b2, iv, iv},
+/* 17: b3 */ {c4, c2, a2, a4},
+/* 18: c3 */ {d4, d2, b2, b4},
+/* 19: d3 */ {e4, e2, c2, c4},
+/* 20: e3 */ {f4, f2, d2, d4},
+/* 21: f3 */ {g4, g2, e2, e4},
+/* 22: g3 */ {h4, h2, f2, f4},
+/* 23: h3 */ {iv, iv, g2, g4},
+/* 24: a4 */ {b5, b3, iv, iv},
+/* 25: b4 */ {c5, c3, a3, a5},
+/* 26: c4 */ {d5, d3, b3, b5},
+/* 27: d4 */ {e5, e3, c3, c5},
+/* 28: e4 */ {f5, f3, d3, d5},
+/* 29: f4 */ {g5, g3, e3, e5},
+/* 30: g4 */ {h5, h3, f3, f5},
+/* 31: h4 */ {iv, iv, g3, g5},
+/* 32: a5 */ {b6, b4, iv, iv},
+/* 33: b5 */ {c6, c4, a4, a6},
+/* 34: c5 */ {d6, d4, b4, b6},
+/* 35: d5 */ {e6, e4, c4, c6},
+/* 36: e5 */ {f6, f4, d4, d6},
+/* 37: f5 */ {g6, g4, e4, e6},
+/* 38: g5 */ {h6, h4, f4, f6},
+/* 39: h5 */ {iv, iv, g4, g6},
+/* 40: a6 */ {b7, b5, iv, iv},
+/* 41: b6 */ {c7, c5, a5, a7},
+/* 42: c6 */ {d7, d5, b5, b7},
+/* 43: d6 */ {e7, e5, c5, c7},
+/* 44: e6 */ {f7, f5, d5, d7},
+/* 45: f6 */ {g7, g5, e5, e7},
+/* 46: g6 */ {h7, h5, f5, f7},
+/* 47: h6 */ {iv, iv, g5, g7},
+/* 48: a7 */ {b8, b6, iv, iv},
+/* 49: b7 */ {c8, c6, a6, a8},
+/* 50: c7 */ {d8, d6, b6, b8},
+/* 51: d7 */ {e8, e6, c6, c8},
+/* 52: e7 */ {f8, f6, d6, d8},
+/* 53: f7 */ {g8, g6, e6, e8},
+/* 54: g7 */ {h8, h6, f6, f8},
+/* 55: h7 */ {iv, iv, g6, g8},
+/* 56: a8 */ {iv, b7, iv, iv},
+/* 57: b8 */ {iv, c7, a7, iv},
+/* 58: c8 */ {iv, d7, b7, iv},
+/* 59: d8 */ {iv, e7, c7, iv},
+/* 60: e8 */ {iv, f7, d7, iv},
+/* 61: f8 */ {iv, g7, e7, iv},
+/* 62: g8 */ {iv, h7, f7, iv},
+/* 63: h8 */ {iv, iv, g7, iv},
+   };
+   public static final int[][] kingMoves = {
+/*  0: a1 */ {b1, a2, b2, iv, iv, iv, iv, iv, iv},
+/*  1: b1 */ {a1, c1, b2, c2, a2, iv, iv, iv, iv},
+/*  2: c1 */ {b1, d1, c2, d2, b2, iv, iv, iv, iv},
+/*  3: d1 */ {c1, e1, d2, e2, c2, iv, iv, iv, iv},
+/*  4: e1 */ {d1, f1, e2, f2, d2, iv, iv, iv, iv},
+/*  5: f1 */ {e1, g1, f2, g2, e2, iv, iv, iv, iv},
+/*  6: g1 */ {f1, h1, g2, h2, f2, iv, iv, iv, iv},
+/*  7: h1 */ {g1, h2, g2, iv, iv, iv, iv, iv, iv},
+/*  8: a2 */ {b2, a1, a3, b3, b1, iv, iv, iv, iv},
+/*  9: b2 */ {a2, c2, b1, b3, c3, a3, a1, c1, iv},
+/* 10: c2 */ {b2, d2, c1, c3, d3, b3, b1, d1, iv},
+/* 11: d2 */ {c2, e2, d1, d3, e3, c3, c1, e1, iv},
+/* 12: e2 */ {d2, f2, e1, e3, f3, d3, d1, f1, iv},
+/* 13: f2 */ {e2, g2, f1, f3, g3, e3, e1, g1, iv},
+/* 14: g2 */ {f2, h2, g1, g3, h3, f3, f1, h1, iv},
+/* 15: h2 */ {g2, h1, h3, g3, g1, iv, iv, iv, iv},
+/* 16: a3 */ {b3, a2, a4, b4, b2, iv, iv, iv, iv},
+/* 17: b3 */ {a3, c3, b2, b4, c4, a4, a2, c2, iv},
+/* 18: c3 */ {b3, d3, c2, c4, d4, b4, b2, d2, iv},
+/* 19: d3 */ {c3, e3, d2, d4, e4, c4, c2, e2, iv},
+/* 20: e3 */ {d3, f3, e2, e4, f4, d4, d2, f2, iv},
+/* 21: f3 */ {e3, g3, f2, f4, g4, e4, e2, g2, iv},
+/* 22: g3 */ {f3, h3, g2, g4, h4, f4, f2, h2, iv},
+/* 23: h3 */ {g3, h2, h4, g4, g2, iv, iv, iv, iv},
+/* 24: a4 */ {b4, a3, a5, b5, b3, iv, iv, iv, iv},
+/* 25: b4 */ {a4, c4, b3, b5, c5, a5, a3, c3, iv},
+/* 26: c4 */ {b4, d4, c3, c5, d5, b5, b3, d3, iv},
+/* 27: d4 */ {c4, e4, d3, d5, e5, c5, c3, e3, iv},
+/* 28: e4 */ {d4, f4, e3, e5, f5, d5, d3, f3, iv},
+/* 29: f4 */ {e4, g4, f3, f5, g5, e5, e3, g3, iv},
+/* 30: g4 */ {f4, h4, g3, g5, h5, f5, f3, h3, iv},
+/* 31: h4 */ {g4, h3, h5, g5, g3, iv, iv, iv, iv},
+/* 32: a5 */ {b5, a4, a6, b6, b4, iv, iv, iv, iv},
+/* 33: b5 */ {a5, c5, b4, b6, c6, a6, a4, c4, iv},
+/* 34: c5 */ {b5, d5, c4, c6, d6, b6, b4, d4, iv},
+/* 35: d5 */ {c5, e5, d4, d6, e6, c6, c4, e4, iv},
+/* 36: e5 */ {d5, f5, e4, e6, f6, d6, d4, f4, iv},
+/* 37: f5 */ {e5, g5, f4, f6, g6, e6, e4, g4, iv},
+/* 38: g5 */ {f5, h5, g4, g6, h6, f6, f4, h4, iv},
+/* 39: h5 */ {g5, h4, h6, g6, g4, iv, iv, iv, iv},
+/* 40: a6 */ {b6, a5, a7, b7, b5, iv, iv, iv, iv},
+/* 41: b6 */ {a6, c6, b5, b7, c7, a7, a5, c5, iv},
+/* 42: c6 */ {b6, d6, c5, c7, d7, b7, b5, d5, iv},
+/* 43: d6 */ {c6, e6, d5, d7, e7, c7, c5, e5, iv},
+/* 44: e6 */ {d6, f6, e5, e7, f7, d7, d5, f5, iv},
+/* 45: f6 */ {e6, g6, f5, f7, g7, e7, e5, g5, iv},
+/* 46: g6 */ {f6, h6, g5, g7, h7, f7, f5, h5, iv},
+/* 47: h6 */ {g6, h5, h7, g7, g5, iv, iv, iv, iv},
+/* 48: a7 */ {b7, a6, a8, b8, b6, iv, iv, iv, iv},
+/* 49: b7 */ {a7, c7, b6, b8, c8, a8, a6, c6, iv},
+/* 50: c7 */ {b7, d7, c6, c8, d8, b8, b6, d6, iv},
+/* 51: d7 */ {c7, e7, d6, d8, e8, c8, c6, e6, iv},
+/* 52: e7 */ {d7, f7, e6, e8, f8, d8, d6, f6, iv},
+/* 53: f7 */ {e7, g7, f6, f8, g8, e8, e6, g6, iv},
+/* 54: g7 */ {f7, h7, g6, g8, h8, f8, f6, h6, iv},
+/* 55: h7 */ {g7, h6, h8, g8, g6, iv, iv, iv, iv},
+/* 56: a8 */ {b8, a7, b7, iv, iv, iv, iv, iv, iv},
+/* 57: b8 */ {a8, c8, b7, a7, c7, iv, iv, iv, iv},
+/* 58: c8 */ {b8, d8, c7, b7, d7, iv, iv, iv, iv},
+/* 59: d8 */ {c8, e8, d7, c7, e7, iv, iv, iv, iv},
+/* 60: e8 */ {d8, f8, e7, d7, f7, iv, iv, iv, iv},
+/* 61: f8 */ {e8, g8, f7, e7, g7, iv, iv, iv, iv},
+/* 62: g8 */ {f8, h8, g7, f7, h7, iv, iv, iv, iv},
+/* 63: h8 */ {g8, h7, g7, iv, iv, iv, iv, iv, iv},
+   };
+   public static final int[][] rookMoves = {
+/*  0: a1 */ {a2, b1, iv, iv},
+/*  1: b1 */ {b2, c1, iv, a1},
+/*  2: c1 */ {c2, d1, iv, b1},
+/*  3: d1 */ {d2, e1, iv, c1},
+/*  4: e1 */ {e2, f1, iv, d1},
+/*  5: f1 */ {f2, g1, iv, e1},
+/*  6: g1 */ {g2, h1, iv, f1},
+/*  7: h1 */ {h2, iv, iv, g1},
+/*  8: a2 */ {a3, b2, a1, iv},
+/*  9: b2 */ {b3, c2, b1, a2},
+/* 10: c2 */ {c3, d2, c1, b2},
+/* 11: d2 */ {d3, e2, d1, c2},
+/* 12: e2 */ {e3, f2, e1, d2},
+/* 13: f2 */ {f3, g2, f1, e2},
+/* 14: g2 */ {g3, h2, g1, f2},
+/* 15: h2 */ {h3, iv, h1, g2},
+/* 16: a3 */ {a4, b3, a2, iv},
+/* 17: b3 */ {b4, c3, b2, a3},
+/* 18: c3 */ {c4, d3, c2, b3},
+/* 19: d3 */ {d4, e3, d2, c3},
+/* 20: e3 */ {e4, f3, e2, d3},
+/* 21: f3 */ {f4, g3, f2, e3},
+/* 22: g3 */ {g4, h3, g2, f3},
+/* 23: h3 */ {h4, iv, h2, g3},
+/* 24: a4 */ {a5, b4, a3, iv},
+/* 25: b4 */ {b5, c4, b3, a4},
+/* 26: c4 */ {c5, d4, c3, b4},
+/* 27: d4 */ {d5, e4, d3, c4},
+/* 28: e4 */ {e5, f4, e3, d4},
+/* 29: f4 */ {f5, g4, f3, e4},
+/* 30: g4 */ {g5, h4, g3, f4},
+/* 31: h4 */ {h5, iv, h3, g4},
+/* 32: a5 */ {a6, b5, a4, iv},
+/* 33: b5 */ {b6, c5, b4, a5},
+/* 34: c5 */ {c6, d5, c4, b5},
+/* 35: d5 */ {d6, e5, d4, c5},
+/* 36: e5 */ {e6, f5, e4, d5},
+/* 37: f5 */ {f6, g5, f4, e5},
+/* 38: g5 */ {g6, h5, g4, f5},
+/* 39: h5 */ {h6, iv, h4, g5},
+/* 40: a6 */ {a7, b6, a5, iv},
+/* 41: b6 */ {b7, c6, b5, a6},
+/* 42: c6 */ {c7, d6, c5, b6},
+/* 43: d6 */ {d7, e6, d5, c6},
+/* 44: e6 */ {e7, f6, e5, d6},
+/* 45: f6 */ {f7, g6, f5, e6},
+/* 46: g6 */ {g7, h6, g5, f6},
+/* 47: h6 */ {h7, iv, h5, g6},
+/* 48: a7 */ {a8, b7, a6, iv},
+/* 49: b7 */ {b8, c7, b6, a7},
+/* 50: c7 */ {c8, d7, c6, b7},
+/* 51: d7 */ {d8, e7, d6, c7},
+/* 52: e7 */ {e8, f7, e6, d7},
+/* 53: f7 */ {f8, g7, f6, e7},
+/* 54: g7 */ {g8, h7, g6, f7},
+/* 55: h7 */ {h8, iv, h6, g7},
+/* 56: a8 */ {iv, b8, a7, iv},
+/* 57: b8 */ {iv, c8, b7, a8},
+/* 58: c8 */ {iv, d8, c7, b8},
+/* 59: d8 */ {iv, e8, d7, c8},
+/* 60: e8 */ {iv, f8, e7, d8},
+/* 61: f8 */ {iv, g8, f7, e8},
+/* 62: g8 */ {iv, h8, g7, f8},
+/* 63: h8 */ {iv, iv, h7, g8},
+   };
+   public static final int[][] knightMoves = {
+/*  0: a1 */ {b3, c2, iv, iv, iv, iv, iv, iv, iv},
+/*  1: b1 */ {c3, d2, a3, iv, iv, iv, iv, iv, iv},
+/*  2: c1 */ {d3, e2, b3, a2, iv, iv, iv, iv, iv},
+/*  3: d1 */ {e3, f2, c3, b2, iv, iv, iv, iv, iv},
+/*  4: e1 */ {f3, g2, d3, c2, iv, iv, iv, iv, iv},
+/*  5: f1 */ {g3, h2, e3, d2, iv, iv, iv, iv, iv},
+/*  6: g1 */ {h3, f3, e2, iv, iv, iv, iv, iv, iv},
+/*  7: h1 */ {g3, f2, iv, iv, iv, iv, iv, iv, iv},
+/*  8: a2 */ {b4, c3, c1, iv, iv, iv, iv, iv, iv},
+/*  9: b2 */ {c4, d3, a4, d1, iv, iv, iv, iv, iv},
+/* 10: c2 */ {d4, e3, b4, a3, e1, a1, iv, iv, iv},
+/* 11: d2 */ {e4, f3, c4, b3, f1, b1, iv, iv, iv},
+/* 12: e2 */ {f4, g3, d4, c3, g1, c1, iv, iv, iv},
+/* 13: f2 */ {g4, h3, e4, d3, h1, d1, iv, iv, iv},
+/* 14: g2 */ {h4, f4, e3, e1, iv, iv, iv, iv, iv},
+/* 15: h2 */ {g4, f3, f1, iv, iv, iv, iv, iv, iv},
+/* 16: a3 */ {b5, c4, b1, c2, iv, iv, iv, iv, iv},
+/* 17: b3 */ {c5, d4, a5, c1, d2, a1, iv, iv, iv},
+/* 18: c3 */ {d5, e4, b5, a4, d1, e2, b1, a2, iv},
+/* 19: d3 */ {e5, f4, c5, b4, e1, f2, c1, b2, iv},
+/* 20: e3 */ {f5, g4, d5, c4, f1, g2, d1, c2, iv},
+/* 21: f3 */ {g5, h4, e5, d4, g1, h2, e1, d2, iv},
+/* 22: g3 */ {h5, f5, e4, h1, f1, e2, iv, iv, iv},
+/* 23: h3 */ {g5, f4, g1, f2, iv, iv, iv, iv, iv},
+/* 24: a4 */ {b6, c5, b2, c3, iv, iv, iv, iv, iv},
+/* 25: b4 */ {c6, d5, a6, c2, d3, a2, iv, iv, iv},
+/* 26: c4 */ {d6, e5, b6, a5, d2, e3, b2, a3, iv},
+/* 27: d4 */ {e6, f5, c6, b5, e2, f3, c2, b3, iv},
+/* 28: e4 */ {f6, g5, d6, c5, f2, g3, d2, c3, iv},
+/* 29: f4 */ {g6, h5, e6, d5, g2, h3, e2, d3, iv},
+/* 30: g4 */ {h6, f6, e5, h2, f2, e3, iv, iv, iv},
+/* 31: h4 */ {g6, f5, g2, f3, iv, iv, iv, iv, iv},
+/* 32: a5 */ {b7, c6, b3, c4, iv, iv, iv, iv, iv},
+/* 33: b5 */ {c7, d6, a7, c3, d4, a3, iv, iv, iv},
+/* 34: c5 */ {d7, e6, b7, a6, d3, e4, b3, a4, iv},
+/* 35: d5 */ {e7, f6, c7, b6, e3, f4, c3, b4, iv},
+/* 36: e5 */ {f7, g6, d7, c6, f3, g4, d3, c4, iv},
+/* 37: f5 */ {g7, h6, e7, d6, g3, h4, e3, d4, iv},
+/* 38: g5 */ {h7, f7, e6, h3, f3, e4, iv, iv, iv},
+/* 39: h5 */ {g7, f6, g3, f4, iv, iv, iv, iv, iv},
+/* 40: a6 */ {b8, c7, b4, c5, iv, iv, iv, iv, iv},
+/* 41: b6 */ {c8, d7, a8, c4, d5, a4, iv, iv, iv},
+/* 42: c6 */ {d8, e7, b8, a7, d4, e5, b4, a5, iv},
+/* 43: d6 */ {e8, f7, c8, b7, e4, f5, c4, b5, iv},
+/* 44: e6 */ {f8, g7, d8, c7, f4, g5, d4, c5, iv},
+/* 45: f6 */ {g8, h7, e8, d7, g4, h5, e4, d5, iv},
+/* 46: g6 */ {h8, f8, e7, h4, f4, e5, iv, iv, iv},
+/* 47: h6 */ {g8, f7, g4, f5, iv, iv, iv, iv, iv},
+/* 48: a7 */ {c8, b5, c6, iv, iv, iv, iv, iv, iv},
+/* 49: b7 */ {d8, c5, d6, a5, iv, iv, iv, iv, iv},
+/* 50: c7 */ {e8, a8, d5, e6, b5, a6, iv, iv, iv},
+/* 51: d7 */ {f8, b8, e5, f6, c5, b6, iv, iv, iv},
+/* 52: e7 */ {g8, c8, f5, g6, d5, c6, iv, iv, iv},
+/* 53: f7 */ {h8, d8, g5, h6, e5, d6, iv, iv, iv},
+/* 54: g7 */ {e8, h5, f5, e6, iv, iv, iv, iv, iv},
+/* 55: h7 */ {f8, g5, f6, iv, iv, iv, iv, iv, iv},
+/* 56: a8 */ {b6, c7, iv, iv, iv, iv, iv, iv, iv},
+/* 57: b8 */ {c6, d7, a6, iv, iv, iv, iv, iv, iv},
+/* 58: c8 */ {d6, e7, b6, a7, iv, iv, iv, iv, iv},
+/* 59: d8 */ {e6, f7, c6, b7, iv, iv, iv, iv, iv},
+/* 60: e8 */ {f6, g7, d6, c7, iv, iv, iv, iv, iv},
+/* 61: f8 */ {g6, h7, e6, d7, iv, iv, iv, iv, iv},
+/* 62: g8 */ {h6, f6, e7, iv, iv, iv, iv, iv, iv},
+/* 63: h8 */ {g6, f7, iv, iv, iv, iv, iv, iv, iv}
+   };
+}
