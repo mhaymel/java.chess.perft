@@ -2,10 +2,10 @@ package com.haymel.chess.perft;
 
 public final class Game {
 
-    public int start;
-    public int dest;
+    public int from;
+    public int to;
     public Piece promote;
-    public Piece capture;
+    public int capturePiece;
     public final Castling castle = new Castling();
 
 }

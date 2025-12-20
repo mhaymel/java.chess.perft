@@ -10,7 +10,7 @@ import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Generator.NewGenerator;
 import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
-import static com.haymel.chess.perft.help.MoveList.NewMoveList;
+import static com.haymel.chess.perft.move.MoveList.NewMoveList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public final class TestUtil {

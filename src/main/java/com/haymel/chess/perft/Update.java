@@ -51,15 +51,14 @@ public final class Update {
             UpdatePiece(c.side, rook, a8,d8);
          }
       }
-//
-//      g = game_list[hply];
-//      g.from = from;
-//      g.to = to;
-//      g.capture = c.board[to];
-//      g.fifty = fifty;
-//
-//      ply++;
-//      hply++;
+
+      Game g = c.gameList[c.hply];
+      g.from = from;
+      g.to = to;
+      g.capturePiece = c.board[to];
+
+      c.ply++;
+      c.hply++;
 //
 //      g = game_list[hply];
 //      g.castle_q[0] = game_list[hply - 1].castle_q[0];

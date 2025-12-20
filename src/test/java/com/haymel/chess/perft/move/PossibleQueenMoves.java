@@ -1,6 +1,5 @@
 package com.haymel.chess.perft.move;
 
-import com.haymel.chess.perft.util.FieldEnum;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;

@@ -1,4 +1,4 @@
-package com.haymel.chess.perft.help;
+package com.haymel.chess.perft.move;
 
 import com.haymel.chess.perft.Chess;
 import com.haymel.chess.perft.Move;

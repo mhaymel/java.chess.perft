@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
@@ -242,6 +243,50 @@ final class AttackTest {
    @MethodSource("blackKnightAttacks")
    void blackKnightAttacks(String fen, ColorEnum side, FieldEnum field, boolean expected) {
       test(fen, side, field, expected);
+   }
+
+   static Stream<Arguments> whiteRookAttacks() {
+      return Stream.of(
+         of("8/8/8/8/8/8/8/R7 b - - 0 1", white, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), true),
+         of("8/8/8/8/8/8/8/R7 b - - 0 1", black, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), false),
+         of("8/8/8/N7/8/8/8/R2N4 b - - 0 1 ", white, Set.of(a2,a3,a4,a5,b1,c1,d1), true),
+         of("8/8/8/N7/8/8/8/R2N4 b - - 0 1", white, Set.of(a6,a7,a8,e1,f1,g1,h1), false)
+         );
+   }
+
+   @ParameterizedTest
+   @MethodSource("whiteRookAttacks")
+   void whiteRookAttacks(String fen, ColorEnum side, Set<FieldEnum> fields, boolean expected) {
+         test(fen, side, fields, expected);
+   }
+
+   @Test
+   void whiteRookAttack1() {
+      test("8/8/8/8/8/8/8/R7 b - - 0 1", black, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), false);
+   }
+
+   @Test
+   void whiteRookAttack2() {
+      test("8/8/8/8/8/8/8/R7 b - - 0 1", black, c1, false);
+   }
+
+   static Stream<Arguments> blackRookAttacks() {
+      return Stream.of(
+         of("8/8/8/8/8/8/8/r7 b - - 0 1", black, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), true),
+         of("8/8/8/8/8/8/8/r7 b - - 0 1", white, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), false)
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("blackRookAttacks")
+   void blackRookAttacks(String fen, ColorEnum side, Set<FieldEnum> fields, boolean expected) {
+      test(fen, side, fields, expected);
+   }
+
+   void test(String fen, ColorEnum side, Set<FieldEnum> fields, boolean expected) {
+      for (FieldEnum field : fields) {
+         test(fen, side, field, expected);
+      }
    }
 
    void test(String fen, ColorEnum side, FieldEnum field, boolean expected) {
