@@ -61,7 +61,6 @@ public final class PossibleRookMoves {
          /* [46] */ of(f6, m(f6f1, f6f2, f6f3, f6f4, f6f5, f6f7, f6f8, f6a6, f6b6, f6c6, f6d6, f6e6, f6g6, f6h6)),
          /* [47] */ of(g6, m(g6g1, g6g2, g6g3, g6g4, g6g5, g6g7, g6g8, g6a6, g6b6, g6c6, g6d6, g6e6, g6f6, g6h6)),
          /* [48] */ of(h6, m(h6h1, h6h2, h6h3, h6h4, h6h5, h6h7, h6h8, h6a6, h6b6, h6c6, h6d6, h6e6, h6f6, h6g6)),
-
          /* [49] */ of(a7, m(a7a1, a7a2, a7a3, a7a4, a7a5, a7a6, a7a8, a7b7, a7c7, a7d7, a7e7, a7f7, a7g7, a7h7)),
          /* [50] */ of(b7, m(b7b1, b7b2, b7b3, b7b4, b7b5, b7b6, b7b8, b7a7, b7c7, b7d7, b7e7, b7f7, b7g7, b7h7)),
          /* [51] */ of(c7, m(c7c1, c7c2, c7c3, c7c4, c7c5, c7c6, c7c8, c7a7, c7b7, c7d7, c7e7, c7f7, c7g7, c7h7)),

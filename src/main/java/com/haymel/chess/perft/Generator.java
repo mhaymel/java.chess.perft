@@ -2,17 +2,13 @@ package com.haymel.chess.perft;
 
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
-import static com.haymel.chess.perft.Direction.NORTH;
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.File.A;
 import static com.haymel.chess.perft.File.H;
 import static com.haymel.chess.perft.Init.file;
 import static com.haymel.chess.perft.Init.rank;
+import static com.haymel.chess.perft.MoveTables.*;
 import static com.haymel.chess.perft.Piece.*;
-import static com.haymel.chess.perft.MoveTables.knightMoves;
-import static com.haymel.chess.perft.MoveTables.bishopMoves;
-import static com.haymel.chess.perft.MoveTables.rookMoves;
-import static com.haymel.chess.perft.MoveTables.kingMoves;
 
 public final class Generator {
 
@@ -52,14 +48,13 @@ public final class Generator {
             gen(knightMoves, from);
             break;
          case bishop:
-            genQrb(bishopMoves, from);
+            genSliding(bishopMoves, from,4);
             break;
          case rook:
-            genQrb(rookMoves, from);
+            genSliding(rookMoves, from,4);
             break;
          case queen:
-            genQrb(bishopMoves, from);
-            genQrb(rookMoves, from);
+            genSliding(queenMoves, from,8);
             break;
          case king:
             gen(kingMoves, from);
@@ -124,8 +119,8 @@ public final class Generator {
       if (c.isOpponent(to)) addPawnMove(from, to);
    }
 
-   private void genQrb(int[][] moves, int from) {
-      for (int i = 0; i < 4; i++)
+   private void genSliding(int[][] moves, int from, int count) {
+      for (int i = 0; i < count; i++)
          genDirection(from, i, moves);
    }
 
@@ -140,8 +135,8 @@ public final class Generator {
    }
 
    private void gen(int[][] moves, int from) {
-      int to = moves[from][NORTH];
-      for (int direction = NORTH + 1; isValid(to); direction++) {
+      int to = moves[from][0];
+      for (int direction = 1; isValid(to); direction++) {
          if (c.isEmptyOrOpponent(to)) addMove(from, to);
          to = moves[from][direction];
       }

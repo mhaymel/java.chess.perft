@@ -1,12 +1,13 @@
 package com.haymel.chess.perft.move;
 
+import com.haymel.chess.perft.util.FieldEnum;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;
 
-import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.move.Moves.*;
 import static com.haymel.chess.perft.move.TestUtil.m;
+import static com.haymel.chess.perft.util.FieldEnum.*;
 import static org.junit.jupiter.params.provider.Arguments.of;
 
 public final class PossibleQueenMoves {

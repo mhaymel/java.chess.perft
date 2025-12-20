@@ -1,6 +1,5 @@
 package com.haymel.chess.perft;
 
-import static com.haymel.chess.perft.Direction.NORTH;
 import static com.haymel.chess.perft.Field.isValid;
 import static com.haymel.chess.perft.File.A;
 import static com.haymel.chess.perft.File.H;
@@ -45,8 +44,8 @@ public final class Attack {
    private boolean isKingAttack(int side, int field) { return isAttack(side, field, kingMoves, king); }
 
    private boolean isAttack(int side, int field, int[][] moves, int piece) {
-      int to = moves[field][NORTH];
-      for (int direction = NORTH + 1; isValid(to); direction++) {
+      int to = moves[field][0];
+      for (int direction = 1; isValid(to); direction++) {
          if (isAttackingPiece(side, to, piece)) return true;
          to = moves[field][direction];
       }
