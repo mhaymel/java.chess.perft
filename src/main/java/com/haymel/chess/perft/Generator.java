@@ -20,6 +20,10 @@ public final class Generator {
    public static final int leftDown = left + down;
    public static final int leftUp = left + up;
    public static final int rightUp = right + up;
+
+   private static final int[] pawnStep = {up, down};
+   private static final int[] pawnDoubleStep = {2 * up, 2 * down};
+
    private final Chess c;
 
    public Generator(Chess c) { this.c = c; }
@@ -96,21 +100,16 @@ public final class Generator {
    }
 
    private void genPawn(int from) {
-      if (c.itsWhitesTurn())  genPawn(from, up, rank[white]);
-      else                    genPawn(from, down, rank[black]);
-   }
-
-   private void genPawn(int from, int step, int[] rank) {
-      if (c.isEmpty(from + step)) {
-         addPawnMove(from, from + step);
-         if (rank[from] == 1) pawnDoubleStep(from, step);
+      if (c.isEmpty(from + pawnStep[c.side])) {
+         addPawnMove(from, from + pawnStep[c.side]);
+         if (rank[c.side][from] == 1) pawnDoubleStep(from);
       }
-      if (file[from] > A) pawnCapture(from, left + step);
-      if (file[from] < H) pawnCapture(from, right + step);
+      if (file[from] > A) pawnCapture(from, left + pawnStep[c.side]);
+      if (file[from] < H) pawnCapture(from, right + pawnStep[c.side]);
    }
 
-   private void pawnDoubleStep(int from, int step) {
-      int to = from + step + step;
+   private void pawnDoubleStep(int from) {
+      int to = from + pawnDoubleStep[c.side];
       if (c.isEmpty(to)) addMove(from, to);
    }
 
