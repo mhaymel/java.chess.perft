@@ -45,26 +45,13 @@ public final class Generator {
 
    private void generate(int from) {
       switch (c.board[from]) {
-         case pawn:
-            genPawn(from);
-            break;
-         case knight:
-            gen(knightMoves, from);
-            break;
-         case bishop:
-            genSliding(bishopMoves, from,4);
-            break;
-         case rook:
-            genSliding(rookMoves, from,4);
-            break;
-         case queen:
-            genSliding(queenMoves, from,8);
-            break;
-         case king:
-            gen(kingMoves, from);
-            break;
-         default:
-            break;
+         case pawn:     genPawn(from);                         break;
+         case knight:   gen(knightMoves, from);                break;
+         case bishop:   genSliding(bishopMoves, from,4); break;
+         case rook:     genSliding(rookMoves, from,4);   break;
+         case queen:    genSliding(queenMoves, from,8);  break;
+         case king:     gen(kingMoves, from);                  break;
+         default:                                              break;
       }
    }
 
