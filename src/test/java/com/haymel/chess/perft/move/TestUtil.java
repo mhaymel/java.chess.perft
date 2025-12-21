@@ -43,7 +43,6 @@ public final class TestUtil {
       Chess chess = new Chess();
       chess.emptyBoard();
       chess.side = color;
-      chess.xside = color == white ? black : white;
       chess.color[field] = color;
       chess.board[field] = piece;
       //when

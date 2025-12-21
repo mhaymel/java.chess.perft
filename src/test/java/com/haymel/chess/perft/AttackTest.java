@@ -273,7 +273,9 @@ final class AttackTest {
    static Stream<Arguments> blackRookAttacks() {
       return Stream.of(
          of("8/8/8/8/8/8/8/r7 b - - 0 1", black, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), true),
-         of("8/8/8/8/8/8/8/r7 b - - 0 1", white, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), false)
+         of("8/8/8/8/8/8/8/r7 b - - 0 1", white, Set.of(a2,a3,a4,a5,a6,a7,a8,b1,c1,d1,e1,f1,g1,h1), false),
+         of("8/8/8/N7/8/8/8/r2N4 b - - 0 1 ", black, Set.of(a2,a3,a4,a5,b1,c1,d1), true),
+         of("8/8/8/N7/8/8/8/r2N4 b - - 0 1", black, Set.of(a6,a7,a8,e1,f1,g1,h1), false)
       );
    }
 

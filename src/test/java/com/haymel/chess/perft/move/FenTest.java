@@ -26,7 +26,6 @@ final class FenTest {
 
       //then
       assertThat(chess.side).isEqualTo(white);
-      assertThat(chess.xside).isEqualTo(black);
 
       assertThat(chess.gameList[chess.hply].castle.kingside[white]).isTrue();
       assertThat(chess.gameList[chess.hply].castle.queenside[white]).isTrue();
@@ -200,7 +199,6 @@ final class FenTest {
 
       //then
       assertThat(chess.side).isEqualTo(white);
-      assertThat(chess.xside).isEqualTo(black);
 
       assertThat(chess.gameList[chess.hply].castle.kingside[white]).isFalse();
       assertThat(chess.gameList[chess.hply].castle.queenside[white]).isFalse();
@@ -233,7 +231,6 @@ final class FenTest {
 
       //then
       assertThat(chess.side).isEqualTo(white);
-      assertThat(chess.xside).isEqualTo(black);
 
       assertThat(chess.gameList[chess.hply].castle.kingside[white]).isFalse();
       assertThat(chess.gameList[chess.hply].castle.queenside[white]).isFalse();

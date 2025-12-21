@@ -33,7 +33,6 @@ public final class Fen {
       chess.ply = 0;
       chess.hply = 0;
       chess.side = -1;
-      chess.xside = -1;
       chess.enPassantField = invalid;
       for (int x = 0; x < 64; x++) {
          chess.board[x] = empty;
@@ -96,11 +95,9 @@ public final class Fen {
       if (fen[c] == ' ' && fen[c + 2] == ' ') {
          if (fen[c + 1] == 'w') {
             chess.side = white;
-            chess.xside = black;
          }
          if (fen[c + 1] == 'b') {
             chess.side = black;
-            chess.xside = white;
          }
       }
       c += 2;

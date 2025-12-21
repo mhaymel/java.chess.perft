@@ -31,7 +31,7 @@ public final class Update {
    }
 
    private boolean isAttacked(int field) {
-      return a.attack(c.xside, field);
+      return a.attack(c.other(c.side), field);
    }
 
    public boolean MakeMove(int from, int to) {

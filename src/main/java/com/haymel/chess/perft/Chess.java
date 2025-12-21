@@ -10,7 +10,6 @@ public final class Chess {
    public int ply;
    public int hply;
    public int side = white;
-   public int xside = black;
    public int enPassantField;
    public int mc;
 
@@ -32,7 +31,6 @@ public final class Chess {
       }
 
       side = white;
-      xside = black;
       ply = 0;
       hply = 0;
       firstMove[0] = 0;
@@ -54,7 +52,6 @@ public final class Chess {
       }
 
       side = white;
-      xside = black;
       ply = 0;
       hply = 0;
       firstMove[0] = 0;
@@ -71,7 +68,9 @@ public final class Chess {
 
    public boolean itsWhitesTurn() { return side == white; }
 
-   public boolean isOpponent(int field) { return color[field] == xside; }
+   public boolean isOpponent(int field) { return color[field] == other(side); }
+
+   public int other(int side) { return side^1; }
 
    public boolean isEmpty(int field) { return board[field] == Piece.empty; }
 
