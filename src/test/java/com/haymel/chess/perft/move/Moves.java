@@ -6,6 +6,72 @@ import static com.haymel.chess.perft.move.TestUtil.m;
 
 public final class Moves {
 
+   public static final String a7a8b = "a7a8b";
+   public static final String a7a8n = "a7a8n";
+   public static final String a7a8r = "a7a8r";
+   public static final String a7a8q = "a7a8q";
+   public static final String b7b8b = "b7b8b";
+   public static final String b7b8n = "b7b8n";
+   public static final String b7b8r = "b7b8r";
+   public static final String b7b8q = "b7b8q";
+   public static final String c7c8b = "c7c8b";
+   public static final String c7c8n = "c7c8n";
+   public static final String c7c8r = "c7c8r";
+   public static final String c7c8q = "c7c8q";
+   public static final String d7d8b = "d7d8b";
+   public static final String d7d8n = "d7d8n";
+   public static final String d7d8r = "d7d8r";
+   public static final String d7d8q = "d7d8q";
+   public static final String e7e8b = "e7e8b";
+   public static final String e7e8n = "e7e8n";
+   public static final String e7e8r = "e7e8r";
+   public static final String e7e8q = "e7e8q";
+   public static final String f7f8b = "f7f8b";
+   public static final String f7f8n = "f7f8n";
+   public static final String f7f8r = "f7f8r";
+   public static final String f7f8q = "f7f8q";
+   public static final String g7g8b = "g7g8b";
+   public static final String g7g8n = "g7g8n";
+   public static final String g7g8r = "g7g8r";
+   public static final String g7g8q = "g7g8q";
+   public static final String h7h8b = "h7h8b";
+   public static final String h7h8n = "h7h8n";
+   public static final String h7h8r = "h7h8r";
+   public static final String h7h8q = "h7h8q";
+
+   public static final String a2a1b = "a2a1b";
+   public static final String a2a1n = "a2a1n";
+   public static final String a2a1r = "a2a1r";
+   public static final String a2a1q = "a2a1q";
+   public static final String b2b1b = "b2b1b";
+   public static final String b2b1n = "b2b1n";
+   public static final String b2b1r = "b2b1r";
+   public static final String b2b1q = "b2b1q";
+   public static final String c2c1b = "c2c1b";
+   public static final String c2c1n = "c2c1n";
+   public static final String c2c1r = "c2c1r";
+   public static final String c2c1q = "c2c1q";
+   public static final String d2d1b = "d2d1b";
+   public static final String d2d1n = "d2d1n";
+   public static final String d2d1r = "d2d1r";
+   public static final String d2d1q = "d2d1q";
+   public static final String e2e1b = "e2e1b";
+   public static final String e2e1n = "e2e1n";
+   public static final String e2e1r = "e2e1r";
+   public static final String e2e1q = "e2e1q";
+   public static final String f2f1b = "f2f1b";
+   public static final String f2f1n = "f2f1n";
+   public static final String f2f1r = "f2f1r";
+   public static final String f2f1q = "f2f1q";
+   public static final String g2g1b = "g2g1b";
+   public static final String g2g1n = "g2g1n";
+   public static final String g2g1r = "g2g1r";
+   public static final String g2g1q = "g2g1q";
+   public static final String h2h1b = "h2h1b";
+   public static final String h2h1n = "h2h1n";
+   public static final String h2h1r = "h2h1r";
+   public static final String h2h1q = "h2h1q";
+
    public static final String b5a6 = "b5a6";
    public static final String e1d1 = "e1d1";
    public static final String e1d2 = "e1d2";
@@ -105,10 +171,6 @@ public final class Moves {
    public static final String g4g3 = "g4g3";
    public static final String f4f3 = "f4f3";
    public static final String h4h3 = "h4h3";
-   public static final String d7d8q = "d7d8q";
-   public static final String d7d8r = "d7d8r";
-   public static final String d7d8b = "d7d8b";
-   public static final String d7d8n = "d7d8n";
    public static final String d8e8 = "d8e8";
    public static final String d8e7 = "d8e7";
    public static final String d8c7 = "d8c7";
@@ -121,10 +183,6 @@ public final class Moves {
    public static final String d7e8r = "d7e8r";
    public static final String d7e8b = "d7e8b";
    public static final String d7e8n = "d7e8n";
-   public static final String a7a8q = "a7a8q";
-   public static final String a7a8r = "a7a8r";
-   public static final String a7a8b = "a7a8b";
-   public static final String a7a8n = "a7a8n";
    public static final String a7b8q = "a7b8q";
    public static final String a7b8r = "a7b8r";
    public static final String a7b8b = "a7b8b";
@@ -133,14 +191,7 @@ public final class Moves {
    public static final String h7g8r = "h7g8r";
    public static final String h7g8b = "h7g8b";
    public static final String h7g8n = "h7g8n";
-   public static final String h7h8q = "h7h8q";
-   public static final String h7h8r = "h7h8r";
-   public static final String h7h8b = "h7h8b";
-   public static final String h7h8n = "h7h8n";
-   public static final String d2d1q = "d2d1q";
-   public static final String d2d1r = "d2d1r";
-   public static final String d2d1b = "d2d1b";
-   public static final String d2d1n = "d2d1n";
+
    public static final String d1e2 = "d1e2";
    public static final String d1e1 = "d1e1";
    public static final String d1c1 = "d1c1";
@@ -1835,8 +1886,6 @@ public final class Moves {
    public static final String h8c3 = "h8c3";
    public static final String h8b2 = "h8b2";
    public static final String h8a1 = "h8a1";
-
-   //chatgpt
 
    private final static char[] files = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
    private final static int[] ranks = {1, 2, 3, 4, 5, 6, 7, 8};

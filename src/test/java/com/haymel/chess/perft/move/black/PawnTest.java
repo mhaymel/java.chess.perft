@@ -1,5 +1,6 @@
 package com.haymel.chess.perft.move.black;
 
+import com.haymel.chess.perft.util.FieldEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -9,6 +10,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.Sets.union;
+import static com.haymel.chess.perft.Color.black;
+import static com.haymel.chess.perft.Color.white;
+import static com.haymel.chess.perft.Piece.pawn;
 import static com.haymel.chess.perft.move.Moves.*;
 import static com.haymel.chess.perft.move.TestUtil.*;
 import static org.junit.jupiter.params.provider.Arguments.of;
@@ -62,7 +66,7 @@ public final class PawnTest {
          of("8/4p3/8/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5)),
          of("8/4p3/4k3/8/8/8/8/8 b - - 0 1", m(e6f7, e6f6, e6f5, e6e5, e6d5, e6d6, e6d7)),
          of("8/4p3/8/4k3/8/8/8/8 b - - 0 1", m(e7e6, e5e6, e5f6, e5f5, e5f4, e5e4, e5d4, e5d5, e5d6)),
-         of("8/4p3/4K3/8/8/8/8/8 b - - 0 1", m()),
+         of("8/4p3/4K3/8/8/8/8/8 b - - 0 1", no),
          of("8/4p3/8/4K3/8/8/8/8 b - - 0 1", m(e7e6)),
          of("8/4p3/3P4/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5, e7d6)),
          of("8/4p3/5P2/8/8/8/8/8 b - - 0 1", m(e7e6, e7e5, e7f6)),
@@ -75,6 +79,94 @@ public final class PawnTest {
    @MethodSource("BlackPawn")
    void whitePawn(String fen, Set<String> expectedMoves) {
       test(fen, expectedMoves);
+   }
+
+   static Stream<Arguments> pawnStep() {
+      return Stream.of(
+         of(FieldEnum.a6, m(FieldEnum.a5)),
+         of(FieldEnum.a5, m(FieldEnum.a4)),
+         of(FieldEnum.a4, m(FieldEnum.a3)),
+         of(FieldEnum.a3, m(FieldEnum.a2)),
+
+         of(FieldEnum.b6, m(FieldEnum.b5)),
+         of(FieldEnum.b5, m(FieldEnum.b4)),
+         of(FieldEnum.b4, m(FieldEnum.b3)),
+         of(FieldEnum.b3, m(FieldEnum.b2)),
+
+         of(FieldEnum.c6, m(FieldEnum.c5)),
+         of(FieldEnum.c5, m(FieldEnum.c4)),
+         of(FieldEnum.c4, m(FieldEnum.c3)),
+         of(FieldEnum.c3, m(FieldEnum.c2)),
+
+         of(FieldEnum.d6, m(FieldEnum.d5)),
+         of(FieldEnum.d5, m(FieldEnum.d4)),
+         of(FieldEnum.d4, m(FieldEnum.d3)),
+         of(FieldEnum.d3, m(FieldEnum.d2)),
+
+         of(FieldEnum.e6, m(FieldEnum.e5)),
+         of(FieldEnum.e5, m(FieldEnum.e4)),
+         of(FieldEnum.e4, m(FieldEnum.e3)),
+         of(FieldEnum.e3, m(FieldEnum.e2)),
+
+         of(FieldEnum.f6, m(FieldEnum.f5)),
+         of(FieldEnum.f5, m(FieldEnum.f4)),
+         of(FieldEnum.f4, m(FieldEnum.f3)),
+         of(FieldEnum.f3, m(FieldEnum.f2)),
+
+         of(FieldEnum.g6, m(FieldEnum.g5)),
+         of(FieldEnum.g5, m(FieldEnum.g4)),
+         of(FieldEnum.g4, m(FieldEnum.g3)),
+         of(FieldEnum.g3, m(FieldEnum.g2)),
+
+         of(FieldEnum.h6, m(FieldEnum.h5)),
+         of(FieldEnum.h5, m(FieldEnum.h4)),
+         of(FieldEnum.h4, m(FieldEnum.h3)),
+         of(FieldEnum.h3, m(FieldEnum.h2))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("pawnStep")
+   void pawnStep(FieldEnum field, Set<FieldEnum> expected) {
+      moveTest(field.value, black, moves(field, expected), pawn);
+   }
+
+   static Stream<Arguments> promotion() {
+      return Stream.of(
+         of(FieldEnum.a2, m(a2a1b, a2a1n, a2a1r, a2a1q)),
+         of(FieldEnum.b2, m(b2b1b, b2b1n, b2b1r, b2b1q)),
+         of(FieldEnum.c2, m(c2c1b, c2c1n, c2c1r, c2c1q)),
+         of(FieldEnum.d2, m(d2d1b, d2d1n, d2d1r, d2d1q)),
+         of(FieldEnum.e2, m(e2e1b, e2e1n, e2e1r, e2e1q)),
+         of(FieldEnum.f2, m(f2f1b, f2f1n, f2f1r, f2f1q)),
+         of(FieldEnum.g2, m(g2g1b, g2g1n, g2g1r, g2g1q)),
+         of(FieldEnum.h2, m(h2h1b, h2h1n, h2h1r, h2h1q))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("promotion")
+   void promotion(FieldEnum field, Set<String> expected) {
+      moveTest(field.value, black, expected, pawn);
+   }
+
+   static Stream<Arguments> pawnDoubleStep() {
+      return Stream.of(
+         of(FieldEnum.a7, m(a7a6, a7a5)),
+         of(FieldEnum.b7, m(b7b6, b7b5)),
+         of(FieldEnum.c7, m(c7c6, c7c5)),
+         of(FieldEnum.d7, m(d7d6, d7d5)),
+         of(FieldEnum.e7, m(e7e6, e7e5)),
+         of(FieldEnum.f7, m(f7f6, f7f5)),
+         of(FieldEnum.g7, m(g7g6, g7g5)),
+         of(FieldEnum.h7, m(h7h6, h7h5))
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("pawnDoubleStep")
+   void pawnDoubleStep(FieldEnum field, Set<String> expected) {
+      moveTest(field.value, black, expected, pawn);
    }
 
 }

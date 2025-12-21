@@ -3,6 +3,8 @@ package com.haymel.chess.perft.move;
 import com.google.common.collect.Sets;
 import com.haymel.chess.perft.Chess;
 import com.haymel.chess.perft.Fen;
+import com.haymel.chess.perft.Notation;
+import com.haymel.chess.perft.util.FieldEnum;
 
 import java.util.Set;
 
@@ -10,12 +12,18 @@ import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Generator.NewGenerator;
 import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
+import static com.haymel.chess.perft.Notation.uci;
 import static com.haymel.chess.perft.move.MoveList.NewMoveList;
+import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public final class TestUtil {
 
-   public static Set<String> no = m();
+   public static Set<String> no = Set.of();
+
+   public static Set<FieldEnum> m(FieldEnum... to) {
+      return Set.of(to);
+   }
 
    public static Set<String> m(String... moves) {
       return Set.of(moves);
@@ -50,6 +58,14 @@ public final class TestUtil {
       //then
       Set<String> moves = NewMoveList(chess).moveStrings();
       assertThat(moves).isEqualTo(expectedMoves);
+   }
+
+   public static String move(FieldEnum from, FieldEnum to) { return uci(from.value, to.value); }
+
+   public static Set<String> moves(FieldEnum from, Set<FieldEnum> expectedTo) {
+      return expectedTo.stream()
+         .map((FieldEnum to) -> move(from, to))
+         .collect(toSet());
    }
 
 }
