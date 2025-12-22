@@ -45,13 +45,13 @@ public final class Generator {
 
    private void generate(int from) {
       switch (c.board[from]) {
-         case pawn:     genPawn(from);                         break;
-         case knight:   gen(knightMoves, from);                break;
+         case pawn:     genPawn(from);                          break;
+         case knight:   gen(knightMoves, from);                 break;
          case bishop:   genSliding(bishopMoves, from,4); break;
          case rook:     genSliding(rookMoves, from,4);   break;
          case queen:    genSliding(queenMoves, from,8);  break;
-         case king:     gen(kingMoves, from);                  break;
-         default:                                              break;
+         case king:     gen(kingMoves, from);                   break;
+         default:                                               break;
       }
    }
 
@@ -86,13 +86,17 @@ public final class Generator {
       }
    }
 
+   private static final int[] leftCapture = { left + pawnStep[white], left + pawnStep[black] };
+   private static final int[] rightCapture = { right + pawnStep[white], right + pawnStep[black] };
+
    private void genPawn(int from) {
-      if (c.isEmpty(from + pawnStep[c.side])) {
-         addPawnMove(from, from + pawnStep[c.side]);
+      int to = from + pawnStep[c.side];
+      if (c.isEmpty(to)) {
+         addPawnMove(from, to);
          if (rank[c.side][from] == 1) pawnDoubleStep(from);
       }
-      if (file[from] > A) pawnCapture(from, left + pawnStep[c.side]);
-      if (file[from] < H) pawnCapture(from, right + pawnStep[c.side]);
+      if (file[from] > A) pawnCapture(from, leftCapture[c.side]);
+      if (file[from] < H) pawnCapture(from, rightCapture[c.side]);
    }
 
    private void pawnDoubleStep(int from) {
