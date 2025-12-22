@@ -2,8 +2,8 @@ package com.haymel.chess.perft;
 
 public final class Move {
 
-   public int start;
-   public int dest;
+   public int from;
+   public int to;
    public int promotion;
 
    public Move() {
@@ -15,16 +15,14 @@ public final class Move {
    }
 
    public Move(int start, int dest, int promotion) {
-      this.start = start;
-      this.dest = dest;
+      this.from = start;
+      this.to = dest;
       this.promotion = promotion;
    }
 
    public String uci() {
-      if (start == Field.invalid || dest == Field.invalid)
-         return "invalid";
-
-      return Notation.uci(start, dest, promotion);
+      if (from == Field.invalid || to == Field.invalid) return "invalid";
+      return Notation.uci(from, to, promotion);
    }
 
    @Override

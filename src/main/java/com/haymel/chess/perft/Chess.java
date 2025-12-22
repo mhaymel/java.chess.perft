@@ -70,15 +70,19 @@ public final class Chess {
 
    public boolean isOpponent(int field) { return color[field] == other(side); }
 
-   public int other(int side) { return side^1; }
+   public static int other(int side) { return side^1; }
+
+   public  int otherSide() { return other(side); }
 
    public boolean isEmpty(int field) { return board[field] == Piece.empty; }
 
    public boolean isEmptyOrOpponent(int field) { return isEmpty(field) || isOpponent(field); }
 
-   public boolean isWhitePawn(int field) { return color[field] == white && board[field] == pawn; }
+   public boolean isWhitePawn(int field) { return color[field] == white && isPawn(field); }
 
-   public boolean isBlackPawn(int field) { return color[field] == black && board[field] == pawn; }
+   public boolean isBlackPawn(int field) { return color[field] == black && isPawn(field); }
+
+   public boolean isPawn(int field) { return board[field] == pawn; }
 
    public boolean queenSideCastling(int color) { return gameList[hply].castle.queenside[color]; }
 

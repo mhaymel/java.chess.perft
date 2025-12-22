@@ -1,29 +1,35 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Chess.other;
+import static com.haymel.chess.perft.Color.black;
+import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Field.*;
-import static com.haymel.chess.perft.Piece.king;
-import static com.haymel.chess.perft.Piece.rook;
+import static com.haymel.chess.perft.Generator.down;
+import static com.haymel.chess.perft.Generator.up;
+import static com.haymel.chess.perft.Piece.*;
 import static java.lang.Math.abs;
 
 public final class Update {
 
-   private static final int[] ReverseSquare = {-8, 8};
+   private static final int[] reverseSquare = {down, up};
 
    private final Chess c;
    private final Attack a;
 
-   public Update(Chess c) {
-      this(c, new Attack(c));
-   }
+   public Update(Chess c) { this(c, new Attack(c)); }
 
    public Update(Chess c, Attack attack) {
       this.c = c;
       this.a = attack;
    }
 
-   public void AddPiece(int s, int p, int sq) {
-      c.board[sq] = p;
-      c.color[sq] = s;
+   private static boolean isPawnCapture(int from, int to) {
+      return abs(from - to) != 8;
+   }
+
+   public void AddPiece(int side, int piece, int field) {
+      c.board[field] = piece;
+      c.color[field] = side;
    }
 
    private boolean isCastleMove(int from, int to) {
@@ -31,10 +37,12 @@ public final class Update {
    }
 
    private boolean isAttacked(int field) {
-      return a.attack(c.other(c.side), field);
+      return a.attack(other(c.side), field);
    }
 
-   public boolean MakeMove(int from, int to) {
+   public boolean MakeMove(Move move) {
+      final int from = move.from;
+      final int to = move.to;
       if (isCastleMove(from, to)) {
          if (isAttacked(from)) return false;
          if (to == g1) {
@@ -45,10 +53,10 @@ public final class Update {
             UpdatePiece(c.side, rook, a1, d1);
          } else if (to == g8) {
             if (isAttacked(f8)) return false;
-            UpdatePiece(c.side,rook, h8, f8);
+            UpdatePiece(c.side, rook, h8, f8);
          } else if (to == c8) {
             if (isAttacked(d8)) return false;
-            UpdatePiece(c.side, rook, a8,d8);
+            UpdatePiece(c.side, rook, a8, d8);
          }
       }
 
@@ -59,46 +67,24 @@ public final class Update {
 
       c.ply++;
       c.hply++;
-//
-//      g = game_list[hply];
-//      g.castle_q[0] = game_list[hply - 1].castle_q[0];
-//      g.castle_q[1] = game_list[hply - 1].castle_q[1];
-//      g.castle_k[0] = game_list[hply - 1].castle_k[0];
-//      g.castle_k[1] = game_list[hply - 1].castle_k[1];
-//
-//      fifty++;
-//
-//      if (board[from] == P) {
-//         fifty = 0;
-//         if (board[to] == EMPTY && col[from] != col[to]) {
-//            RemovePiece(xside, P, to + ReverseSquare[side]);
-//         }
-//      }
-//
-//      if (board[to] < 6) {
-//         fifty = 0;
-//         RemovePiece(xside, board[to], to);
-//      }
-//
-//      if (board[from] == P && (row[to] == 0 || row[to] == 7))//promotion
-//      {
-//         RemovePiece(side, P, from);
-//         AddPiece(side, Q, to);
-//         g.promote = Q;
-//      } else {
-//         g.promote = 0;
-//         UpdatePiece(side, board[from], from, to);
-//      }
-//
-//      if (to == A1 || from == A1)
-//         g.castle_q[0] = 0;
-//      else if (to == H1 || from == H1)
-//         g.castle_k[0] = 0;
-//      else if (from == E1) {
-//         g.castle_q[0] = 0;
-//         g.castle_k[0] = 0;
-//      }
-//
+
+      g.castle.assign(c.gameList[c.hply].castle);
+
+      if (isEnPassant(move)) RemovePiece(other(c.side), pawn, to + reverseSquare[c.side]);
+      if (isCapture(to)) RemovePiece(c.otherSide(), c.board[to], to);
+
+      if (isPromotion(move)) {
+         RemovePiece(c.side, pawn, from);
+         AddPiece(c.side, move.promotion, to);
+         g.promote = move.promotion;
+      } else {
+         g.promote = empty;
+         UpdatePiece(c.side, c.board[from], from, to);
+      }
+
+      whiteCastling(move, g.castle);
+      blackCastling(move, g.castle);
+
 //      if (to == A8 || from == A8)
 //         g.castle_q[1] = 0;
 //      else if (to == H8 || from == H8)
@@ -116,6 +102,32 @@ public final class Update {
 //      }
       return true;
    }
+
+   private static void blackCastling(Move move, Castling castling) {
+      if (move.to == a8 || move.from == a8)         castling.queenside[black] = false;
+      else if (move.to == h8 || move.from == h8)    castling.kingside[black] = false;
+      else if (move.from == e8) {
+         castling.queenside[black] = false;
+         castling.kingside[black] = false;
+      }
+   }
+
+   private static void whiteCastling(Move move, Castling castling) {
+      if (move.to == a1 || move.from == a1)         castling.queenside[white] = false;
+      else if (move.to == h1 || move.from == h1)    castling.kingside[white] = false;
+      else if (move.from == e1) {
+         castling.queenside[white] = false;
+         castling.kingside[white] = false;
+      }
+   }
+
+   private boolean isEnPassant(Move move) {
+      return c.isPawn(move.from) && c.isEmpty(move.to) && isPawnCapture(move.from, move.to);
+   }
+
+   private boolean isPromotion(Move move) { return c.isPawn(move.from) && (move.to >= a8 || move.to <= h1); }
+
+   private boolean isCapture(int to) { return !c.isEmpty(to); }
 
    public void RemovePiece(int s, int p, int sq) {
       c.board[sq] = Piece.empty;

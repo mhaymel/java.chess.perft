@@ -12,8 +12,8 @@ import static com.haymel.chess.perft.Piece.*;
 
 public final class Generator {
 
-   private static final int up = 8;
-   private static final int down = -up;
+   public static final int up = 8;
+   public static final int down = -up;
    private static final int right = 1;
    public static final int rightDown = right + down;
    private static final int left = -right;
@@ -133,14 +133,14 @@ public final class Generator {
    }
 
    private void addMove(int from, int to) {
-      c.moveList[c.mc].start = from;
-      c.moveList[c.mc].dest = to;
+      c.moveList[c.mc].from = from;
+      c.moveList[c.mc].to = to;
       c.moveList[c.mc].promotion = empty;
       c.mc++;
    }
 
    private void addPawnMove(int from, int to) {
-      if (isPromotion(to)) {
+      if (isFirstOrLastRow(to)) {
          addPromotion(from, to, queen);
          addPromotion(from, to, rook);
          addPromotion(from, to, bishop);
@@ -150,12 +150,12 @@ public final class Generator {
    }
 
    private void addPromotion(int from, int to, int piece) {
-      c.moveList[c.mc].start = from;
-      c.moveList[c.mc].dest = to;
+      c.moveList[c.mc].from = from;
+      c.moveList[c.mc].to = to;
       c.moveList[c.mc].promotion = piece;
       c.mc++;
    }
 
-   private boolean isPromotion(int to) { return to >= a8 || to <= h1; }
+   public static boolean isFirstOrLastRow(int to) { return to >= a8 || to <= h1; }
 
 }

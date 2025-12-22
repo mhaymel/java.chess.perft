@@ -15,4 +15,11 @@ public final class Castling {
       queenside[black] = false;
    }
 
+   public void assign(Castling castle) {
+      kingside[white] = castle.kingside[white];
+      queenside[white] = castle.queenside[white];
+      kingside[black] = castle.kingside[black];
+      queenside[black] = castle.queenside[black];
+   }
+
 }
