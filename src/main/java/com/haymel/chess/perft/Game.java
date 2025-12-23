@@ -7,5 +7,6 @@ public final class Game {
     public int promote;
     public int capturePiece;
     public final Castling castle = new Castling();
+    public int enPassantField;
 
 }

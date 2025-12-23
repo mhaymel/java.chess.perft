@@ -22,7 +22,8 @@ public final class Generator {
    public static final int rightUp = right + up;
 
    private static final int[] pawnStep = {up, down};
-   private static final int[] pawnDoubleStep = {2 * up, 2 * down};
+   public static final int doubleStep = 2*up;
+   private static final int[] pawnDoubleStep = {doubleStep, -doubleStep};
 
    private final Chess c;
 
@@ -47,9 +48,9 @@ public final class Generator {
       switch (c.board[from]) {
          case pawn:     genPawn(from);                          break;
          case knight:   gen(knightMoves, from);                 break;
-         case bishop:   genSliding(bishopMoves, from,4); break;
-         case rook:     genSliding(rookMoves, from,4);   break;
-         case queen:    genSliding(queenMoves, from,8);  break;
+         case bishop:   genSliding(bishopMoves, from,4);  break;
+         case rook:     genSliding(rookMoves, from,4);    break;
+         case queen:    genSliding(queenMoves, from,8);   break;
          case king:     gen(kingMoves, from);                   break;
          default:                                               break;
       }
