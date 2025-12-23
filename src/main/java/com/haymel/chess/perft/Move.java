@@ -6,17 +6,18 @@ public final class Move {
    public int to;
    public int promotion;
 
+   public static Move NewMove(int from, int to) { return new Move(from, to); }
    public Move() {
       this(Field.invalid, Field.invalid, Piece.empty);
    }
 
-   public Move(int start, int dest) {
-      this(start, dest, Piece.empty);
+   public Move(int from, int to) {
+      this(from, to, Piece.empty);
    }
 
-   public Move(int start, int dest, int promotion) {
-      this.from = start;
-      this.to = dest;
+   public Move(int from, int to, int promotion) {
+      this.from = from;
+      this.to = to;
       this.promotion = promotion;
    }
 

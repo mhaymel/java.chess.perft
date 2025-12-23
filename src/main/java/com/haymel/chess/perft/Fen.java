@@ -25,11 +25,11 @@ public final class Fen {
       https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
       rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     */
-   public static void load(String fen, Chess chess, HalfFullMove enpHalfFullMove) {
-      load(fen.toCharArray(), chess, enpHalfFullMove);
+   public static void load(String fen, Chess chess) {
+      load(fen.toCharArray(), chess);
    }
 
-   private static void load(char[] fen, Chess chess, HalfFullMove enpHalfFullMove) {
+   private static void load(char[] fen, Chess chess) {
       chess.ply = 0;
       chess.hply = 0;
       chess.side = -1;
@@ -38,8 +38,8 @@ public final class Fen {
          chess.board[x] = empty;
          chess.color[x] = empty;
       }
-      enpHalfFullMove.fullMoveNumber = 0;
-      enpHalfFullMove.halfMoveClock = 0;
+      chess.halfFullMove.fullMoveNumber = 0;
+      chess.halfFullMove.halfMoveClock = 0;
 
       int c = 0;
       int i = 0;
@@ -149,7 +149,7 @@ public final class Fen {
          count = count * 10 + fen[c] - '0';
          c++;
       }
-      enpHalfFullMove.halfMoveClock = count;
+      chess.halfFullMove.halfMoveClock = count;
 
       while (isWhitespace(fen[c]))
          c++;
@@ -159,7 +159,7 @@ public final class Fen {
          count = count * 10 + fen[c] - '0';
          c++;
       }
-      enpHalfFullMove.fullMoveNumber = count;
+      chess.halfFullMove.fullMoveNumber = count;
    }
 
    private static boolean isDigit(char c) {
@@ -169,4 +169,103 @@ public final class Fen {
    private static int color(char piece) {
       return isUpperCase(piece) ? white : black;
    }
+
+   public static String toFen(Chess chess) {
+      StringBuilder fen = new StringBuilder();
+
+      // 1. Piece placement (rank 8 to rank 1)
+      for (int rank = 7; rank >= 0; rank--) {
+         int emptyCount = 0;
+
+         for (int file = 0; file < 8; file++) {
+            int sq = rank * 8 + file;
+            int piece = chess.board[sq];
+
+            if (piece == empty) {
+               emptyCount++;
+            } else {
+               if (emptyCount > 0) {
+                  fen.append(emptyCount);
+                  emptyCount = 0;
+               }
+               fen.append(pieceToChar(piece, chess.color[sq]));
+            }
+         }
+
+         if (emptyCount > 0) {
+            fen.append(emptyCount);
+         }
+
+         if (rank > 0) {
+            fen.append('/');
+         }
+      }
+
+      // 2. Side to move
+      fen.append(' ');
+      fen.append(chess.side == white ? 'w' : 'b');
+
+      // 3. Castling rights
+      fen.append(' ');
+      Castling castle = chess.gameList[chess.hply].castle;
+      boolean anyCastle = false;
+
+      if (castle.kingside[white]) {
+         fen.append('K');
+         anyCastle = true;
+      }
+      if (castle.queenside[white]) {
+         fen.append('Q');
+         anyCastle = true;
+      }
+      if (castle.kingside[black]) {
+         fen.append('k');
+         anyCastle = true;
+      }
+      if (castle.queenside[black]) {
+         fen.append('q');
+         anyCastle = true;
+      }
+
+      if (!anyCastle) {
+         fen.append('-');
+      }
+
+      // 4. En passant
+      fen.append(' ');
+      if (chess.enPassantField == invalid) {
+         fen.append('-');
+      } else {
+         int file = chess.enPassantField % 8;
+         int rank = chess.enPassantField / 8;
+         fen.append((char) ('a' + file));
+         fen.append((char) ('1' + rank));
+      }
+
+      // 5. Halfmove clock
+      fen.append(' ');
+      fen.append(chess.halfFullMove.halfMoveClock);
+
+      // 6. Fullmove number
+      fen.append(' ');
+      fen.append(chess.halfFullMove.fullMoveNumber);
+
+      return fen.toString();
+   }
+
+   private static char pieceToChar(int piece, int color) {
+      char c;
+      switch (piece) {
+         case king:   c = 'k'; break;
+         case queen:  c = 'q'; break;
+         case rook:   c = 'r'; break;
+         case bishop: c = 'b'; break;
+         case knight: c = 'n'; break;
+         case pawn:   c = 'p'; break;
+         default:
+            throw new IllegalArgumentException("Unknown piece: " + piece);
+      }
+      return color == white ? Character.toUpperCase(c) : c;
+   }
+
 }

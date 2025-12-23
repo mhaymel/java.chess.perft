@@ -1,5 +1,7 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Move.NewMove;
+
 public final class Game {
 
     public int from;
@@ -9,4 +11,13 @@ public final class Game {
     public final Castling castle = new Castling();
     public int enPassantField;
 
+   @Override
+   public String toString() {
+      return "Game{ move =" + NewMove(from, to) +
+         ", promote=" + promote +
+         ", capturePiece=" + capturePiece +
+         ", castle=" + castle +
+         ", enPassantField=" + enPassantField +
+         '}';
+   }
 }

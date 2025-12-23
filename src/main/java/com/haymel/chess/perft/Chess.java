@@ -3,6 +3,7 @@ package com.haymel.chess.perft;
 import static com.haymel.chess.perft.Color.*;
 import static com.haymel.chess.perft.Field.e1;
 import static com.haymel.chess.perft.Field.e8;
+import static com.haymel.chess.perft.Piece.king;
 import static com.haymel.chess.perft.Piece.pawn;
 
 public final class Chess {
@@ -23,6 +24,7 @@ public final class Chess {
    public final int[] board = new int[64];
    public final int[] color = new int[64];
    public final int[] kingloc = new int[2];
+   public final HalfFullMove halfFullMove = new HalfFullMove();
 
    public void emptyBoard() {
       for (int x = 0; x < 64; ++x) {
@@ -43,6 +45,9 @@ public final class Chess {
       gameList[hply].castle.queenside[white] = false;
       gameList[hply].castle.kingside[black] = false;
       gameList[hply].castle.queenside[black] = false;
+
+      halfFullMove.halfMoveClock = 0;
+      halfFullMove.fullMoveNumber = 0;
    }
 
    public void initBoard() {
@@ -64,6 +69,9 @@ public final class Chess {
       gameList[hply].castle.queenside[white] = true;
       gameList[hply].castle.kingside[black] = true;
       gameList[hply].castle.queenside[black] = true;
+
+      halfFullMove.halfMoveClock = 0;
+      halfFullMove.fullMoveNumber = 0;
    }
 
    public boolean itsWhitesTurn() { return side == white; }
@@ -101,5 +109,7 @@ public final class Chess {
          game[i] = new Game();
       return game;
    }
+
+   public boolean isKing(int from) { return board[from] == king; }
 
 }

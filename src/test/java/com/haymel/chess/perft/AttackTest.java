@@ -294,7 +294,7 @@ final class AttackTest {
    void test(String fen, ColorEnum side, FieldEnum field, boolean expected) {
       //given
       Chess chess = new Chess();
-      Fen.load(fen, chess, NewHalfFullMove());
+      Fen.load(fen, chess);
       Attack attack = Attack.NewAttack(chess);
 
       //when

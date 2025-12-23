@@ -65,10 +65,11 @@ public final class Update {
    }
 
    public boolean MakeMove(Move move) {
-      if (!makeRookMoveForCastling(move)) return false;
-
       final int from = move.from;
       final int to = move.to;
+
+      if (c.isKing(from)) c.kingloc[c.side] = to;
+      if (!makeRookMoveForCastling(move)) return false;
 
       Game g = c.gameList[c.hply];
       g.from = from;
@@ -79,7 +80,7 @@ public final class Update {
       c.ply++;
       c.hply++;
 
-      g.castle.assign(c.gameList[c.hply].castle);
+      g.castle.assign(c.gameList[c.hply - 1].castle);
 
       if (isEnPassant(move)) removePiece(to + reverseSquare[c.side]);
       if (isCapture(to)) removePiece(to);
@@ -90,7 +91,7 @@ public final class Update {
          g.promote = move.promotion;
       } else {
          g.promote = empty;
-         updatePiece(c.board[from], move);
+         update(c.board[from], from, to);
       }
 
       whiteCastling(move, g.castle);
@@ -100,32 +101,30 @@ public final class Update {
       if (!a.attack(c.side, c.kingloc[c.otherSide()])) return true;
 
       unMakeMove();
+
       return false;
    }
 
-   private boolean isPawnDoubleStep(Move move) {
-      return c.isPawn(move.from) && (abs(move.from - move.to) == doubleStep);
-   }
+   public void unMakeMove() {
+      c.side ^= 1;
+      c.ply--;
+      c.hply--;
 
-   private void unMakeMove() {
-//      c.side ^= 1;
-//      c.ply--;
-//      c.hply--;
-//
-//      Game m = c.gameList[c.hply];
-//
-//      int from = m.from;
-//      int to = m.to;
-//
-//      if (c.isPawn(to) && m.capture == EMPTY && col[from] != col[to]) {
-//         addPiece(c.otherSide(), P, to + ReverseSquare[side]);
-//      }
-//      if (game_list[hply + 1].promote == Q) {
-//         AddPiece(side, P, from);
-//         RemovePiece(side, board[to], to);
-//      } else {
-//         UpdatePiece(side, board[to], to, from);
-//      }
+      Game g = c.gameList[c.hply];
+
+      final int from = g.from;
+      final int to = g.to;
+
+      if (c.isKing(to)) c.kingloc[c.side] = from;
+      if (isEnPassant(g)) addPiece(c.otherSide(), pawn, to + reverseSquare[c.side]);
+      if (isPromotion(g)) {
+         addPiece(c.side, pawn, from);
+         removePiece(c.side);
+      } else {
+         update(c.board[to], to, from);
+      }
+
+
 //      if (m.capture != EMPTY) {
 //         AddPiece(xside, m.capture, to);
 //      }
@@ -139,6 +138,10 @@ public final class Update {
 //         else if (to == C8)
 //            UpdatePiece(side, R, D8, A8);
 //      }
+   }
+
+   private boolean isPawnDoubleStep(Move move) {
+      return c.isPawn(move.from) && (abs(move.from - move.to) == doubleStep);
    }
 
    private static void blackCastling(Move move, Castling castling) {
@@ -163,19 +166,21 @@ public final class Update {
       return c.isPawn(move.from) && c.isEmpty(move.to) && isPawnCapture(move.from, move.to);
    }
 
+   private boolean isEnPassant(Game g) {
+      return c.isPawn(g.to) && g.capturePiece == empty && isPawnCapture(g.from, g.to);
+   }
+
    private boolean isPromotion(Move move) { return c.isPawn(move.from) && (move.to >= a8 || move.to <= h1); }
+
+   private boolean isPromotion(Game g) {
+      return g.promote != empty;
+   }
 
    private boolean isCapture(int to) { return !c.isEmpty(to); }
 
    public void removePiece(int field) {
       c.board[field] = Piece.empty;
       c.color[field] = Color.empty;
-   }
-
-   private void updatePiece(int piece, Move move) {
-      update(piece, move.from, move.to);
-      if (piece == king)
-         c.kingloc[c.side] = move.to;
    }
 
    private void updateRookCastling(int from, int to) {

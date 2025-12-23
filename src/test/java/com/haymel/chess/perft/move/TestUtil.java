@@ -36,7 +36,7 @@ public final class TestUtil {
    public static void test(String fen, Set<String> expectedMoves) {
       //given
       Chess chess = new Chess();
-      Fen.load(fen, chess, NewHalfFullMove());
+      Fen.load(fen, chess);
 
       //when
       NewGenerator(chess).execute();
