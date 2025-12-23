@@ -105,12 +105,11 @@ public final class Fen {
       while (isWhitespace(fen[c]))
          c++;
 
-
+      Castling castle = chess.gameList[chess.hply].castle;
+      castle.reset();
       if (fen[c] == '-') {
          c++;
       } else {
-         Castling castle = chess.gameList[chess.hply].castle;
-         castle.reset();
          while (!isWhitespace(fen[c])) {
 
             switch (fen[c]) {

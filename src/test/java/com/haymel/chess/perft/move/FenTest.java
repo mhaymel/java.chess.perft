@@ -1,14 +1,13 @@
 package com.haymel.chess.perft.move;
 
-import com.haymel.chess.perft.Castling;
-import com.haymel.chess.perft.Chess;
-import com.haymel.chess.perft.Fen;
-import com.haymel.chess.perft.HalfFullMove;
+import com.haymel.chess.perft.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Color.*;
@@ -24,7 +23,6 @@ final class FenTest {
       //given
       String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
       Chess chess = new Chess();
-      HalfFullMove halfFullMove = new HalfFullMove();
 
       //when
       Fen.load(fen, chess);
@@ -359,6 +357,104 @@ final class FenTest {
       test(fen);
    }
 
+   private static List<String> fenProvider() {
+      List<String> list = new ArrayList<>();
+      String[] boards = {
+         "8/8/8/8/8/8/8/8",
+         "8/8/8/8/8/8/8/R7",
+         "8/8/8/8/8/8/8/K6k",
+         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
+         "r3k2r/8/8/8/8/8/8/R3K2R",
+         "8/8/8/3pP3/8/8/8/8",
+         "8/8/8/3Pp3/8/8/8/8",
+         "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R",
+         "r2q1rk1/pp1nbppp/2p1bn2/3p4/3P4/2NBPN2/PPQ2PPP/R1B2RK1"
+      };
+
+      String[] sides = { "w", "b" };
+
+      String[] castles = {
+         "-", "K", "Q", "k", "q",
+         "KQ", "kq", "Kk", "Qq",
+         "KQkq"
+      };
+
+      String[] enPassant = {
+         "-", "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3",
+         "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6"
+      };
+
+      for (String board : boards) {
+         for (String side : sides) {
+            for (String castle : castles) {
+               for (String ep : enPassant) {
+                  for (int half = 0; half <= 10; half++) {
+                     for (int full = 1; full <= 5; full++) {
+
+                        // En-passant nur erlauben, wenn sinnvoll
+                        if (!ep.equals("-")) {
+                           if (side.equals("w") && ep.endsWith("3")) continue;
+                           if (side.equals("b") && ep.endsWith("6")) continue;
+                        }
+
+                        String fen = String.format(
+                           "%s %s %s %s %d %d",
+                           board,
+                           side,
+                           castle,
+                           ep,
+                           half,
+                           full
+                        );
+
+                        list.add(fen);
+                     }
+                  }
+               }
+            }
+         }
+      }
+      return list;
+   }
+
+   @Test
+   void testFenProvider() {
+      test(fenProvider());
+   }
+
+   @Test
+   void testWithFens() {
+      //https://github.com/zabuzara/Chess-Fen/blob/main/FENs.txt
+      test(Fens.read());
+   }
+
+   void test(List<String> fens) {
+      Chess chess = new Chess();
+      for (String fen : fens) {
+         Fen.load(fen, chess);
+         String convertedFen = Fen.toFen(chess);
+         assertThat(convertedFen).isEqualTo(fen);
+      }
+   }
+
+   @Test
+   void testFen1() {
+      //given
+      String fen = "8/8/8/8/8/8/8/8 b - - 0 1";
+      Chess chess = new Chess();
+      Fen.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", chess);
+
+      //when
+      Fen.load(fen, chess);
+
+      //then
+      Castling castle = chess.gameList[chess.hply].castle;
+      assertThat(castle.queenside[white]).isFalse();
+      assertThat(castle.queenside[black]).isFalse();
+      assertThat(castle.kingside[white]).isFalse();
+      assertThat(castle.kingside[black]).isFalse();
+   }
+
    void test(String fen) {
       //given
       Chess chess = new Chess();
@@ -369,79 +465,6 @@ final class FenTest {
 
       //then
       assertThat(convertedFen).isEqualTo(fen);
-   }
-
-   private static Stream<Arguments> fenProvider() {
-      return Stream.of(Arguments.of("8/8/8/8/8/8/8/R7 b - - 0 1"));
-//      List<Arguments> list = new ArrayList<>();
-//      String[] boards = {
-//         "8/8/8/8/8/8/8/8",
-//         "8/8/8/8/8/8/8/R7",
-//         "8/8/8/8/8/8/8/K6k",
-//         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
-//         "r3k2r/8/8/8/8/8/8/R3K2R",
-//         "8/8/8/3pP3/8/8/8/8",
-//         "8/8/8/3Pp3/8/8/8/8",
-//         "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R",
-//         "r2q1rk1/pp1nbppp/2p1bn2/3p4/3P4/2NBPN2/PPQ2PPP/R1B2RK1"
-//      };
-//
-//      String[] sides = { "w", "b" };
-//
-//      String[] castles = {
-//         "-", "K", "Q", "k", "q",
-//         "KQ", "kq", "Kk", "Qq",
-//         "KQkq"
-//      };
-//
-//      String[] enPassant = {
-//         "-", "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3",
-//         "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6"
-//      };
-//
-//      for (String board : boards) {
-//         for (String side : sides) {
-//            for (String castle : castles) {
-//               for (String ep : enPassant) {
-//                  for (int half = 0; half <= 10; half++) {
-//                     for (int full = 1; full <= 5; full++) {
-//
-//                        // En-passant nur erlauben, wenn sinnvoll
-//                        if (!ep.equals("-")) {
-//                           if (side.equals("w") && ep.endsWith("3")) continue;
-//                           if (side.equals("b") && ep.endsWith("6")) continue;
-//                        }
-//
-//                        String fen = String.format(
-//                           "%s %s %s %s %d %d",
-//                           board,
-//                           side,
-//                           castle,
-//                           ep,
-//                           half,
-//                           full
-//                        );
-//
-//                        list.add(Arguments.of(fen));
-//                     }
-//                  }
-//               }
-//            }
-//         }
-//      }
-//
-//      // Sicherheit: garantiert >1000
-//      if (list.size() < 1000) {
-//         throw new IllegalStateException("Zu wenige FENs: " + list.size());
-//      }
-//
-//      return list.stream();
-   }
-
-   @ParameterizedTest
-   @MethodSource("fenProvider")
-   void testFenProvider(String fen) {
-      test(fen);
    }
 
 }
