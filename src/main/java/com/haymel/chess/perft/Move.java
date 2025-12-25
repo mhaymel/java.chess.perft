@@ -6,6 +6,7 @@ public final class Move {
    public int to;
    public int promotion;
 
+   public static Move NewMove(int from, int to, int promotion) { return new Move(from, to, promotion); }
    public static Move NewMove(int from, int to) { return new Move(from, to); }
    public Move() {
       this(Field.invalid, Field.invalid, Piece.empty);

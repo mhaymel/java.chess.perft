@@ -3,17 +3,13 @@ package com.haymel.chess.perft.move;
 import com.google.common.collect.Sets;
 import com.haymel.chess.perft.Chess;
 import com.haymel.chess.perft.Fen;
-import com.haymel.chess.perft.Notation;
 import com.haymel.chess.perft.util.FieldEnum;
 
 import java.util.Set;
 
-import static com.haymel.chess.perft.Color.black;
-import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Generator.NewGenerator;
-import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
 import static com.haymel.chess.perft.Notation.uci;
-import static com.haymel.chess.perft.move.MoveList.NewMoveList;
+import static com.haymel.chess.util.MoveList.NewMoveList;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 

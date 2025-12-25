@@ -107,7 +107,8 @@ public final class Generator {
 
    private void pawnCapture(int from, int step) {
       int to = from + step;
-      if (c.isOpponent(to)) addPawnMove(from, to);
+      if (c.isOpponent(to))
+         addPawnMove(from, to);
    }
 
    private void genSliding(int[][] moves, int from, int count) {

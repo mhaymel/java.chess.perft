@@ -16,7 +16,7 @@ import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Piece.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-final class FenTest {
+public final class FenTest {
 
    @Test
    void test1() {
@@ -356,9 +356,9 @@ final class FenTest {
    void testFens(String fen) {
       test(fen);
    }
-
-   private static List<String> fenProvider() {
+   public static List<String> fenProvider() {
       List<String> list = new ArrayList<>();
+
       String[] boards = {
          "8/8/8/8/8/8/8/8",
          "8/8/8/8/8/8/8/R7",
@@ -391,11 +391,8 @@ final class FenTest {
                   for (int half = 0; half <= 10; half++) {
                      for (int full = 1; full <= 5; full++) {
 
-                        // En-passant nur erlauben, wenn sinnvoll
-                        if (!ep.equals("-")) {
-                           if (side.equals("w") && ep.endsWith("3")) continue;
-                           if (side.equals("b") && ep.endsWith("6")) continue;
-                        }
+                        // EP nur erlauben, wenn es auf dem Brett möglich ist
+                        if (!isValidEnPassant(board, side, ep)) continue;
 
                         String fen = String.format(
                            "%s %s %s %s %d %d",
@@ -415,6 +412,40 @@ final class FenTest {
          }
       }
       return list;
+   }
+
+   private static boolean isValidEnPassant(String board, String side, String ep) {
+      if (ep.equals("-")) return true;
+
+      int file = ep.charAt(0) - 'a';
+      int rank = ep.charAt(1) - '1';
+
+      // Seite am Zug muss EP schlagen können
+      if (side.equals("w") && rank != 5) return false; // w schlägt auf Rank 6 → EP square rank=5
+      if (side.equals("b") && rank != 2) return false; // b schlägt auf Rank 3 → EP square rank=2
+
+      // Rank hinter dem EP square
+      int behindRank = (rank == 2) ? 3 : (rank == 5 ? 4 : -1);
+      if (behindRank == -1) return false;
+
+      // Brett in Ranks splitten
+      String[] ranks = board.split("/");
+      String row = ranks[7 - behindRank];
+
+      int col = 0;
+      for (char c : row.toCharArray()) {
+         if (Character.isDigit(c)) {
+            col += c - '0';
+         } else {
+            if (col == file) {
+               if (rank == 2 && c == 'P') return true; // Weißer Bauer auf Rank 4
+               if (rank == 5 && c == 'p') return true; // Schwarzer Bauer auf Rank 5
+               return false;
+            }
+            col++;
+         }
+      }
+      return false;
    }
 
    @Test

@@ -76,7 +76,9 @@ public final class Chess {
 
    public boolean itsWhitesTurn() { return side == white; }
 
-   public boolean isOpponent(int field) { return color[field] == other(side); }
+   public boolean isOpponent(int field) {
+      return color[field] == other(side);
+   }
 
    public static int other(int side) { return side^1; }
 

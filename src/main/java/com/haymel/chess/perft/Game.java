@@ -13,8 +13,7 @@ public final class Game {
 
    @Override
    public String toString() {
-      return "Game{ move =" + NewMove(from, to) +
-         ", promote=" + promote +
+      return "Game{ move =" + NewMove(from, to, promote) +
          ", capturePiece=" + capturePiece +
          ", castle=" + castle +
          ", enPassantField=" + enPassantField +
