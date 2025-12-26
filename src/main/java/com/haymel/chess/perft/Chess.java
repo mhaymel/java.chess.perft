@@ -32,7 +32,7 @@ public final class Chess {
          board[x] = empty;
       }
 
-      side = white;
+      side = -1;
       ply = 0;
       hply = 0;
       firstMove[0] = 0;

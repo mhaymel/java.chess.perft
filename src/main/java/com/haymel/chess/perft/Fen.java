@@ -29,7 +29,14 @@ public final class Fen {
       load(fen.toCharArray(), chess);
    }
 
+   public static Chess load(String fen) {
+      Chess chess = new Chess();
+      load(fen.toCharArray(), chess);
+      return chess;
+   }
+
    private static void load(char[] fen, Chess chess) {
+      chess.emptyBoard();
       chess.ply = 0;
       chess.hply = 0;
       chess.side = -1;

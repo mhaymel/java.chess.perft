@@ -3,6 +3,7 @@ package com.haymel.chess.util;
 import com.haymel.chess.perft.Chess;
 import com.haymel.chess.perft.Fen;
 import com.haymel.chess.perft.Fens;
+import com.haymel.chess.perft.move.FenProvider;
 import com.haymel.chess.perft.move.FenTest;
 import org.junit.jupiter.api.Test;
 
@@ -32,9 +33,10 @@ final class ValidMovesTest {
 
    @Test
    void testFenProvider() {
-      List<String> fens = FenTest.fenProvider();
+      List<String> fens = FenProvider.fens();
       Chess chess = new Chess();
       for (String fen : fens) {
+         System.out.println(fen);
          Fen.load(fen, chess);
          new ValidMoves(chess).value();
          assertThat(Fen.toFen(chess)).isEqualTo(fen);
