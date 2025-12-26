@@ -17,10 +17,27 @@ public final class Perft {
    }
 
    public long execute(int depth) {
-      if (depth == 0) return 0;
+      if (depth == 0) return 1;
 
+      long count = 0;
       generator.execute();
-      return 0;
+      int from = chess.firstMove[chess.ply];
+      int to = chess.firstMove[chess.ply + 1];
+      String fen = Fen.toFen(chess);
+      for (int i = from; i < to; i++) {
+         Move move = chess.moveList[i];
+         if (update.MakeMove(move)) {
+            count += execute(depth - 1);
+            update.unMakeMove();
+         }
+         String fen2 = Fen.toFen(chess);
+         if (!fen2.equals(fen)) {
+            System.out.println("fen:   " + fen);
+            System.out.println("fen2:  " + fen2);
+            System.exit(0);
+         }
+      }
+     return count;
 
    }
 }

@@ -4,7 +4,6 @@ import com.haymel.chess.perft.Chess;
 import com.haymel.chess.perft.Fen;
 import com.haymel.chess.perft.Fens;
 import com.haymel.chess.perft.move.FenProvider;
-import com.haymel.chess.perft.move.FenTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
