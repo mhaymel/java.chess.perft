@@ -10,6 +10,8 @@ public final class Game {
     public int capturePiece;
     public final Castling castle = new Castling();
     public int enPassantField;
+    public int halfMoveClock;
+    public int fullMoveNumber;
 
    @Override
    public String toString() {

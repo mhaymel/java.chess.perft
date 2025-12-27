@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -182,7 +181,6 @@ public final class FenTest {
       String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
       Chess chess = new Chess();
       Castling castling = new Castling();
-      HalfFullMove halfFullMove = new HalfFullMove();
 
       //when
       Fen.load(fen, chess);
@@ -216,9 +214,9 @@ public final class FenTest {
       assertThat(chess.board[d6]).isEqualTo(king);
       assertThat(chess.color[d6]).isEqualTo(black);
 
-      assertThat(chess.enPassantField).isEqualTo(invalid);
-      assertThat(chess.halfFullMove.halfMoveClock).isEqualTo(0);
-      assertThat(chess.halfFullMove.fullMoveNumber).isEqualTo(1);
+      assertThat(chess.gameList[chess.hply].enPassantField).isEqualTo(invalid);
+      assertThat(chess.gameList[chess.hply].halfMoveClock).isEqualTo(0);
+      assertThat(chess.gameList[chess.hply].fullMoveNumber).isEqualTo(1);
    }
 
    @Test
@@ -247,9 +245,9 @@ public final class FenTest {
       assertThat(chess.board[e8]).isEqualTo(king);
       assertThat(chess.color[e8]).isEqualTo(black);
 
-      assertThat(chess.enPassantField).isEqualTo(c6);
-      assertThat(chess.halfFullMove.halfMoveClock).isEqualTo(0);
-      assertThat(chess.halfFullMove.fullMoveNumber).isEqualTo(1);
+      assertThat(chess.gameList[chess.hply].enPassantField).isEqualTo(c6);
+      assertThat(chess.gameList[chess.hply].halfMoveClock).isEqualTo(0);
+      assertThat(chess.gameList[chess.hply].fullMoveNumber).isEqualTo(1);
    }
 
    @Test

@@ -32,6 +32,7 @@ public final class Perft {
          }
          String fen2 = Fen.toFen(chess);
          if (!fen2.equals(fen)) {
+            System.out.println(move);
             System.out.println("fen:   " + fen);
             System.out.println("fen2:  " + fen2);
             System.exit(0);

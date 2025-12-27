@@ -35,7 +35,6 @@ final class ValidMovesTest {
       List<String> fens = FenProvider.fens();
       Chess chess = new Chess();
       for (String fen : fens) {
-         System.out.println(fen);
          Fen.load(fen, chess);
          new ValidMoves(chess).value();
          assertThat(Fen.toFen(chess)).isEqualTo(fen);

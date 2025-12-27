@@ -33,9 +33,12 @@ public final class Attack {
    }
 
    private boolean isPawnAttack(int side, int field) {
-      if (rank[side][field] == 0) return false;
-      if (file[field] > A && isAttackingPawn(side, field + left[side])) return true;
-      if (file[field] < H && isAttackingPawn(side, field + right[side])) return true;
+      if (rank[side][field] == 0)
+         return false;
+      if (file[field] > A && isAttackingPawn(side, field + left[side]))
+         return true;
+      if (file[field] < H && isAttackingPawn(side, field + right[side]))
+         return true;
       return false;
    }
 
@@ -75,8 +78,12 @@ public final class Attack {
       return false;
    }
 
-   private boolean isAttackingPawn(int side, int field) { return isAttackingPiece(side, field, pawn); }
+   private boolean isAttackingPawn(int side, int field) {
+      return isAttackingPiece(side, field, pawn);
+   }
 
-   private boolean isAttackingPiece(int side, int field, int piece) { return c.board[field] == piece && c.color[field] == side; }
+   private boolean isAttackingPiece(int side, int field, int piece) {
+      return c.board[field] == piece && c.color[field] == side;
+   }
 
 }

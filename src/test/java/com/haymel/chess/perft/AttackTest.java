@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.haymel.chess.perft.HalfFullMove.NewHalfFullMove;
 import static com.haymel.chess.perft.util.ColorEnum.black;
 import static com.haymel.chess.perft.util.ColorEnum.white;
 import static com.haymel.chess.perft.util.FieldEnum.*;
@@ -302,6 +301,11 @@ final class AttackTest {
 
       //then
       assertThat(attacked).isEqualTo(expected);
+   }
+
+   @Test
+   void blackPawnAttacksF1() {
+      test("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q2/PPPBBPpP/1R2K2R w Kkq - 0 2", black, f1, true);
    }
 
 }

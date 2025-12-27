@@ -45,18 +45,23 @@ public final class Update {
       final int to = move.to;
 
       if (isCastleMove(from, to)) {
-         if (isAttacked(from)) return false;
+         if (isAttacked(from))
+            return false;
          if (to == g1) {
-            if (isAttacked(from)) return false;
+            if (isAttacked(f1))
+               return false;
             updateRookCastling(h1, f1);
          } else if (to == c1) {
-            if (isAttacked(d1)) return false;
+            if (isAttacked(d1))
+               return false;
             updateRookCastling(a1, d1);
          } else if (to == g8) {
-            if (isAttacked(f8)) return false;
+            if (isAttacked(f8))
+               return false;
             updateRookCastling(h8, f8);
          } else if (to == c8) {
-            if (isAttacked(d8)) return false;
+            if (isAttacked(d8))
+               return false;
             updateRookCastling(a8, d8);
          }
       }
@@ -77,7 +82,6 @@ public final class Update {
       g.from = from;
       g.to = to;
       g.capturePiece = c.board[to];
-      g.enPassantField = invalid;
 
       c.ply++;
       c.hply++;
@@ -91,8 +95,9 @@ public final class Update {
       if (isCapture(to))
          removePiece(to);
 
+      c.gameList[c.hply].enPassantField = invalid;
       if (isPawnDoubleStep(move))
-         g.enPassantField = to + reverseSquare[c.side];
+         c.gameList[c.hply].enPassantField = to + reverseSquare[c.side];
 
       if (isPromotion(move)) {
          removePiece(from);
@@ -145,11 +150,16 @@ public final class Update {
    }
 
    private void unMakeRookMoveForCastling(int from, int to) {
-      if (!isCastleMove(from, to)) return;
-      if (to == g1)        updateRookCastling(f1, h1);
-      else if (to == c1)   updateRookCastling(d1, a1);
-      else if (to == g8)   updateRookCastling(f8, h8);
-      else if (to == c8)   updateRookCastling(d8, a8);
+      if (!isCastleMove(from, to))
+         return;
+      if (to == g1)
+         updateRookCastling(f1, h1);
+      else if (to == c1)
+         updateRookCastling(d1, a1);
+      else if (to == g8)
+         updateRookCastling(f8, h8);
+      else if (to == c8)
+         updateRookCastling(d8, a8);
    }
 
    private boolean isPawnDoubleStep(Move move) {
@@ -157,8 +167,10 @@ public final class Update {
    }
 
    private static void blackCastling(Move move, Castling castling) {
-      if (move.to == a8 || move.from == a8)         castling.queenside[black] = false;
-      else if (move.to == h8 || move.from == h8)    castling.kingside[black] = false;
+      if (move.to == a8 || move.from == a8)
+         castling.queenside[black] = false;
+      else if (move.to == h8 || move.from == h8)
+         castling.kingside[black] = false;
       else if (move.from == e8) {
          castling.queenside[black] = false;
          castling.kingside[black] = false;
@@ -166,8 +178,10 @@ public final class Update {
    }
 
    private static void whiteCastling(Move move, Castling castling) {
-      if (move.to == a1 || move.from == a1)         castling.queenside[white] = false;
-      else if (move.to == h1 || move.from == h1)    castling.kingside[white] = false;
+      if (move.to == a1 || move.from == a1)
+         castling.queenside[white] = false;
+      else if (move.to == h1 || move.from == h1)
+         castling.kingside[white] = false;
       else if (move.from == e1) {
          castling.queenside[white] = false;
          castling.kingside[white] = false;

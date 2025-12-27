@@ -11,7 +11,6 @@ public final class Chess {
    public int ply;
    public int hply;
    public int side = white;
-   public int enPassantField;
    public int mc;
 
    public static final int maxPly = 128;
@@ -24,7 +23,6 @@ public final class Chess {
    public final int[] board = new int[64];
    public final int[] color = new int[64];
    public final int[] kingloc = new int[2];
-   public final HalfFullMove halfFullMove = new HalfFullMove();
 
    public void emptyBoard() {
       for (int x = 0; x < 64; ++x) {
@@ -38,7 +36,7 @@ public final class Chess {
       firstMove[0] = 0;
       kingloc[white] = Field.invalid;
       kingloc[black] = Field.invalid;
-      enPassantField = Field.invalid;
+      gameList[hply].enPassantField = Field.invalid;
       mc = 0;
 
       gameList[hply].castle.kingside[white] = false;
@@ -46,8 +44,8 @@ public final class Chess {
       gameList[hply].castle.kingside[black] = false;
       gameList[hply].castle.queenside[black] = false;
 
-      halfFullMove.halfMoveClock = 0;
-      halfFullMove.fullMoveNumber = 0;
+      gameList[hply].halfMoveClock = 0;
+      gameList[hply].fullMoveNumber = 0;
    }
 
    public void initBoard() {
@@ -62,7 +60,6 @@ public final class Chess {
       firstMove[0] = 0;
       kingloc[white] = e1;
       kingloc[black] = e8;
-      enPassantField = Field.invalid;
       mc = 0;
 
       gameList[hply].castle.kingside[white] = true;
@@ -70,8 +67,8 @@ public final class Chess {
       gameList[hply].castle.kingside[black] = true;
       gameList[hply].castle.queenside[black] = true;
 
-      halfFullMove.halfMoveClock = 0;
-      halfFullMove.fullMoveNumber = 0;
+      gameList[hply].halfMoveClock = 0;
+      gameList[hply].fullMoveNumber = 0;
    }
 
    public boolean itsWhitesTurn() { return side == white; }
@@ -114,4 +111,8 @@ public final class Chess {
 
    public boolean isKing(int from) { return board[from] == king; }
 
+   @Override
+   public String toString() {
+      return "Chess{ " + Fen.toFen(this) + " }";
+   }
 }

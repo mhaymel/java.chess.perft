@@ -40,13 +40,12 @@ public final class Fen {
       chess.ply = 0;
       chess.hply = 0;
       chess.side = -1;
-      chess.enPassantField = invalid;
       for (int x = 0; x < 64; x++) {
          chess.board[x] = empty;
          chess.color[x] = empty;
       }
-      chess.halfFullMove.fullMoveNumber = 0;
-      chess.halfFullMove.halfMoveClock = 0;
+      chess.gameList[chess.hply].fullMoveNumber = 0;
+      chess.gameList[chess.hply].halfMoveClock = 0;
 
       int c = 0;
       int i = 0;
@@ -140,7 +139,7 @@ public final class Fen {
          c++;
 
       if (fen[c] >= 'a' && fen[c] <= 'h') {
-         chess.enPassantField = fen[c] - 'a' + (fen[c+1] - '1')*8;
+         chess.gameList[chess.hply].enPassantField = fen[c] - 'a' + (fen[c+1] - '1')*8;
          c = c + 2;
       }
 
@@ -155,7 +154,7 @@ public final class Fen {
          count = count * 10 + fen[c] - '0';
          c++;
       }
-      chess.halfFullMove.halfMoveClock = count;
+      chess.gameList[chess.hply].halfMoveClock = count;
 
       while (isWhitespace(fen[c]))
          c++;
@@ -165,7 +164,7 @@ public final class Fen {
          count = count * 10 + fen[c] - '0';
          c++;
       }
-      chess.halfFullMove.fullMoveNumber = count;
+      chess.gameList[chess.hply].fullMoveNumber = count;
    }
 
    private static boolean isDigit(char c) {
@@ -239,22 +238,22 @@ public final class Fen {
 
       // 4. En passant
       fen.append(' ');
-      if (chess.enPassantField == invalid) {
+      if (chess.gameList[chess.hply].enPassantField == invalid) {
          fen.append('-');
       } else {
-         int file = chess.enPassantField % 8;
-         int rank = chess.enPassantField / 8;
+         int file = chess.gameList[chess.hply].enPassantField % 8;
+         int rank = chess.gameList[chess.hply].enPassantField / 8;
          fen.append((char) ('a' + file));
          fen.append((char) ('1' + rank));
       }
 
       // 5. Halfmove clock
       fen.append(' ');
-      fen.append(chess.halfFullMove.halfMoveClock);
+      fen.append(chess.gameList[chess.hply].halfMoveClock);
 
       // 6. Fullmove number
       fen.append(' ');
-      fen.append(chess.halfFullMove.fullMoveNumber);
+      fen.append(chess.gameList[chess.hply].fullMoveNumber);
 
       return fen.toString();
    }

@@ -5,6 +5,8 @@ import com.haymel.chess.perft.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.haymel.chess.perft.Color.black;
+
 public final class ValidMoves {
 
    private final Chess chess;

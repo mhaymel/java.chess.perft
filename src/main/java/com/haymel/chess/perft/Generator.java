@@ -57,33 +57,41 @@ public final class Generator {
    }
 
    private void genEnPassant() {
-      if (isInvalid(c.enPassantField)) return;
+      if (isInvalid(enPassantField())) return;
       if (c.itsWhitesTurn()) {
-         if (c.enPassantField > a6) whiteEnPassant(leftDown);
-         if (c.enPassantField < h6) whiteEnPassant(rightDown);
+         if (enPassantField() > a6) whiteEnPassant(leftDown);
+         if (enPassantField() < h6) whiteEnPassant(rightDown);
       } else {
-         if (c.enPassantField > a3) blackEnPassant(leftUp);
-         if (c.enPassantField < h3) blackEnPassant(rightUp);
+         if (enPassantField() > a3) blackEnPassant(leftUp);
+         if (enPassantField() < h3) blackEnPassant(rightUp);
       }
    }
 
+   private int enPassantField() {
+      return c.gameList[c.hply].enPassantField;
+   }
+
    private void whiteEnPassant(int direction) {
-      int from = c.enPassantField + direction;
-      if (c.isWhitePawn(from)) addMove(from, c.enPassantField);
+      int from = enPassantField() + direction;
+      if (c.isWhitePawn(from)) addMove(from, enPassantField());
    }
 
    private void blackEnPassant(int direction) {
-      int from = c.enPassantField + direction;
-      if (c.isBlackPawn(from)) addMove(from, c.enPassantField);
+      int from = enPassantField() + direction;
+      if (c.isBlackPawn(from)) addMove(from, enPassantField());
    }
 
    private void genCastling() {
       if (c.itsWhitesTurn()) {
-         if (c.kingSideCastling(white) && c.isEmpty(f1) && c.isEmpty(g1)) addMove(e1, g1);
-         if (c.queenSideCastling(white) && c.isEmpty(d1) && c.isEmpty(c1) && c.isEmpty(b1)) addMove(e1, c1);
+         if (c.kingSideCastling(white) && c.isEmpty(f1) && c.isEmpty(g1))
+            addMove(e1, g1);
+         if (c.queenSideCastling(white) && c.isEmpty(d1) && c.isEmpty(c1) && c.isEmpty(b1))
+            addMove(e1, c1);
       } else {
-         if (c.kingSideCastling(black) && c.isEmpty(f8) && c.isEmpty(g8)) addMove(e8, g8);
-         if (c.queenSideCastling(black) && c.isEmpty(d8) && c.isEmpty(c8) && c.isEmpty(b8)) addMove(e8, c8);
+         if (c.kingSideCastling(black) && c.isEmpty(f8) && c.isEmpty(g8))
+            addMove(e8, g8);
+         if (c.queenSideCastling(black) && c.isEmpty(d8) && c.isEmpty(c8) && c.isEmpty(b8))
+            addMove(e8, c8);
       }
    }
 
@@ -119,9 +127,14 @@ public final class Generator {
    private void genDirection(int from, int direction, int[][] moves) {
       int to = moves[from][direction];
       while (isValid(to)) {
-         if (c.isEmpty(to))         addMove(from, to);
-         else if (c.isOpponent(to)) addMove(from, to);
-         else return;
+         if (c.isEmpty(to))
+            addMove(from, to);
+         else if (c.isOpponent(to)) {
+            addMove(from, to);
+            return;
+         }
+         else
+            return;
          to = moves[to][direction];
       }
    }
