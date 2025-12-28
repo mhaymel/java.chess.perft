@@ -284,7 +284,16 @@ final class PerftTest {
 
    void test(int depth, long expectedCount, String fen) {
       Perft perft = new Perft(fen);
+      long start = System.currentTimeMillis();
       long count = perft.execute(depth);
+      long stop = System.currentTimeMillis();
+      if (stop == start)
+         System.out.println("nps: na.");
+      else {
+         double delta = (stop - start) / 1000d;
+         double nps = count / delta / 1000;
+         System.out.println("knps: " + nps + "k");
+      }
       assertThat(count).isEqualTo(expectedCount);
    }
 
@@ -312,9 +321,9 @@ final class PerftTest {
          Arguments.of(2, 191, fen),
          Arguments.of(3, 2812, fen),
          Arguments.of(4, 43_238, fen),
-         Arguments.of(5, 674_624, fen)
-//         Arguments.of(6, 11_030_083, fen)
-//         Arguments.of(7, 178_633_661, fen),
+         Arguments.of(5, 674_624, fen),
+         Arguments.of(6, 11_030_083, fen),
+         Arguments.of(7, 178_633_661, fen)
 //         Arguments.of(8, 30_097_943_93L, fen)
       );
    }
