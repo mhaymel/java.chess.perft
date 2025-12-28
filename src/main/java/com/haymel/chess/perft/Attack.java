@@ -55,17 +55,22 @@ public final class Attack {
       return false;
    }
 
-   private boolean isRookAttack(int side, int field) { return qrbAttack(side, field, rookMoves, rook); }
+   private boolean isRookAttack(int side, int field) {
+      return qrbAttack(side, field, rookMoves, rook);
+   }
 
-   private boolean isBishopAttack(int side, int field) { return qrbAttack(side, field, bishopMoves, bishop); }
+   private boolean isBishopAttack(int side, int field) {
+      return qrbAttack(side, field, bishopMoves, bishop);
+   }
 
    private boolean isQueenAttack(int side, int field) {
-      return isRookAttack(side, field) || isBishopAttack(side, field);
+      return qrbAttack(side, field, rookMoves, queen) || qrbAttack(side, field, bishopMoves, queen);
    }
 
    private boolean qrbAttack(int side, int field, int[][] moves, int piece) {
       for (int i = 0; i < 4; i++)
-         if (qrbAttack(side, field, i, moves, piece)) return true;
+         if (qrbAttack(side, field, i, moves, piece))
+            return true;
       return false;
    }
 

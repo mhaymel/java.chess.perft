@@ -142,7 +142,8 @@ public final class Generator {
    private void gen(int[][] moves, int from) {
       int to = moves[from][0];
       for (int direction = 1; isValid(to); direction++) {
-         if (c.isEmptyOrOpponent(to)) addMove(from, to);
+         if (c.isEmptyOrOpponent(to))
+            addMove(from, to);
          to = moves[from][direction];
       }
    }

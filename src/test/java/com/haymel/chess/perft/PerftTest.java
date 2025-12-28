@@ -1,17 +1,41 @@
 package com.haymel.chess.perft;
 
-import com.haymel.chess.util.ValidMoves;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class PerftTest {
+
+   @Test
+   public void initialPosition() {
+      String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+      perft(fen, 0, 1);
+      perft(fen, 1, 20);
+      perft(fen, 2, 400);
+      perft(fen, 3, 8902);
+      perft(fen, 4, 197_281);
+      perft(fen, 5, 4_865_609);
+   }
+
+   @Test
+   public void kiwipete() {
+      String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+      perft(fen, 1, 48);
+      perft(fen, 2, 2039);
+      perft(fen, 3, 97862);
+      perft(fen, 4, 4_085_603);
+//		perft(fen, 5, 19_3690_690);
+//		perft(fen, 6, 8_031_647_685L);
+   }
+
+   private void perft(String fen, int depth, int count) {
+      test(depth, count, fen);
+   }
 
    @Test
    void test1() {
@@ -220,11 +244,8 @@ final class PerftTest {
 
    @Test
    void perftPositions2_1() {
-      String fen ="r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q2/PPPBBPpP/1R2K2R w Kkq - 0 2";
+      String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q2/PPPBBPpP/1R2K2R w Kkq - 0 2";
       Chess chess = Fen.load(fen);
-      Set<String> moves = new ValidMoves(chess).value();
-      System.out.println(moves.size() + ": " + moves);
-
       test(1, 44L, fen);
    }
 
@@ -233,10 +254,157 @@ final class PerftTest {
       test(1, 40L, "r3k2r/p1ppqpb1/1n2pnp1/3PN3/1p2P3/2N2Q1p/PPPBbPPP/1R2K2R w Kkq - 0 2");
    }
 
+   static Stream<Arguments> perftPositions3() {
+      return PerftFileLoader.positions("perft01.txt");
+   }
+
+   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+   @MethodSource("perftPositions3")
+   void perftPositions3(int depth, long expectedCount, String fen) {
+      Perft perft = new Perft(fen);
+      long count = perft.execute(depth);
+      if (count != expectedCount)
+         System.out.println("count: " + count + " expected: " + expectedCount + "   " + fen);
+      assertThat(count).isEqualTo(expectedCount);
+   }
+
+   static Stream<Arguments> perftPositions4() {
+      return PerftFileLoader.positions("perft02.txt");
+   }
+
+//   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+//   @MethodSource("perftPositions4")
+//   void perftPositions4(int depth, long expectedCount, String fen) {
+//      Perft perft = new Perft(fen);
+//      long count = perft.execute(depth);
+//      if (count != expectedCount)
+//         System.out.println("count: " + count + " expected: " + expectedCount + "   " + fen);
+//      assertThat(count).isEqualTo(expectedCount);
+//   }
 
    void test(int depth, long expectedCount, String fen) {
       Perft perft = new Perft(fen);
       long count = perft.execute(depth);
       assertThat(count).isEqualTo(expectedCount);
+   }
+
+   @Test
+   void test14() {
+      test(1, 6L, "rnbqkbnr/ppp1pppp/3p4/8/Q7/2P5/PP1PPPPP/RNB1KBNR b KQkq - 1 2");
+   }
+
+   @Test
+   void test15() {
+      String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/1R2K2R b Kkq - 1 1";
+      test(1, 43, fen);
+   }
+
+   @Test
+   void test16() {
+      String fen = "r3k1nr/p1ppqQb1/bnN1p1p1/3P4/1p2P3/2N4p/PPPBBPPP/R3K2R b KQkq - 0 2";
+      test(1, 2, fen);
+   }
+
+   static Stream<Arguments> perftPositions5() {
+      String fen = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1";
+      return Stream.of(
+         Arguments.of(1, 14, fen),
+         Arguments.of(2, 191, fen),
+         Arguments.of(3, 2812, fen),
+         Arguments.of(4, 43_238, fen),
+         Arguments.of(5, 674_624, fen)
+//         Arguments.of(6, 11_030_083, fen)
+//         Arguments.of(7, 178_633_661, fen),
+//         Arguments.of(8, 30_097_943_93L, fen)
+      );
+   }
+
+   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+   @MethodSource("perftPositions5")
+   void perftPositions5(int depth, long expectedCount, String fen) {
+      test(depth, expectedCount, fen);
+   }
+
+   static Stream<Arguments> perftPositions6() {
+      String fen = "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1";
+      return Stream.of(
+         Arguments.of(1, 6, fen),
+         Arguments.of(2, 264, fen),
+         Arguments.of(3, 9467, fen),
+         Arguments.of(4, 422_333, fen)
+//         Arguments.of(5, 15_833_292, fen)
+//         Arguments.of(6, 706_045_033L, fen)
+      );
+   }
+
+   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+   @MethodSource("perftPositions6")
+   void perftPositions6(int depth, long expectedCount, String fen) {
+      test(depth, expectedCount, fen);
+   }
+
+   static Stream<Arguments> perftPositionsMirrored6() {
+      String fen = "r2q1rk1/pP1p2pp/Q4n2/bbp1p3/Np6/1B3NBn/pPPP1PPP/R3K2R b KQ - 0 1";
+      return Stream.of(
+         Arguments.of(1, 6, fen),
+         Arguments.of(2, 264, fen),
+         Arguments.of(3, 9467, fen),
+         Arguments.of(4, 422_333, fen)
+//         Arguments.of(5, 15_833_292, fen)
+//         Arguments.of(6, 706_045_033L, fen)
+      );
+   }
+
+   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+   @MethodSource("perftPositionsMirrored6")
+   void perftPositionsMirrored6(int depth, long expectedCount, String fen) {
+      test(depth, expectedCount, fen);
+   }
+
+
+   static Stream<Arguments> perftPositions7() {
+      String fen = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
+      return Stream.of(
+         Arguments.of(1, 44, fen),
+         Arguments.of(2, 1486, fen),
+         Arguments.of(3, 62_379, fen),
+         Arguments.of(4, 2_103_487, fen)
+//         Arguments.of(5, 89_941_194, fen)
+      );
+   }
+
+   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+   @MethodSource("perftPositions7")
+   void perftPositions7(int depth, long expectedCount, String fen) {
+      test(depth, expectedCount, fen);
+   }
+
+   static Stream<Arguments> perftPositions8() {
+      String fen = "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10";
+      return Stream.of(
+         Arguments.of(1, 46, fen),
+         Arguments.of(2, 2_079, fen),
+         Arguments.of(3, 89_890, fen),
+         Arguments.of(4, 3_894_594, fen)
+//         Arguments.of(5, 164_075_551, fen),
+//         Arguments.of(6, 6_923_051_137L, fen)
+      );
+   }
+
+   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+   @MethodSource("perftPositions8")
+   void perftPositions8(int depth, long expectedCount, String fen) {
+      test(depth, expectedCount, fen);
+   }
+
+   static Stream<Arguments> perftSuiteEpd() {
+      return PerfsuiteEpdLoader.perftSuite();
+   }
+
+   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+   @MethodSource("perftSuiteEpd")
+   void perftSuiteEpd(int depth, long expectedCount, String fen) {
+      if (expectedCount < 1_000_000)
+         test(depth, expectedCount, fen);
    }
 }

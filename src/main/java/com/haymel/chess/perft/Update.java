@@ -72,11 +72,11 @@ public final class Update {
       final int from = move.from;
       final int to = move.to;
 
-      if (c.isKing(from))
-         c.kingloc[c.side] = to;
-
       if (!makeRookMoveForCastling(move))
          return false;
+
+      if (c.isKing(from))
+         c.kingloc[c.side] = to;
 
       Game g = c.gameList[c.hply];
       g.from = from;

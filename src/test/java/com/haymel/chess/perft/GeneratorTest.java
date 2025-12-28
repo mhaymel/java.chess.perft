@@ -66,4 +66,20 @@ final class GeneratorTest {
          e5g4, e5d7, e5f7, e5c4);
    }
 
+   @Test
+   void test5() {
+      //given
+      String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+      Chess chess = Fen.load(fen);
+      //when
+      Set<String> moves = new ValidMoves(chess).value();
+      //then
+      assertThat(moves).containsExactlyInAnyOrder(
+         a1b1, a1c1, a1d1, e1d1, e1f1, e1g1, e1c1, h1g1, h1f1, a2a3,
+         a2a4, b2b3, d2c1, d2e3, d2f4, d2g5, d2h6, e2d3, e2c4, e2b5,
+         e2a6, e2d1, e2f1, g2g3, g2g4, g2h3, c3a4, c3b1, c3d1, c3b5,
+         f3f4, f3f5, f3f6, f3e3, f3d3, f3g3, f3h3, f3g4, f3h5, d5d6,
+         d5e6, e5c6, e5d3, e5g6, e5g4, e5d7, e5f7, e5c4);
+   }
+
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Move.NewMove;
 import static com.haymel.chess.perft.Piece.bishop;
@@ -175,4 +176,21 @@ final class UpdateTest {
          f3g3, f3h3, f3g4, f3h5, f3g2, d5d6, d5e6, e5c6, e5d3, e5g6,
          e5g4, e5d7, e5f7, e5c4);
    }
+
+   @Test
+   void test11() {
+      //given
+      String fen = "rnbqkbnr/ppp1pppp/3p4/8/Q7/2P5/PP1PPPPP/RNB1KBNR b KQkq - 1 2";
+      Chess c = new Chess();
+      Fen.load(fen, c);
+      Update update = new Update(c);
+
+      //when
+      boolean valid = update.MakeMove(NewMove(e8, c8));
+
+      //then
+      assertThat(valid).isFalse();
+      assertThat(c.kingloc[black]).isEqualTo(Field.e8);
+   }
+
 }
