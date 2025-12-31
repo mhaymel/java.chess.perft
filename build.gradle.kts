@@ -1,6 +1,18 @@
 plugins {
-    id("java")
+    java
+    application
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+application {
+    mainClass.set("com.haymel.chess.uci.MinimalUci")
+}
+
 
 group = "org.example"
 version = "1.0-SNAPSHOT"

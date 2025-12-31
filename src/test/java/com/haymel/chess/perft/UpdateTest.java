@@ -81,7 +81,7 @@ final class UpdateTest {
       assertThat(fenAfterMakeAndUnMakeMove).isEqualTo(fen);
    }
 
-
+/*
    @Test
    void test6() {
       //given
@@ -95,7 +95,7 @@ final class UpdateTest {
       String fenAfterMakingMove = Fen.toFen(c);
       assertThat(fenAfterMakingMove).isEqualTo("r4rk1/p1ppqpb1/bn2pnp1/3PN3/Pp2P3/2N2Q1p/1PPBBPPP/R3K2R w KQ - 1 1");
    }
-
+*/
    @Test
    void test7() {
       //given

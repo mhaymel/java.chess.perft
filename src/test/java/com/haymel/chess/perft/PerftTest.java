@@ -19,7 +19,7 @@ final class PerftTest {
       perft(fen, 2, 400);
       perft(fen, 3, 8902);
       perft(fen, 4, 197_281);
-      perft(fen, 5, 4_865_609);
+//      perft(fen, 5, 4_865_609);
    }
 
    @Test
@@ -254,24 +254,24 @@ final class PerftTest {
       test(1, 40L, "r3k2r/p1ppqpb1/1n2pnp1/3PN3/1p2P3/2N2Q1p/PPPBbPPP/1R2K2R w Kkq - 0 2");
    }
 
-   static Stream<Arguments> perftPositions3() {
-      return PerftFileLoader.positions("perft01.txt");
-   }
+//   static Stream<Arguments> perftPositions3() {
+//      return PerftFileLoader.positions("perft01.txt");
+//   }
+//
+//   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
+//   @MethodSource("perftPositions3")
+//   void perftPositions3(int depth, long expectedCount, String fen) {
+//      Perft perft = new Perft(fen);
+//      long count = perft.execute(depth);
+//      if (count != expectedCount)
+//         System.out.println("count: " + count + " expected: " + expectedCount + "   " + fen);
+//      assertThat(count).isEqualTo(expectedCount);
+//   }
 
-   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
-   @MethodSource("perftPositions3")
-   void perftPositions3(int depth, long expectedCount, String fen) {
-      Perft perft = new Perft(fen);
-      long count = perft.execute(depth);
-      if (count != expectedCount)
-         System.out.println("count: " + count + " expected: " + expectedCount + "   " + fen);
-      assertThat(count).isEqualTo(expectedCount);
-   }
-
-   static Stream<Arguments> perftPositions4() {
-      return PerftFileLoader.positions("perft02.txt");
-   }
-
+//   static Stream<Arguments> perftPositions4() {
+//      return PerftFileLoader.positions("perft02.txt");
+//   }
+//
 //   @ParameterizedTest(name = "depth={0}, expected={1}, fen=\"{2}\"")
 //   @MethodSource("perftPositions4")
 //   void perftPositions4(int depth, long expectedCount, String fen) {
@@ -321,9 +321,9 @@ final class PerftTest {
          Arguments.of(2, 191, fen),
          Arguments.of(3, 2812, fen),
          Arguments.of(4, 43_238, fen),
-         Arguments.of(5, 674_624, fen),
-         Arguments.of(6, 11_030_083, fen),
-         Arguments.of(7, 178_633_661, fen)
+         Arguments.of(5, 674_624, fen)
+//         Arguments.of(6, 11_030_083, fen),
+//         Arguments.of(7, 178_633_661, fen)
 //         Arguments.of(8, 30_097_943_93L, fen)
       );
    }

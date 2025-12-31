@@ -10,6 +10,7 @@ public final class MoveFromString {
 
    private final String moveString;
 
+   public static MoveFromString NewMoveFromString(String moveString) { return new MoveFromString(moveString);}
    public MoveFromString(String moveString) {
       this.moveString = verified(moveString);
    }

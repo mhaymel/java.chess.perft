@@ -10,6 +10,8 @@ import static java.lang.String.format;
 
 public final class Fen {
 
+   public static final String initial = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
    private static final int[] flip = {
       a8, b8, c8, d8, e8, f8, g8, h8,
       a7, b7, c7, d7, e7, f7, g7, h7,
@@ -27,6 +29,10 @@ public final class Fen {
     */
    public static void load(String fen, Chess chess) {
       load(fen.toCharArray(), chess);
+   }
+
+   public static void loadInitial(Chess chess) {
+      load(initial.toCharArray(), chess);
    }
 
    public static Chess load(String fen) {
