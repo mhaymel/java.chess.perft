@@ -11,6 +11,11 @@ public final class ValidMoves {
 
    private final Chess chess;
 
+
+   public static ValidMoves NewValidMoves(Chess chess) {
+      return new ValidMoves(chess);
+   }
+
    public static ValidMoves NewValidMoves(String fen) {
       Chess chess = new Chess();
       Fen.load(fen, chess);
