@@ -68,7 +68,7 @@ public final class Update {
       return true;
    }
 
-   public boolean MakeMove(Move move) {
+   public boolean makeMove(Move move) {
       final int from = move.from;
       final int to = move.to;
 

@@ -23,7 +23,7 @@ final class UpdateTest {
       Chess c = new Chess();
       Fen.load(fen, c);
       Update update = new Update(c);
-      update.MakeMove(NewMove(e2, e4));
+      update.makeMove(NewMove(e2, e4));
       update.unMakeMove();
       String fenAfterMakeAndUnMakeMove = Fen.toFen(c);
       assertThat(fenAfterMakeAndUnMakeMove).isEqualTo(fen);
@@ -35,7 +35,7 @@ final class UpdateTest {
       Chess c = new Chess();
       Fen.load(fen, c);
       Update update = new Update(c);
-      if (update.MakeMove(NewMove(g7, g8, bishop))) {
+      if (update.makeMove(NewMove(g7, g8, bishop))) {
          update.unMakeMove();
       }
       String fenAfterMakeAndUnMakeMove = Fen.toFen(c);
@@ -47,7 +47,7 @@ final class UpdateTest {
       Chess c = new Chess();
       Fen.load("6QR/8/3p1kN1/1P5P/3N1r2/1b4P1/3r4/2K2b2 b - - 13 10", c);
       Update update = new Update(c);
-      update.MakeMove(NewMove(f6, g6));
+      update.makeMove(NewMove(f6, g6));
    }
 
    @Test
@@ -58,7 +58,7 @@ final class UpdateTest {
       Fen.load(fen, c);
       Update update = new Update(c);
       //when
-      boolean b = update.MakeMove(NewMove(h2, h4));
+      boolean b = update.makeMove(NewMove(h2, h4));
       assertThat(b).isTrue();
       update.unMakeMove();
       //then
@@ -74,7 +74,7 @@ final class UpdateTest {
       Fen.load(fen, c);
       Update update = new Update(c);
       //when
-      update.MakeMove(NewMove(e1, g1));
+      update.makeMove(NewMove(e1, g1));
       update.unMakeMove();
       //then
       String fenAfterMakeAndUnMakeMove = Fen.toFen(c);
@@ -104,7 +104,7 @@ final class UpdateTest {
       Fen.load(fen, c);
       Update update = new Update(c);
       //when
-      update.MakeMove(NewMove(e8, g8));
+      update.makeMove(NewMove(e8, g8));
       update.unMakeMove();
 
       //then
@@ -121,7 +121,7 @@ final class UpdateTest {
       Update update = new Update(c);
 
       //when
-      update.MakeMove(NewMove(a2, a4));
+      update.makeMove(NewMove(a2, a4));
       update.unMakeMove();
 
       //then
@@ -138,7 +138,7 @@ final class UpdateTest {
       Update update = new Update(c);
 
       //when
-      boolean valid = update.MakeMove(NewMove(e1, g1));
+      boolean valid = update.makeMove(NewMove(e1, g1));
 
       //then
       System.out.println(Fen.toFen(c));
@@ -157,7 +157,7 @@ final class UpdateTest {
       Update update = new Update(chess);
       for (String moveAsString : moves) {
          Move move = new MoveFromString(moveAsString).value();
-         if (update.MakeMove(move)) {
+         if (update.makeMove(move)) {
             result.add(moveAsString);
             update.unMakeMove();
          }
@@ -186,7 +186,7 @@ final class UpdateTest {
       Update update = new Update(c);
 
       //when
-      boolean valid = update.MakeMove(NewMove(e8, c8));
+      boolean valid = update.makeMove(NewMove(e8, c8));
 
       //then
       assertThat(valid).isFalse();

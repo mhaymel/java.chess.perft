@@ -1,10 +1,9 @@
 package com.haymel.chess.uci;
 
+import com.haymel.chess.eval.Evaluation;
 import com.haymel.chess.perft.*;
 import com.haymel.chess.util.ValidMoves;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -47,6 +46,7 @@ public class Engine {
 
       boolean whiteToMove = chess.side == Color.white;
       int timeForMove = tm.computeTimeForMove(whiteToMove);
+      System.out.println("# time for move: " + timeForMove/1000d + "secs");
       long endTime = System.currentTimeMillis() + timeForMove;
 
       int depthLimit = tm.getDepthLimit();
@@ -66,7 +66,8 @@ public class Engine {
    private void searchLoop(int depthLimit, int nodeLimit, long endTime) {
       int nodes = 0;
 
-      for (int depth = 1; depth <= depthLimit; depth++) {
+      for (int depth = 1; depth <= 2; depth++) {
+//      for (int depth = 1; depth <= depthLimit; depth++) {
 
          if (stopRequested.get() || System.currentTimeMillis() >= endTime) break;
 
@@ -84,12 +85,15 @@ public class Engine {
                break;
 
             nodes++;
+            boolean validMove = update.makeMove(moveFromUci(move));
+            if (validMove) {
+               int score = evaluateStub(move, depth);
+               update.unMakeMove();
 
-            int score = evaluateStub(move, depth);
-
-            if (score > localBestScore) {
-               localBestScore = score;
-               localBestMove = move;
+               if (score > localBestScore) {
+                  localBestScore = score;
+                  localBestMove = move;
+               }
             }
          }
 
@@ -122,13 +126,16 @@ public class Engine {
    }
 
    private int evaluateStub(String move, int depth) {
-      return 0;
+      int value = Evaluation.evaluate(chess.board, chess.color);
+      System.out.println("#  move" + ": " + value);
+      return value;
    }
 
-   public void makeMoveFromUci(String moveAlgebraic) {
-      System.out.println("# makeMove " + moveAlgebraic);
-      Move move = NewMoveFromString(moveAlgebraic).value();
-      update.MakeMove(move);
+   public static Move moveFromUci(String moveAlgebraic) {
+      return NewMoveFromString(moveAlgebraic).value();
+   }
 
+   public void makeMoveFromUci(String move) {
+      update.makeMove(moveFromUci(move));
    }
 }

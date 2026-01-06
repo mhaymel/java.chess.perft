@@ -5,8 +5,6 @@ import com.haymel.chess.perft.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.haymel.chess.perft.Color.black;
-
 public final class ValidMoves {
 
    private final Chess chess;
@@ -35,7 +33,7 @@ public final class ValidMoves {
       Update update = new Update(chess);
       for (String moveAsString : moves) {
          Move move = new MoveFromString(moveAsString).value();
-         if (update.MakeMove(move)) {
+         if (update.makeMove(move)) {
             result.add(moveAsString);
             update.unMakeMove();
          }

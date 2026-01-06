@@ -26,7 +26,7 @@ public final class Perft {
       String fen = Fen.toFen(chess);
       for (int i = from; i < to; i++) {
          Move move = chess.moveList[i];
-         if (update.MakeMove(move)) {
+         if (update.makeMove(move)) {
 //            System.out.println(move);
             count += execute(depth - 1);
             update.unMakeMove();
