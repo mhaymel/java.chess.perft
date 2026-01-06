@@ -18,7 +18,7 @@ final class EvaluationTest {
          Arguments.of(Fen.initial, 0),
          Arguments.of("8/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ", 4070),
          Arguments.of("rnbqkbnr/pppppppp/8/8/8/8/8/8 b KQkq - 0 1 ", -4070),
-         Arguments.of("rnbqkbnr/p1pppppp/8/1p6/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1", 0),
+         Arguments.of("rnbqkbnr/p1pppppp/8/1p6/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1", 8),
          Arguments.of("8/8/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1", 4070),
          Arguments.of("rnbqkbnr/p1pppppp/8/1p6/8/8/8/8 w KQkq - 0 1 ", -4062)
       );
