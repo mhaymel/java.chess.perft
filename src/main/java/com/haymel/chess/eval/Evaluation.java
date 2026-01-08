@@ -7,15 +7,22 @@ import static com.haymel.chess.perft.Piece.*;
 //values from copilot
 public final class Evaluation {
 
-   public static final int[] material = {
-      100,  //pawn
-      320,  //knight
-      330,  //bishop
-      500,  //rook
-      900,  //queen
-      0,    //king
-      0,    //empty
-   };
+   private static final int pawnValue = 100;
+   private static final int knightValue = 320;
+   private static final int bishopValue = 330;
+   private static final int rookValue = 500;
+   private static final int queenValue = 900;
+   private static final int kingValue = 0;
+   private static final int emptyValue = 0;
+
+   private static final int[] material = {
+      pawnValue,
+      knightValue,
+      bishopValue,
+      rookValue,
+      queenValue,
+      kingValue ,
+      emptyValue };
 
    public static final int[] pstPawn = {
       0,   0,  0,  0,  0,  0,  0,  0,
@@ -108,11 +115,12 @@ public final class Evaluation {
 
    private static int value(int piece, int field, int color) {
       return switch (piece) {
-         case pawn -> sign[color] * (material[piece] + pstPawn[flipped[color][field]]);
-         case knight -> sign[color] * (material[piece] + pstKnight[flipped[color][field]]);
-         case bishop -> sign[color] * (material[piece] + pstBishop[flipped[color][field]]);
-         case rook -> sign[color] * (material[piece] + pstRook[flipped[color][field]]);
-         case queen -> sign[color] * (material[piece] + pstQueen[flipped[color][field]]);
+         case pawn -> sign[color] * (pawnValue + pstPawn[flipped[color][field]]);
+         case knight -> sign[color] * (knightValue + pstKnight[flipped[color][field]]);
+         case bishop -> sign[color] * (bishopValue + pstBishop[flipped[color][field]]);
+         case rook -> sign[color] * (rookValue + pstRook[flipped[color][field]]);
+         case queen -> sign[color] * (queenValue + pstQueen[flipped[color][field]]);
+         case king -> sign[color] * (kingValue + pstKing[flipped[color][field]]);
          default -> 0;
       };
    }

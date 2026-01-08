@@ -33,7 +33,7 @@ final class PerftTest {
 //		perft(fen, 6, 8_031_647_685L);
    }
 
-   private void perft(String fen, int depth, int count) {
+   private void perft(String fen, int depth, long count) {
       test(depth, count, fen);
    }
 

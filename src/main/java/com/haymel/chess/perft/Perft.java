@@ -23,7 +23,7 @@ public final class Perft {
       generator.execute();
       int from = chess.firstMove[chess.ply];
       int to = chess.firstMove[chess.ply + 1];
-      String fen = Fen.toFen(chess);
+      //String fen = Fen.toFen(chess);
       for (int i = from; i < to; i++) {
          Move move = chess.moveList[i];
          if (update.makeMove(move)) {
