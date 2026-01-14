@@ -1,5 +1,7 @@
 package com.haymel.chess.eval;
 
+import com.haymel.chess.perft.Chess;
+
 import static com.haymel.chess.perft.Field.*;
 import static com.haymel.chess.perft.Init.flip;
 import static com.haymel.chess.perft.Piece.*;
@@ -7,22 +9,13 @@ import static com.haymel.chess.perft.Piece.*;
 //values from copilot
 public final class Evaluation {
 
-   private static final int pawnValue = 100;
-   private static final int knightValue = 320;
-   private static final int bishopValue = 330;
-   private static final int rookValue = 500;
-   private static final int queenValue = 900;
-   private static final int kingValue = 0;
-   private static final int emptyValue = 0;
-
-   private static final int[] material = {
-      pawnValue,
-      knightValue,
-      bishopValue,
-      rookValue,
-      queenValue,
-      kingValue ,
-      emptyValue };
+   private static final int pawnValue =      100;
+   private static final int knightValue =    320;
+   private static final int bishopValue =    330;
+   private static final int rookValue =      500;
+   private static final int queenValue =     900;
+   private static final int kingValue =        0;
+   private static final int emptyValue =       0;
 
    public static final int[] pstPawn = {
       0,   0,  0,  0,  0,  0,  0,  0,
@@ -103,25 +96,25 @@ public final class Evaluation {
 
    private static final int[][] flipped = {flipFlipped, flip};
 
-   private static final int[] sign = {1, -1};
-
-   public static int evaluate(int[] board, int[] color) {
-      int value = 0;
+   private static int evaluate(int[] board, int[] color) {
+      int[] score = new int[] { 0, 0 };
       for (int i = 0; i < board.length; i++) {
-         value += value(board[i], i, color[i]);
+         int piece = board[i];
+         int c = color[i];
+         switch (piece) {
+            case pawn -> score[c] += pawnValue + pstPawn[flipped[c][i]];
+            case knight -> score[c] += knightValue + pstKnight[flipped[c][i]];
+            case bishop -> score[c] += bishopValue + pstBishop[flipped[c][i]];
+            case rook -> score[c] += rookValue + pstRook[flipped[c][i]];
+            case queen -> score[c] += queenValue + pstQueen[flipped[c][i]];
+            case king -> score[c] += kingValue + pstKing[flipped[c][i]];
+            default -> {}
+         }
       }
-      return value;
+      return score[0] - score[1];
    }
 
-   private static int value(int piece, int field, int color) {
-      return switch (piece) {
-         case pawn -> sign[color] * (pawnValue + pstPawn[flipped[color][field]]);
-         case knight -> sign[color] * (knightValue + pstKnight[flipped[color][field]]);
-         case bishop -> sign[color] * (bishopValue + pstBishop[flipped[color][field]]);
-         case rook -> sign[color] * (rookValue + pstRook[flipped[color][field]]);
-         case queen -> sign[color] * (queenValue + pstQueen[flipped[color][field]]);
-         case king -> sign[color] * (kingValue + pstKing[flipped[color][field]]);
-         default -> 0;
-      };
+   public static int evaluate(Chess chess) {
+      return evaluate(chess.board, chess.color);
    }
 }

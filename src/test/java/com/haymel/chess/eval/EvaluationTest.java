@@ -34,7 +34,7 @@ final class EvaluationTest {
       //given
       Chess chess = Fen.load(fen);
       //when
-      int evaluate = evaluate(chess.board, chess.color);
+      int evaluate = evaluate(chess);
       //then
       assertThat(evaluate).isEqualTo(expectedEvaluation);
    }

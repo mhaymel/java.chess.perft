@@ -64,52 +64,60 @@ public class Engine {
    }
 
    private void searchLoop(int depthLimit, int nodeLimit, long endTime) {
-      int nodes = 0;
-
-      for (int depth = 1; depth <= 2; depth++) {
-//      for (int depth = 1; depth <= depthLimit; depth++) {
-
-         if (stopRequested.get() || System.currentTimeMillis() >= endTime) break;
-
-         Set<String> moves = generateLegalMoves();
-         if (moves.isEmpty()) {
-            bestMoveUci = "0000";
-            break;
-         }
-
-         String localBestMove = moves.iterator().next();
-         int localBestScore = Integer.MIN_VALUE;
-
-         for (String move : moves) {
-            if (stopRequested.get() || System.currentTimeMillis() >= endTime || nodes >= nodeLimit)
-               break;
-
-            nodes++;
-            boolean validMove = update.makeMove(moveFromUci(move));
-            if (validMove) {
-               int score = evaluateStub(move, depth);
-               update.unMakeMove();
-
-               if (score > localBestScore) {
-                  localBestScore = score;
-                  localBestMove = move;
-               }
-            }
-         }
-
-         bestMoveUci = localBestMove;
-
-         System.out.println("info depth " + depth +
-            " score cp " + localBestScore +
-            " nodes " + nodes +
-            " pv " + bestMoveUci);
-
-         if (System.currentTimeMillis() >= endTime || stopRequested.get() || nodes >= nodeLimit)
-            break;
-      }
-
-      System.out.println("bestmove " + bestMoveUci);
+      Search search = new Search(chess);
+      search.search(5);
+      Move move = search.bestMove();
+      System.out.println("bestmove " + move.uci() + " ");
    }
+//   private void searchLoop(int depthLimit, int nodeLimit, long endTime) {
+//      int nodes = 0;
+//
+////      for (int depth = 1; depth <= 2; depth++) {
+////      for (int depth = 1; depth <= depthLimit; depth++) {
+//
+////         if (stopRequested.get() || System.currentTimeMillis() >= endTime) break;
+//
+//         Set<String> moves = generateLegalMoves();
+//         if (moves.isEmpty()) {
+//            bestMoveUci = "0000";
+////            break;
+//         }
+//
+//         String localBestMove = moves.iterator().next();
+//         int localBestScore = Integer.MIN_VALUE;
+//
+//         for (String move : moves) {
+//            if (stopRequested.get() || System.currentTimeMillis() >= endTime || nodes >= nodeLimit)
+//               break;
+//
+//            nodes++;
+//            boolean validMove = update.makeMove(moveFromUci(move));
+//            if (validMove) {
+//               int score = evaluateStub();
+//               update.unMakeMove();
+//
+//               if (score > localBestScore) {
+//                  localBestScore = score;
+//                  localBestMove = move;
+//
+//                  System.out.println("new bestmove " + localBestMove + ", score " + localBestScore);
+//               }
+//            }
+//         }
+//
+//         bestMoveUci = localBestMove;
+//
+////         System.out.println("info depth " + depth +
+////            " score cp " + localBestScore +
+////            " nodes " + nodes +
+////            " pv " + bestMoveUci);
+//
+////         if (System.currentTimeMillis() >= endTime || stopRequested.get() || nodes >= nodeLimit)
+////            break;
+////      }
+//
+//      System.out.println("bestmove " + bestMoveUci + " ");
+//   }
 
    public void stopSearch() {
       stopRequested.set(true);
@@ -125,9 +133,11 @@ public class Engine {
       return ValidMoves.NewValidMoves(chess).value();
    }
 
-   private int evaluateStub(String move, int depth) {
-      int value = Evaluation.evaluate(chess.board, chess.color);
-      System.out.println("#  move" + ": " + value);
+   private int evaluateStub() {
+      int value = Evaluation.evaluate(chess);
+      if (chess.side == Color.white) {
+         value = -value;
+      }
       return value;
    }
 

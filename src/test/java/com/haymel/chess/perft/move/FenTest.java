@@ -215,8 +215,7 @@ public final class FenTest {
       assertThat(chess.color[d6]).isEqualTo(black);
 
       assertThat(chess.gameList[chess.hply].enPassantField).isEqualTo(invalid);
-      assertThat(chess.gameList[chess.hply].halfMoveClock).isEqualTo(0);
-      assertThat(chess.gameList[chess.hply].fullMoveNumber).isEqualTo(1);
+      assertThat(chess.gameList[chess.hply].fiftyMoveCounter).isEqualTo(0);
    }
 
    @Test
@@ -246,8 +245,7 @@ public final class FenTest {
       assertThat(chess.color[e8]).isEqualTo(black);
 
       assertThat(chess.gameList[chess.hply].enPassantField).isEqualTo(c6);
-      assertThat(chess.gameList[chess.hply].halfMoveClock).isEqualTo(0);
-      assertThat(chess.gameList[chess.hply].fullMoveNumber).isEqualTo(1);
+      assertThat(chess.gameList[chess.hply].fiftyMoveCounter).isEqualTo(0);
    }
 
    @Test

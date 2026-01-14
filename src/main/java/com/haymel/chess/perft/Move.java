@@ -5,6 +5,7 @@ public final class Move {
    public int from;
    public int to;
    public int promotion;
+   public int score;
 
    public static Move NewMove(int from, int to, int promotion) { return new Move(from, to, promotion); }
    public static Move NewMove(int from, int to) { return new Move(from, to); }

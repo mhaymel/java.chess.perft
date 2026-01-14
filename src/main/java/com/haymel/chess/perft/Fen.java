@@ -40,8 +40,7 @@ public final class Fen {
          chess.board[x] = empty;
          chess.color[x] = empty;
       }
-      chess.gameList[chess.hply].fullMoveNumber = 0;
-      chess.gameList[chess.hply].halfMoveClock = 0;
+      chess.fiftyMoveCounter = 0;
 
       int c = 0;
       int i = 0;
@@ -150,17 +149,26 @@ public final class Fen {
          count = count * 10 + fen[c] - '0';
          c++;
       }
-      chess.gameList[chess.hply].halfMoveClock = count;
+      chess.fiftyMoveCounter = count;
 
+      c = skipWhiteSpace(fen, c);
+
+      chess.hplyOffset = (fullMoveNumber(fen, c) - 1) * 2 + (chess.side == black ? 1 : 0);
+   }
+
+   private static int skipWhiteSpace(char[] fen, int c) {
       while (isWhitespace(fen[c]))
          c++;
+      return c;
+   }
 
-      count = 0;
+   private static int fullMoveNumber(char[] fen, int c) {
+      int fullMoveNumber = 0;
       while (c < fen.length && isDigit(fen[c])) {
-         count = count * 10 + fen[c] - '0';
+         fullMoveNumber = fullMoveNumber * 10 + fen[c] - '0';
          c++;
       }
-      chess.gameList[chess.hply].fullMoveNumber = count;
+      return fullMoveNumber;
    }
 
    private static boolean isDigit(char c) {
@@ -244,28 +252,23 @@ public final class Fen {
       }
 
       // 5. Halfmove clock
-      fen.append(' ');
-      fen.append(chess.gameList[chess.hply].halfMoveClock);
+      fen.append(' ').append(chess.fiftyMoveCounter);
 
       // 6. Fullmove number
-      fen.append(' ');
-      fen.append(chess.gameList[chess.hply].fullMoveNumber);
-
+      fen.append(' ').append(chess.fullMoveNumber());
       return fen.toString();
    }
 
    private static char pieceToChar(int piece, int color) {
-      char c;
-      switch (piece) {
-         case king:   c = 'k'; break;
-         case queen:  c = 'q'; break;
-         case rook:   c = 'r'; break;
-         case bishop: c = 'b'; break;
-         case knight: c = 'n'; break;
-         case pawn:   c = 'p'; break;
-         default:
-            throw new IllegalArgumentException("Unknown piece: " + piece);
-      }
+      char c = switch (piece) {
+         case king -> 'k';
+         case queen -> 'q';
+         case rook -> 'r';
+         case bishop -> 'b';
+         case knight -> 'n';
+         case pawn -> 'p';
+         default -> throw new IllegalArgumentException("Unknown piece: " + piece);
+      };
       return color == white ? Character.toUpperCase(c) : c;
    }
 

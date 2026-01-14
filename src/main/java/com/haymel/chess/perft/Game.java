@@ -10,8 +10,7 @@ public final class Game {
     public int capturePiece;
     public final Castling castle = new Castling();
     public int enPassantField;
-    public int halfMoveClock;
-    public int fullMoveNumber;
+    public int fiftyMoveCounter;
 
    @Override
    public String toString() {
@@ -19,6 +18,7 @@ public final class Game {
          ", capturePiece=" + capturePiece +
          ", castle=" + castle +
          ", enPassantField=" + enPassantField +
+         ", fiftyMoveCounter=" + fiftyMoveCounter +
          '}';
    }
 }

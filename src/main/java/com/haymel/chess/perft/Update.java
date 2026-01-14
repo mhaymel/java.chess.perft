@@ -82,6 +82,11 @@ public final class Update {
       g.from = from;
       g.to = to;
       g.capturePiece = c.board[to];
+      g.fiftyMoveCounter = c.fiftyMoveCounter;
+
+      c.fiftyMoveCounter++;
+      if (c.isPawn(from) || !c.isEmpty(to))
+         c.fiftyMoveCounter = 0;
 
       c.ply++;
       c.hply++;
@@ -126,7 +131,7 @@ public final class Update {
       c.hply--;
 
       Game g = c.gameList[c.hply];
-
+      c.fiftyMoveCounter = g.fiftyMoveCounter;
       final int from = g.from;
       final int to = g.to;
 
