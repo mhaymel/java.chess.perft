@@ -38,6 +38,7 @@ public final class Search {
 
       int localBestScore = -100_000;
 
+//      String fen = Fen.toFen(chess);
       int moveCount = chess.moveCount();
       for (int i = 0; i < moveCount; i++) {
          Move move = chess.move(i);
@@ -46,12 +47,18 @@ public final class Search {
             unMakeMove();
             if (score > localBestScore) {
                localBestScore = score;
-               if (depth == 0)
+               if (depth == 0) {
                   bestMove = move;
+                  System.out.println("# New best move: " + bestMove + " score: " + score);
+               }
             }
-         } else {
-            unMakeMove();
          }
+//         String fenAfterMakeAndUnMake = Fen.toFen(chess);
+//         if (!fenAfterMakeAndUnMake.equals(fen)) {
+//            System.out.println(move);
+//            System.out.println("fen:              " + fen);
+//            System.out.println("afterMakeUnMake:  " + fenAfterMakeAndUnMake);
+//         }
       }
       return localBestScore;
    }

@@ -65,7 +65,7 @@ public class Engine {
 
    private void searchLoop(int depthLimit, int nodeLimit, long endTime) {
       Search search = new Search(chess);
-      search.search(5);
+      search.search(4);
       Move move = search.bestMove();
       System.out.println("bestmove " + move.uci() + " ");
    }

@@ -10,6 +10,7 @@ public class MinimalUci {
    private final TimeManager timeManager = new TimeManager();
 
    public void run() throws IOException {
+      engine.newGame();
       BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
       while (true) {
