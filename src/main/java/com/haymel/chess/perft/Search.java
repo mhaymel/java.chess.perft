@@ -1,6 +1,7 @@
 package com.haymel.chess.perft;
 
 import com.haymel.chess.eval.Evaluation;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class Search {
 
@@ -9,28 +10,34 @@ public final class Search {
    private final Update update;
    private int maxDepth;
    private Move bestMove;
-   private int bestMoveScore;
+   private final AtomicBoolean stop;
 
    public Search(Chess chess) {
-      this(chess, new Generator(chess), new Update(chess));
+      this(chess, new AtomicBoolean(false));
    }
 
-   private Search(Chess chess, Generator generator, Update update) {
+   public Search(Chess chess, AtomicBoolean stop) {
+      this(chess, new Generator(chess), new Update(chess), stop);
+   }
+
+   private Search(Chess chess, Generator generator, Update update, AtomicBoolean stop) {
       this.chess = chess;
       this.generator = generator;
       this.update = update;
+      this.stop = stop;
    }
 
    public Move search(int maxDepth) {
+      stop.set(false);
       this.maxDepth = maxDepth;
       bestMove = null;
-      bestMoveScore = -100_000;
       searchImpl(0);
-//      System.out.println("# Best move: " + bestMove + " score: " + bestMoveScore);
       return bestMove;
    }
 
    private int searchImpl(int depth) {
+      if (stop.get()) return 0;
+
       if (depth >= maxDepth)
          return evaluateStub();
 
