@@ -7,8 +7,8 @@ import static com.haymel.chess.perft.Piece.pawn;
 public final class Chess {
 
    public static final int maxPly = 128;
-   public static final int moveStackSize = 2000;
-   public static final int gameStackSize = 2000;
+   public static final int moveStackSize = 100_000;
+   public static final int gameStackSize = 100_000;
    public final Move[] moveList = newMove(moveStackSize);
    public final int[] firstMove = new int[maxPly];
    public final Game[] gameList = newGame(gameStackSize);
