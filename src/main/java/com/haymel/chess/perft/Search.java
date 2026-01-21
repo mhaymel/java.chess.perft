@@ -1,6 +1,7 @@
 package com.haymel.chess.perft;
 
 import com.haymel.chess.eval.Evaluation;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class Search {
@@ -8,9 +9,9 @@ public final class Search {
    private final Chess chess;
    private final Generator generator;
    private final Update update;
-   private int maxDepth;
-   private Move bestMove;
    private final AtomicBoolean stop;
+   public long nodes;
+   private Move bestMove;
 
    public Search(Chess chess) {
       this(chess, new AtomicBoolean(false));
@@ -27,19 +28,21 @@ public final class Search {
       this.stop = stop;
    }
 
-   public Move search(int maxDepth) {
+   public Move search(int depth) {
+      nodes = 0;
       stop.set(false);
-      this.maxDepth = maxDepth;
       bestMove = null;
-      searchImpl(0);
+      searchImpl(depth);
       return bestMove;
    }
 
    private int searchImpl(int depth) {
       if (stop.get()) return 0;
 
-      if (depth >= maxDepth)
-         return evaluateStub();
+      if (depth < 1)
+         return captureSearch();
+
+      nodes++;
 
       generateMoves();
 
@@ -50,11 +53,11 @@ public final class Search {
       for (int i = 0; i < moveCount; i++) {
          Move move = chess.move(i);
          if (isMakeMove(move)) {
-            int score = -searchImpl(depth + 1);
+            int score = -searchImpl(depth - 1);
             unMakeMove();
             if (score > localBestScore) {
                localBestScore = score;
-               if (depth == 0) {
+               if (chess.ply == 0) {
                   bestMove = move;
                   System.out.println("# New best move: " + bestMove + " score: " + score);
                }
@@ -70,6 +73,16 @@ public final class Search {
       return localBestScore;
    }
 
+   private int captureSearch() {
+      nodes++;
+
+      int x = evaluateStub();
+
+      //generateCaptureMoves();
+
+      return x;
+   }
+
    private void unMakeMove() {
       update.unMakeMove();
    }
@@ -80,6 +93,10 @@ public final class Search {
 
    private void generateMoves() {
       generator.execute();
+   }
+
+   private void generateCaptureMoves() {
+      generator.executeCaptureMoves();
    }
 
    private int evaluateStub() {

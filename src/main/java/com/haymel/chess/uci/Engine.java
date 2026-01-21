@@ -85,8 +85,9 @@ public class Engine {
       for (int depth = 1; !stopRequested(); depth++) {
          System.out.println("# searching at depth " + depth);
          search.search(depth);
+         System.out.println("# nodes searched: " + search.nodes);
          Move move = search.bestMove();
-         if (!stopRequested()) bestmove = move.uci();
+         if (!stopRequested() || bestmove == null) bestmove = move.uci();
       }
       System.out.println("bestmove " + bestmove + " ");
       long elapsedMs = System.currentTimeMillis() - start;

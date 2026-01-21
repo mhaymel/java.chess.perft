@@ -39,6 +39,14 @@ public final class Generator {
       c.firstMove[c.ply + 1] = c.mc;
    }
 
+   public void executeCaptureMoves() {
+      c.mc = c.firstMove[c.ply];
+      genEnPassant();
+      genCastling();
+      genPieces();
+      c.firstMove[c.ply + 1] = c.mc;
+   }
+
    private void genPieces() {
       for (int from = 0; from < 64; from++)
          if (c.color[from] == c.side) generate(from);
