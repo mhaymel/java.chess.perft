@@ -62,6 +62,7 @@ public class MinimalUci {
          if (rest.startsWith("moves")) {
             String[] moves = rest.substring(5).trim().split("\\s+");
             for (String m : moves) engine.makeMoveFromUci(m);
+            engine.chess.ply = 0;
          }
       }
 

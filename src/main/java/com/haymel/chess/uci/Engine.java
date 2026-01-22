@@ -15,7 +15,7 @@ import static com.haymel.chess.util.MoveFromString.NewMoveFromString;
 public class Engine {
 
    private final AtomicBoolean stopRequested;
-   private final Chess chess;
+   public final Chess chess;
    private final Update update;
    private final ScheduledExecutorService executor;
    private Thread searchThread;
