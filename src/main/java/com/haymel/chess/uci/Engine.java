@@ -114,9 +114,16 @@ public class Engine {
       return ValidMoves.NewValidMoves(chess).value();
    }
 
+   public void makeMoves(String[] moves) {
+      for (String m : moves) makeMoveFromUci(m);
+      chess.ply = 0;
+   }
+
    public void makeMoveFromUci(String move) {
       update.makeMove(moveFromUci(move));
    }
+
+   public String fen() { return Fen.toFen(chess); }
 
    public void shutdown() {
       executor.shutdownNow();

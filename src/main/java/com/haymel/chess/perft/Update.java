@@ -13,7 +13,7 @@ public final class Update {
    private static final int[] reverseSquare = {down, up};
 
    private final Chess c;
-   private final Attack a;
+   public final Attack a;
 
    public Update(Chess c) { this(c, new Attack(c)); }
 

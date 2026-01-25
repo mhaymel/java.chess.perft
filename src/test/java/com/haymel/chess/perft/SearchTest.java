@@ -32,8 +32,45 @@ final class SearchTest {
    }
 
    @Test
-   void testSearchDepth6() {
-      test(6);
+   void testSearch1() {
+      //given
+      Chess chess = Fen.load("3k1b1r/Q3pppp/3p4/8/8/1P4P1/1P2KP1P/2R5 b - - 2 24");
+      Search search = new Search(chess);
+      //when
+      int score = search.search(5);
+      Move bestMove = search.bestMove();
+      //then
+      System.out.println("nodes: " + search.nodes);
+      System.out.println("score: " + score);
+      assertThat(bestMove).isNotNull();
+   }
+
+   @Test
+   void testSearch2() {
+      //given
+      Chess chess = Fen.load("7R/3k1ppp/p7/8/2b5/4PPP1/P2P3q/2B2K2 w - - 0 30");
+      Search search = new Search(chess);
+      //when
+      int score = search.search(5);
+      Move bestMove = search.bestMove();
+      //then
+      System.out.println("nodes: " + search.nodes);
+      System.out.println("score: " + score);
+      assertThat(bestMove).isNotNull();
+   }
+
+   @Test
+   void testSearch3() {
+      //given
+      Chess chess = Fen.load("2k5/pp5p/3B1pp1/8/2P1r1K1/2P1p3/5qPP/5B1R w - - 3 29");
+      Search search = new Search(chess);
+      //when
+      int score = search.search(5);
+      Move bestMove = search.bestMove();
+      //then
+      System.out.println("nodes: " + search.nodes);
+      System.out.println("score: " + score);
+      assertThat(bestMove).isNotNull();
    }
 
    void test(int depth) {
@@ -42,7 +79,8 @@ final class SearchTest {
       Search search = new Search(chess);
 
       //when
-      Move bestMove = search.search(depth);
+      search.search(depth);
+      Move bestMove = search.bestMove();
 
       //then
       assertThat(bestMove).isNotNull();

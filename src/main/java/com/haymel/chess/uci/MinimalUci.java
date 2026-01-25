@@ -13,43 +13,33 @@ public class MinimalUci {
       engine.newGame();
       BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-      while (true) {
-         String line = in.readLine();
-         if (line == null) continue;
-         line = line.trim();
-         if (line.isEmpty()) continue;
+      while (handle(in.readLine()));
+   }
 
-         if (line.equals("uci")) {
-            System.out.println("id name MinimalEngine");
-            System.out.println("id author Markus");
-            System.out.println("uciok");
-         }
+   public boolean handle(String line) {
+      if (line == null) return true;
+      line = line.trim();
+      if (line.isEmpty()) return true;
 
-         else if (line.equals("isready")) {
-            System.out.println("readyok");
-         }
-
-         else if (line.equals("ucinewgame")) {
-            engine.newGame();
-         }
-
-         else if (line.startsWith("position")) {
-            handlePosition(line);
-         }
-
-         else if (line.startsWith("go")) {
-            handleGo(line);
-         }
-
-         else if (line.equals("stop")) {
-            engine.stopSearch();
-         }
-
-         else if (line.equals("quit")) {
-            engine.stopSearch();
-            break;
-         }
+      if (line.equals("uci")) {
+         System.out.println("id name MinimalEngine");
+         System.out.println("id author Markus");
+         System.out.println("uciok");
+      } else if (line.equals("isready")) {
+         System.out.println("readyok");
+      } else if (line.equals("ucinewgame")) {
+         engine.newGame();
+      } else if (line.startsWith("position")) {
+         handlePosition(line);
+      } else if (line.startsWith("go")) {
+         handleGo(line);
+      } else if (line.equals("stop")) {
+         engine.stopSearch();
+      } else if (line.equals("quit")) {
+         engine.stopSearch();
+         return false;
       }
+      return true;
    }
 
    private void handlePosition(String cmd) {
@@ -61,8 +51,7 @@ public class MinimalUci {
 
          if (rest.startsWith("moves")) {
             String[] moves = rest.substring(5).trim().split("\\s+");
-            for (String m : moves) engine.makeMoveFromUci(m);
-            engine.chess.ply = 0;
+            engine.makeMoves(moves);
          }
       }
 

@@ -28,12 +28,11 @@ public final class Search {
       this.stop = stop;
    }
 
-   public Move search(int depth) {
+   public int search(int depth) {
       nodes = 0;
       stop.set(false);
       bestMove = null;
-      searchImpl(depth);
-      return bestMove;
+      return searchImpl(depth);
    }
 
    private int searchImpl(int depth) {
@@ -46,13 +45,14 @@ public final class Search {
 
       generateMoves();
 
-      int localBestScore = -100_000;
+      int localBestScore = -10001;
+      int validMovesCount = 0;
 
-//      String fen = Fen.toFen(chess);
       int moveCount = chess.moveCount();
       for (int i = 0; i < moveCount; i++) {
          Move move = chess.move(i);
-         if (isMakeMove(move)) {
+         if (makeMove(move)) {
+            validMovesCount++;
             int score = -searchImpl(depth - 1);
             unMakeMove();
             if (score > localBestScore) {
@@ -63,14 +63,18 @@ public final class Search {
                }
             }
          }
-//         String fenAfterMakeAndUnMake = Fen.toFen(chess);
-//         if (!fenAfterMakeAndUnMake.equals(fen)) {
-//            System.out.println(move);
-//            System.out.println("fen:              " + fen);
-//            System.out.println("afterMakeUnMake:  " + fenAfterMakeAndUnMake);
-//         }
       }
+      if (validMovesCount == 0) {
+         if (isInCheck()) return -10000 + chess.ply;
+         return 0;
+      }
+      if (chess.fiftyMoveCounter >= 100)    return 0;
+
       return localBestScore;
+   }
+
+   private boolean isInCheck() {
+      return update.a.attack(chess.otherSide(), chess.kingloc[chess.side]); //TODO
    }
 
    private int captureSearch() {
@@ -87,7 +91,7 @@ public final class Search {
       update.unMakeMove();
    }
 
-   private boolean isMakeMove(Move move) {
+   private boolean makeMove(Move move) {
       return update.makeMove(move);
    }
 
