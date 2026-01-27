@@ -4,10 +4,14 @@ import com.haymel.chess.eval.Evaluation;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.haymel.chess.perft.CaptureGenerator.NewCaptureGenerator;
+import static com.haymel.chess.perft.Generator.NewGenerator;
+
 public final class Search {
 
    private final Chess chess;
    private final Generator generator;
+   private final CaptureGenerator captureGenerator;
    private final Update update;
    private final AtomicBoolean stop;
    public long nodes;
@@ -18,12 +22,14 @@ public final class Search {
    }
 
    public Search(Chess chess, AtomicBoolean stop) {
-      this(chess, new Generator(chess), new Update(chess), stop);
+      this(chess, NewGenerator(chess), NewCaptureGenerator(chess), new Update(chess), stop);
    }
 
-   private Search(Chess chess, Generator generator, Update update, AtomicBoolean stop) {
+   private Search(
+      Chess chess, Generator generator, CaptureGenerator captureGenerator, Update update, AtomicBoolean stop) {
       this.chess = chess;
       this.generator = generator;
+      this.captureGenerator = captureGenerator;
       this.update = update;
       this.stop = stop;
    }
@@ -82,7 +88,7 @@ public final class Search {
 
       int x = evaluateStub();
 
-      //generateCaptureMoves();
+      generateCaptureMoves();
 
       return x;
    }
@@ -100,7 +106,7 @@ public final class Search {
    }
 
    private void generateCaptureMoves() {
-      generator.executeCaptureMoves();
+      captureGenerator.execute();
    }
 
    private int evaluateStub() {

@@ -39,14 +39,6 @@ public final class Generator {
       c.firstMove[c.ply + 1] = c.mc;
    }
 
-   public void executeCaptureMoves() {
-      c.mc = c.firstMove[c.ply];
-      genEnPassant();
-      genCastling();
-      genPieces();
-      c.firstMove[c.ply + 1] = c.mc;
-   }
-
    private void genPieces() {
       for (int from = 0; from < 64; from++)
          if (c.color[from] == c.side) generate(from);
@@ -54,13 +46,13 @@ public final class Generator {
 
    private void generate(int from) {
       switch (c.board[from]) {
-         case pawn:     genPawn(from);                          break;
-         case knight:   gen(knightMoves, from);                 break;
+         case pawn:     genPawn(from);                           break;
+         case knight:   gen(knightMoves, from);                  break;
          case bishop:   genSliding(bishopMoves, from,4);  break;
          case rook:     genSliding(rookMoves, from,4);    break;
          case queen:    genSliding(queenMoves, from,8);   break;
-         case king:     gen(kingMoves, from);                   break;
-         default:                                               break;
+         case king:     gen(kingMoves, from);                    break;
+         default:                                                break;
       }
    }
 
@@ -103,8 +95,8 @@ public final class Generator {
       }
    }
 
-   private static final int[] leftCapture = { left + pawnStep[white], left + pawnStep[black] };
-   private static final int[] rightCapture = { right + pawnStep[white], right + pawnStep[black] };
+   static final int[] leftCapture = { left + pawnStep[white], left + pawnStep[black] };
+   static final int[] rightCapture = { right + pawnStep[white], right + pawnStep[black] };
 
    private void genPawn(int from) {
       int to = from + pawnStep[c.side];
