@@ -2,6 +2,7 @@ package com.haymel.chess.eval;
 
 import com.haymel.chess.perft.Chess;
 import com.haymel.chess.perft.Fen;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,6 +29,11 @@ final class EvaluationTest {
    @MethodSource("fens")
    void testFens(String fen, int eval) {
       test(fen, eval);
+   }
+
+   @Test
+   void test1() {
+      test(Fen.initial, 0);
    }
 
    void test(String fen, int expectedEvaluation) {

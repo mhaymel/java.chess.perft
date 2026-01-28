@@ -128,4 +128,5 @@ public final class Chess {
       }
       return moveList[index];
    }
+
 }

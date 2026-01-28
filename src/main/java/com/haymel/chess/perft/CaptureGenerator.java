@@ -1,6 +1,6 @@
 package com.haymel.chess.perft;
 
-import static com.haymel.chess.perft.Field.*;
+import static com.haymel.chess.perft.Field.isValid;
 import static com.haymel.chess.perft.File.A;
 import static com.haymel.chess.perft.File.H;
 import static com.haymel.chess.perft.Generator.leftCapture;
@@ -19,10 +19,6 @@ public final class CaptureGenerator {
 
    public static CaptureGenerator NewCaptureGenerator(Chess chess) {
       return new CaptureGenerator(chess);
-   }
-
-   public static boolean isFirstOrLastRow(int to) {
-      return to >= a8 || to <= h1;
    }
 
    public void execute() {
@@ -56,7 +52,7 @@ public final class CaptureGenerator {
    private void pawnCapture(int from, int step) {
       int to = from + step;
       if (c.isOpponent(to))
-         addPawnMove(from, to);
+         addMove(from, to);
    }
 
    private void genSliding(int[][] moves, int from, int count) {
@@ -71,6 +67,7 @@ public final class CaptureGenerator {
             addMove(from, to);
             return;
          }
+         if (!c.isEmpty(to)) return;
          to = moves[to][direction];
       }
    }
@@ -87,23 +84,6 @@ public final class CaptureGenerator {
       c.moveList[c.mc].from = from;
       c.moveList[c.mc].to = to;
       c.moveList[c.mc].promotion = empty;
-      c.mc++;
-   }
-
-   private void addPawnMove(int from, int to) {
-      if (isFirstOrLastRow(to)) {
-         addPromotion(from, to, queen);
-         addPromotion(from, to, rook);
-         addPromotion(from, to, bishop);
-         addPromotion(from, to, knight);
-      } else
-         addMove(from, to);
-   }
-
-   private void addPromotion(int from, int to, int piece) {
-      c.moveList[c.mc].from = from;
-      c.moveList[c.mc].to = to;
-      c.moveList[c.mc].promotion = piece;
       c.mc++;
    }
 
