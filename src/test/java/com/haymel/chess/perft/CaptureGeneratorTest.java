@@ -5,10 +5,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.haymel.chess.util.MoveList.NewMoveList;
+import static com.haymel.chess.perft.Notation.uci;
+import static com.haymel.chess.perft.Update.isEnPassant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class CaptureGeneratorTest {
@@ -101,17 +103,34 @@ final class CaptureGeneratorTest {
    void testFen(String fen) {
       Chess chessAllMoves = Fen.load(fen);
       new Generator(chessAllMoves).execute();
-      Set<String> allMoves = NewMoveList(chessAllMoves).moveStrings();
+      Set<String> chessAllMovesCapture = allWithoutEnPassantAndPromotionPiecesRemoved(chessAllMoves);
 
-      Chess chessCaptureMoves = Fen.load(fen);
-      new CaptureGenerator(chessCaptureMoves).execute();
-      Set<String> allCaptureMoves = NewMoveList(chessCaptureMoves).moveStrings();
-      assertThat(allMoves).containsAll(allCaptureMoves);
+      Chess chessOnlyCaptureMoves = Fen.load(fen);
+      new CaptureGenerator(chessOnlyCaptureMoves).execute();
+      Set<String> chessOnlyCaptureMoveAsString = allWithoutEnPassantAndPromotionPiecesRemoved(chessOnlyCaptureMoves);
+
+      assertThat(chessAllMovesCapture).isEqualTo(chessOnlyCaptureMoveAsString);
    }
 
    @Test
    void test1() {
       testFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+   }
+
+   @Test
+   void test2() {
+      testFen("K2r4/4P3/8/8/8/8/8/k7 w - - 0 1");
+   }
+
+   private Set<String> allWithoutEnPassantAndPromotionPiecesRemoved(Chess chess) {
+      Set<String> moves = new HashSet<>();
+      int from = chess.firstMove[chess.ply];
+      int to = chess.firstMove[chess.ply + 1];
+      for (int i = from; i < to; i++) {
+         Move m = chess.moveList[i];
+         if (!isEnPassant(chess, m) && !chess.isEmpty(m.to)) moves.add(uci(m.from, m.to));
+      }
+      return moves;
    }
 
 }

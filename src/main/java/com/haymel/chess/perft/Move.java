@@ -1,5 +1,7 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.perft.Field.invalid;
+
 public final class Move {
 
    public int from;
@@ -10,7 +12,7 @@ public final class Move {
    public static Move NewMove(int from, int to, int promotion) { return new Move(from, to, promotion); }
    public static Move NewMove(int from, int to) { return new Move(from, to); }
    public Move() {
-      this(Field.invalid, Field.invalid, Piece.empty);
+      this(invalid, invalid, Piece.empty);
    }
 
    public Move(int from, int to) {
@@ -24,7 +26,7 @@ public final class Move {
    }
 
    public String uci() {
-      if (from == Field.invalid || to == Field.invalid) return "invalid";
+      if (from == invalid || to == invalid) return "invalid";
       return Notation.uci(from, to, promotion);
    }
 

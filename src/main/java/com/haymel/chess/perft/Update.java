@@ -194,6 +194,10 @@ public final class Update {
    }
 
    private boolean isEnPassant(Move move) {
+      return isEnPassant(c, move);
+   }
+
+   public static boolean isEnPassant(Chess c, Move move) {
       return c.isPawn(move.from) && c.isEmpty(move.to) && isPawnCapture(move.from, move.to);
    }
 
