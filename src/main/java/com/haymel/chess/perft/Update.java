@@ -22,7 +22,7 @@ public final class Update {
       this.a = attack;
    }
 
-   private static boolean isPawnCapture(int from, int to) {
+   public static boolean isPawnCapture(int from, int to) {
       int step = abs(from - to);
       return step != up && step != doubleStep;
    }
@@ -94,7 +94,7 @@ public final class Update {
       g = c.gameList[c.hply];
       g.castle.assign(c.gameList[c.hply - 1].castle);
 
-      if (isEnPassant(move))
+      if (c.isEnPassant(move))
          removePiece(to + reverseSquare[c.side]);
 
       if (isCapture(to))
@@ -193,14 +193,6 @@ public final class Update {
       }
    }
 
-   private boolean isEnPassant(Move move) {
-      return isEnPassant(c, move);
-   }
-
-   public static boolean isEnPassant(Chess c, Move move) {
-      return c.isPawn(move.from) && c.isEmpty(move.to) && isPawnCapture(move.from, move.to);
-   }
-
    private boolean isEnPassant(Game g) {
       return c.isPawn(g.to) && g.capturePiece == empty && isPawnCapture(g.from, g.to);
    }
@@ -229,4 +221,43 @@ public final class Update {
       c.color[from] = empty;
    }
 
+   public boolean makeRecaptureMove(int from, int to) {
+      c.gameList[c.hply].from = from;
+      c.gameList[c.hply].to = to;
+      c.gameList[c.hply].capturePiece = c.board[to];
+      c.ply++;
+      c.hply++;
+
+      c.board[to] = c.board[from];
+      c.color[to] = c.color[from];
+      c.board[from] = empty;
+      c.color[from] = empty;
+
+      if (c.isKing(to))
+         c.kingloc[c.side] = to;
+
+      c.side ^= 1;
+      if (a.attack(c.side, c.kingloc[c.otherSide()])) {
+         unMakeRecaptureMove();
+         return false;
+      }
+      return true;
+   }
+
+   public void unMakeRecaptureMove() {
+      c.side ^= 1;
+      c.ply--;
+      c.hply--;
+
+      int from = c.gameList[c.hply].from;
+      int to = c.gameList[c.hply].to;
+
+      c.board[from] = c.board[to];
+      c.color[from] = c.color[to];
+      c.board[to] = c.gameList[c.hply].capturePiece;
+      c.color[to] = c.otherSide();
+
+      if (c.isKing(from))
+         c.kingloc[c.side] = from;
+   }
 }

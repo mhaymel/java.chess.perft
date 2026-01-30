@@ -3,6 +3,7 @@ package com.haymel.chess.perft;
 import static com.haymel.chess.perft.Color.*;
 import static com.haymel.chess.perft.Piece.king;
 import static com.haymel.chess.perft.Piece.pawn;
+import static com.haymel.chess.perft.Update.isPawnCapture;
 
 public final class Chess {
 
@@ -24,6 +25,10 @@ public final class Chess {
 
    public static int other(int side) {
       return side ^ 1;
+   }
+
+   public boolean isEnPassant(Move move) {
+      return isPawn(move.from) && isEmpty(move.to) && isPawnCapture(move.from, move.to);
    }
 
    private static Move[] newMove(int size) {

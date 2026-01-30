@@ -17,6 +17,10 @@ public final class Evaluation {
    private static final int kingValue =        0;
    private static final int emptyValue =       0;
 
+   public static final int[] pieceValue = {
+      pawnValue, knightValue, bishopValue, rookValue, queenValue, kingValue, emptyValue
+   };
+
    public static final int[] pstPawn = {
       0,   0,  0,  0,  0,  0,  0,  0,
       10, 10, 10, 10, 10, 10, 10, 10,

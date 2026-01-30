@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static com.haymel.chess.Fens.kiwipete;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class PerftTest {
@@ -24,11 +25,10 @@ final class PerftTest {
 
    @Test
    public void kiwipete() {
-      String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
-      perft(fen, 1, 48);
-      perft(fen, 2, 2039);
-      perft(fen, 3, 97862);
-      perft(fen, 4, 4_085_603);
+      perft(kiwipete, 1, 48);
+      perft(kiwipete, 2, 2039);
+      perft(kiwipete, 3, 97862);
+      perft(kiwipete, 4, 4_085_603);
 //		perft(fen, 5, 19_3690_690);
 //		perft(fen, 6, 8_031_647_685L);
    }
@@ -117,10 +117,9 @@ final class PerftTest {
 
    @Test
    void testKiwipete() {
-      String fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
-      test(1, 48, fen);
-      test(2, 2039, fen);
-      test(3, 97862, fen);
+      test(1, 48, kiwipete);
+      test(2, 2039, kiwipete);
+      test(3, 97862, kiwipete);
    }
 
    @Test

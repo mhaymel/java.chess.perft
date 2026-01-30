@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.perft.Notation.uci;
-import static com.haymel.chess.perft.Update.isEnPassant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class CaptureGeneratorTest {
@@ -122,13 +121,14 @@ final class CaptureGeneratorTest {
       testFen("K2r4/4P3/8/8/8/8/8/k7 w - - 0 1");
    }
 
-   private Set<String> allWithoutEnPassantAndPromotionPiecesRemoved(Chess chess) {
+   private Set<String> allWithoutEnPassantAndPromotionPiecesRemoved(Chess c) {
       Set<String> moves = new HashSet<>();
-      int from = chess.firstMove[chess.ply];
-      int to = chess.firstMove[chess.ply + 1];
+      int from = c.firstMove[c.ply];
+      int to = c.firstMove[c.ply + 1];
       for (int i = from; i < to; i++) {
-         Move m = chess.moveList[i];
-         if (!isEnPassant(chess, m) && !chess.isEmpty(m.to)) moves.add(uci(m.from, m.to));
+         Move m = c.moveList[i];
+         if (!c.isEnPassant(m) && !c.isEmpty(m.to))
+            moves.add(uci(m.from, m.to));
       }
       return moves;
    }

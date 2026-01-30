@@ -1,7 +1,13 @@
 package com.haymel.chess.perft;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.Stream;
+
+import static com.haymel.chess.Fens.kiwipete;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class SearchTest {
@@ -85,4 +91,31 @@ final class SearchTest {
       //then
       assertThat(bestMove).isNotNull();
    }
+
+   private static Stream<Arguments> fens() {
+      return Stream.of(
+         Arguments.of(Fen.initial, 5),
+         Arguments.of(kiwipete, 4)
+      );
+   }
+
+   @ParameterizedTest
+   @MethodSource("fens")
+   void testFens(String fen, int dept) {
+      for(int i=1; i<=dept; i++)
+         test(fen, dept);
+   }
+
+   void test(String fen, int depth) {
+      //given
+      Chess chess = Fen.load(fen);
+      Search search = new Search(chess);
+      //when
+      search.search(depth);
+      Move bestMove = search.bestMove();
+      //then
+      String resultFen = Fen.toFen(chess);
+      assertThat(resultFen).isEqualTo(fen);
+   }
+
 }

@@ -36,6 +36,11 @@ final class EvaluationTest {
       test(Fen.initial, 0);
    }
 
+   @Test
+   void test2() {
+      test("8/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ", 4065);
+   }
+
    void test(String fen, int expectedEvaluation) {
       //given
       Chess chess = Fen.load(fen);
