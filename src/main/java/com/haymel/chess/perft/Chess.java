@@ -134,4 +134,5 @@ public final class Chess {
       return moveList[index];
    }
 
+   public boolean isKnight(int field) { return board[field] == Piece.knight; }
 }

@@ -95,8 +95,13 @@ public final class Generator {
       }
    }
 
-   static final int[] leftCapture = { left + pawnStep[white], left + pawnStep[black] };
-   static final int[] rightCapture = { right + pawnStep[white], right + pawnStep[black] };
+   public static final int whitePawnLeftCapture = left + pawnStep[white];
+   public static final int blackPawnLeftCapture = left + pawnStep[black];
+   public static final int whitePawnRightCapture = right + pawnStep[white];
+   public static final int blackPawnRightCapture = right + pawnStep[black];
+
+   static final int[] leftCapture = {whitePawnLeftCapture, blackPawnLeftCapture};
+   static final int[] rightCapture = {whitePawnRightCapture, blackPawnRightCapture };
 
    private void genPawn(int from) {
       int to = from + pawnStep[c.side];
