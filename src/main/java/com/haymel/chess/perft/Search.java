@@ -21,9 +21,9 @@ public final class Search {
    public long nodes;
    private Move bestMove;
 
-   public Search(Chess chess) {
-      this(chess, new AtomicBoolean(false));
-   }
+   public static Search NewSearch(Chess chess) { return new Search(chess); }
+
+   public Search(Chess chess) { this(chess, new AtomicBoolean(false)); }
 
    public Search(Chess chess, AtomicBoolean stop) {
       this(chess, NewGenerator(chess), NewCaptureGenerator(chess), new Update(chess), NewLowestAttacker(chess), stop);
@@ -59,12 +59,20 @@ public final class Search {
       int localBestScore = -10001;
       int validMovesCount = 0;
 
+      boolean check = isInCheck();
+
       int moveCount = chess.moveCount();
       for (int i = 0; i < moveCount; i++) {
          Move move = chess.move(i);
          if (makeMove(move)) {
             validMovesCount++;
+
+//            int d = depth - 2;
+//            if (isInCheck()) d = depth;
+//            else if (check || validMovesCount == 1) d = depth - 1;
+//            int score = -searchImpl(d);
             int score = -searchImpl(depth - 1);
+
             unMakeMove();
             if (score > localBestScore) {
                localBestScore = score;
@@ -79,7 +87,7 @@ public final class Search {
          if (isInCheck()) return -10000 + chess.ply;
          return 0;
       }
-      if (chess.fiftyMoveCounter >= 100)    return 0;
+      if (chess.fiftyMoveCounter >= 100) return 0;
 
       return localBestScore;
    }
@@ -88,15 +96,21 @@ public final class Search {
       return update.a.attack(chess.otherSide(), chess.kingloc[chess.side]); //TODO
    }
 
-   private boolean makeMove(Move move) { return update.makeMove(move); }
+   private boolean makeMove(Move move) {
+      return update.makeMove(move);
+   }
 
    private void unMakeMove() {
       update.unMakeMove();
    }
 
-   private boolean makeRecaptureMove(int from, int to) { return update.makeRecaptureMove(from, to); }
+   private boolean makeRecaptureMove(int from, int to) {
+      return update.makeRecaptureMove(from, to);
+   }
 
-   private void unMakeRecaptureMove() { update.unMakeRecaptureMove(); }
+   private void unMakeRecaptureMove() {
+      update.unMakeRecaptureMove();
+   }
 
    private void generateMoves() {
       generator.execute();

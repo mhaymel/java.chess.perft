@@ -14,8 +14,8 @@ import static com.haymel.chess.util.MoveFromString.NewMoveFromString;
 
 public class Engine {
 
-   private final AtomicBoolean stopRequested;
    public final Chess chess;
+   private final AtomicBoolean stopRequested;
    private final Update update;
    private final ScheduledExecutorService executor;
    private Thread searchThread;
@@ -89,12 +89,19 @@ public class Engine {
          Move move = search.bestMove();
          if (!stopRequested() || bestmove == null) bestmove = move.uci();
       }
+
+      search.search(1);
+      System.out.println("# nodes searched: " + search.nodes);
+      bestmove = search.bestMove().uci();
+
       System.out.println("bestmove " + bestmove + " ");
       long elapsedMs = System.currentTimeMillis() - start;
       System.out.printf("# search time: %.3f s\n", elapsedMs / 1000.0);
    }
 
-   private boolean stopRequested() { return stopRequested.get(); }
+   private boolean stopRequested() {
+      return stopRequested.get();
+   }
 
    public void stopSearch() {
       stopRequested.set(true);
@@ -123,7 +130,9 @@ public class Engine {
       update.makeMove(moveFromUci(move));
    }
 
-   public String fen() { return Fen.toFen(chess); }
+   public String fen() {
+      return Fen.toFen(chess);
+   }
 
    public void shutdown() {
       executor.shutdownNow();

@@ -106,8 +106,9 @@ public final class LowestAttacker {
       for (int direction = 0; direction < count; direction++) {
          int to = moves[from][direction];
          while (isValid(to)) {
-            if (c.color[to] == side && c.board[to] == piece)
-               return to;
+            if (!c.isEmpty(to))
+               return (c.color[to] == side && c.board[to] == piece)
+                  ? to : -1;
             to = moves[to][direction];
          }
       }

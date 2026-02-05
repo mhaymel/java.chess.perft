@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.Fens.kiwipete;
+import static com.haymel.chess.util.MakeFenFromMoves.NewMakeFenFromMoves;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class SearchTest {
@@ -78,6 +79,20 @@ final class SearchTest {
       System.out.println("score: " + score);
       assertThat(bestMove).isNotNull();
    }
+
+   @Test
+   void testCaptureSearch1() {
+      //given
+      String fen = NewMakeFenFromMoves("e2e4 d7d6 d2d4 e7e6 f1c4 b8c6 d4d5 c6d4").fen();
+      System.out.println(fen);
+      Chess chess = Fen.load(fen);
+      Search search = new Search(chess);
+      //when
+      search.search(1);
+      //then
+      assertThat(search.bestMove().uci()).isEqualTo("d1d4");
+   }
+
 
    void test(int depth) {
       //given

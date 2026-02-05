@@ -23,6 +23,8 @@ public final class Chess {
    public int fiftyMoveCounter;
    public int mc;
 
+   public static Chess NewChess() { return new Chess(); }
+
    public static int other(int side) {
       return side ^ 1;
    }

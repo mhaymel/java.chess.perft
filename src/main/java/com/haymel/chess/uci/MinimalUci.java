@@ -54,7 +54,6 @@ public class MinimalUci {
             engine.makeMoves(moves);
          }
       }
-
       else if (rest.startsWith("fen")) {
          rest = rest.substring(3).trim();
          String fen;
