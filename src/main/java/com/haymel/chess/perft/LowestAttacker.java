@@ -59,46 +59,17 @@ public final class LowestAttacker {
 
       sq = lineCheck(side, queen, field, queenMoves, 8);
       if (sq > -1) return sq;
-      //
-//      sq = LineCheck(side, field, NE, B);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, NW, B);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, SW, B);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, SE, B);
-//      if (sq > -1) return sq;
-//
-//      sq = LineCheck(side, field, NORTH, R);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, SOUTH, R);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, EAST, R);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, WEST, R);
-//      if (sq > -1) return sq;
-//
-//      sq = LineCheck(side, field, NORTH, Q);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, SOUTH, Q);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, EAST, Q);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, WEST, Q);
-//      if (sq > -1) return sq;
-//
-//      sq = LineCheck(side, field, NE, Q);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, NW, Q);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, SW, Q);
-//      if (sq > -1) return sq;
-//      sq = LineCheck(side, field, SE, Q);
-//      if (sq > -1) return sq;
-//
-//      if (abs(col[field] - col[kingloc[side]]) < 2 && abs(row[field] - row[kingloc[side]]) < 2) {
-//         return kingloc[side];
-//      }
+
+
+      k = 0;
+      sq = kingMoves[field][k];
+
+      while (sq > -1) {
+         if (c.color[sq] == side && c.isKing(sq))
+            return sq;
+         k++;
+         sq = kingMoves[field][k];
+      }
       return -1;
    }
 
@@ -106,13 +77,14 @@ public final class LowestAttacker {
       for (int direction = 0; direction < count; direction++) {
          int to = moves[from][direction];
          while (isValid(to)) {
-            if (!c.isEmpty(to))
-               return (c.color[to] == side && c.board[to] == piece)
-                  ? to : -1;
+            if (!c.isEmpty(to)) {
+               if (c.color[to] == side && c.board[to] == piece)
+                  return to;
+               break;
+            }
             to = moves[to][direction];
          }
       }
       return -1;
    }
-
 }

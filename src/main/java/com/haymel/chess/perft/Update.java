@@ -232,6 +232,7 @@ public final class Update {
       c.color[to] = c.color[from];
       c.board[from] = empty;
       c.color[from] = empty;
+      c.gameList[c.hply].enPassantField = invalid;
 
       if (c.isKing(to))
          c.kingloc[c.side] = to;

@@ -9,13 +9,13 @@ import static com.haymel.chess.perft.Piece.*;
 //values from copilot
 public final class Evaluation {
 
-   private static final int pawnValue =      100;
-   private static final int knightValue =    320;
-   private static final int bishopValue =    330;
-   private static final int rookValue =      500;
-   private static final int queenValue =     900;
-   private static final int kingValue =        0;
-   private static final int emptyValue =       0;
+   public static final int pawnValue =      100;
+   public static final int knightValue =    320;
+   public static final int bishopValue =    330;
+   public static final int rookValue =      500;
+   public static final int queenValue =     900;
+   public static final int kingValue =        0;
+   public static final int emptyValue =       0;
 
    public static final int[] pieceValue = {
       pawnValue, knightValue, bishopValue, rookValue, queenValue, kingValue, emptyValue

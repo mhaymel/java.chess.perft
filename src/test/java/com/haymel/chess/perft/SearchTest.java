@@ -8,10 +8,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static com.haymel.chess.Fens.kiwipete;
+import static com.haymel.chess.eval.Evaluation.pawnValue;
 import static com.haymel.chess.util.MakeFenFromMoves.NewMakeFenFromMoves;
+import static java.lang.Math.abs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 final class SearchTest {
+
+   private static Stream<Arguments> fens() {
+      return Stream.of(
+         Arguments.of(Fen.initial, 5),
+         Arguments.of(kiwipete, 4)
+      );
+   }
 
    @Test
    void testSearchDepth1() {
@@ -93,6 +102,34 @@ final class SearchTest {
       assertThat(search.bestMove().uci()).isEqualTo("d1d4");
    }
 
+//   @Test
+//   void testCaptureSearch3() {
+//      //given
+//      String fen = NewMakeFenFromMoves("e2e4 d7d6 d2d4 e7e6 g1f3 b8c6 b1c3 g8f6 f1c4 c8d7 e1g1 f8e7 c1f4 e8g8 f1e1 f8e8 e4e5 d6e5 d4e5 f6g4 h2h3 g4e5").fen();
+//      System.out.println(fen);
+//      Chess chess = Fen.load(fen);
+//      Search search = new Search(chess);
+//      //when
+//      int eval = search.captureSearch();
+//      System.out.println("eval: " + eval);
+//      //then
+//      assertThat(abs(eval)).isLessThan(knightValue - pawnValue - pawnValue/2);
+//   }
+
+   @Test
+   void testCaptureSearch2() {
+      //given
+      String fen = NewMakeFenFromMoves("e2e4 d7d6 d2d4 e7e6 g1f3 b8c6 b1c3 g8f6 f1c4 c8d7 e1g1 f8e7 c1f4 e8g8 f1e1 f8e8 e4e5 d6e5 d4e5 f6g4 h2h3").fen();
+      System.out.println(fen);
+      Chess chess = Fen.load(fen);
+      Search search = new Search(chess);
+      //when
+      int eval = search.captureSearch();
+      System.out.println("eval: " + eval);
+      //then
+      assertThat(abs(eval)).isLessThan(pawnValue);
+      //assertThat(search.bestMove().uci()).isEqualTo("");
+   }
 
    void test(int depth) {
       //given
@@ -107,17 +144,10 @@ final class SearchTest {
       assertThat(bestMove).isNotNull();
    }
 
-   private static Stream<Arguments> fens() {
-      return Stream.of(
-         Arguments.of(Fen.initial, 5),
-         Arguments.of(kiwipete, 4)
-      );
-   }
-
    @ParameterizedTest
    @MethodSource("fens")
    void testFens(String fen, int dept) {
-      for(int i=1; i<=dept; i++)
+      for (int i = 1; i <= dept; i++)
          test(fen, dept);
    }
 
