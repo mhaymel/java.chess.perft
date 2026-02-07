@@ -41,7 +41,7 @@ public class TimeManager {
          return Math.max(10, timeLeft / movestogo + inc);
       }
 
-      int timeForMove = timeLeft / 25 + inc;
+      int timeForMove = timeLeft / 30 + inc;
 
       if (timeLeft < 2000) {
          timeForMove = Math.max(50, timeLeft / 2);

@@ -89,6 +89,20 @@ final class SearchTest {
       assertThat(bestMove).isNotNull();
    }
 
+//   @Test
+//   void testSearch4() {
+//      //given
+//      Chess chess = Fen.load("2kr1b1r/Qppq1ppp/3p1n2/3P1b2/5B2/2N2B2/PPP2PPP/4RRK1 b - - 0 13 ");
+//      Search search = new Search(chess);
+//      //when
+//      int score = search.search(5);
+//      Move bestMove = search.bestMove();
+//      //then
+//      System.out.println("nodes: " + search.nodes);
+//      System.out.println("score: " + score);
+//      assertThat(bestMove).isNotNull();
+//   }
+
    @Test
    void testCaptureSearch1() {
       //given
