@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class MinimalUci {
 
-   private final Engine engine = new Engine();
+   public final Engine engine = new Engine();
    private final TimeManager timeManager = new TimeManager();
 
    public void run() throws IOException {
@@ -46,7 +46,7 @@ public class MinimalUci {
       String rest = cmd.substring("position".length()).trim();
 
       if (rest.startsWith("startpos")) {
-         engine.setToStartpos();
+         engine.setToStartPos();
          rest = rest.substring("startpos".length()).trim();
 
          if (rest.startsWith("moves")) {
@@ -99,6 +99,10 @@ public class MinimalUci {
 
       timeManager.setParameters(wtime, btime, winc, binc, movetime, movestogo, depth, nodes);
       engine.startSearch(timeManager);
+   }
+
+   public void waitForSearchFinished() {
+      engine.waitForSearchFinished();
    }
 
    public static void main(String[] args) throws Exception {

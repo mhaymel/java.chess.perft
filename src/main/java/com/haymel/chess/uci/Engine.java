@@ -36,12 +36,12 @@ public class Engine {
       Fen.loadInitial(chess);
    }
 
-   public void setToStartpos() {
+   public void setToStartPos() {
       newGame();
    }
 
    public void setFromFen(String fen) {
-      setToStartpos(); // Dummy
+      Fen.load(fen, chess);
    }
 
    public void startSearch(TimeManager tm) {
@@ -74,10 +74,10 @@ public class Engine {
 
    private void searchLoop() {
       long start = System.currentTimeMillis();
-      String bestmove = "0000";
+      String betMoveString = "0000";
       Set<String> moves = generateLegalMoves();
       if (moves.isEmpty()) {
-         System.out.println("bestmove " + bestmove);
+         System.out.println("bestmove " + betMoveString);
          return;
       }
 
@@ -87,14 +87,11 @@ public class Engine {
          search.search(depth);
          System.out.println("# nodes searched: " + search.nodes);
          Move move = search.bestMove();
-         if (!stopRequested() || bestmove == null) bestmove = move.uci();
+         if (!stopRequested() || betMoveString == null) betMoveString = move.uci();
       }
 
-      search.search(1);
-      System.out.println("# nodes searched: " + search.nodes);
-      bestmove = search.bestMove().uci();
 
-      System.out.println("bestmove " + bestmove + " ");
+      System.out.println("bestmove " + betMoveString + " ");
       long elapsedMs = System.currentTimeMillis() - start;
       System.out.printf("# search time: %.3f s\n", elapsedMs / 1000.0);
    }
@@ -105,13 +102,7 @@ public class Engine {
 
    public void stopSearch() {
       stopRequested.set(true);
-      if (searchThread != null && searchThread.isAlive()) {
-         try {
-            searchThread.join(50);
-         } catch (InterruptedException ignored) {
-         }
-      }
-      if (stopFuture != null && !stopFuture.isDone()) {
+      waitForSearchFinished();      if (stopFuture != null && !stopFuture.isDone()) {
          stopFuture.cancel(true);
          stopFuture = null;
       }
@@ -136,5 +127,15 @@ public class Engine {
 
    public void shutdown() {
       executor.shutdownNow();
+   }
+
+   public void waitForSearchFinished() {
+      Thread t = searchThread;
+      if (t != null && t.isAlive()) {
+         try {
+            t.join();
+         } catch (InterruptedException ignored) {
+         }
+      }
    }
 }
