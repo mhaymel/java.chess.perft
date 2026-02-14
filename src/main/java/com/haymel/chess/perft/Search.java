@@ -39,18 +39,21 @@ public final class Search {
       this.stop = stop;
    }
 
+   private static final int initialAlphaValue = -10000;
+   private static final int initialBetaValue = -initialAlphaValue;
+
    public int search(int depth) {
       nodes = 0;
       stop.set(false);
       bestMove = null;
-      return searchImpl(depth);
+      return searchImpl(initialAlphaValue, initialBetaValue, depth);
    }
 
-   private int searchImpl(int depth) {
+   private int searchImpl(int alpha, int beta, int depth) {
       if (stop.get()) return 0;
 
       if (depth < 1)
-         return captureSearch();
+         return captureSearch(alpha, beta);
 
       nodes++;
 
@@ -67,11 +70,10 @@ public final class Search {
          if (makeMove(move)) {
             validMovesCount++;
 
-//            int d = depth - 2;
-//            if (isInCheck()) d = depth;
-//            else if (check || validMovesCount == 1) d = depth - 1;
-//            int score = -searchImpl(d);
-            int score = -searchImpl(depth - 1);
+            int d = depth - 2;
+            if (isInCheck()) d = depth;
+            else if (check || validMovesCount == 1) d = depth - 1;
+            int score = -searchImpl(-beta, -alpha, d);
 
             unMakeMove();
             if (score > localBestScore) {
@@ -80,6 +82,12 @@ public final class Search {
                   bestMove = move;
                   System.out.println("# New best move: " + bestMove + " score: " + score);
                }
+            }
+            if (score > alpha) {
+               if (score >= beta) {
+                  return beta;
+               }
+               alpha = score;
             }
          }
       }
@@ -132,12 +140,20 @@ public final class Search {
       return bestMove;
    }
 
-   public int captureSearch() {
+   public int captureSearch(int alpha, int beta) {
       if (stop.get()) return 0;
 
       nodes++;
 
       int x = evaluateStub();
+      if (x > alpha) {
+         if (x >= beta) {
+            return beta;
+         }
+         alpha = x;
+      } else if (x + 900 < alpha)
+         return alpha;
+
       int best = 0;
 
       generateCaptureMoves();

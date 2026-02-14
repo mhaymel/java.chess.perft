@@ -138,7 +138,7 @@ final class SearchTest {
       Chess chess = Fen.load(fen);
       Search search = new Search(chess);
       //when
-      int eval = search.captureSearch();
+      int eval = search.captureSearch(-10000, 1000);
       System.out.println("eval: " + eval);
       //then
       assertThat(abs(eval)).isLessThan(pawnValue);
