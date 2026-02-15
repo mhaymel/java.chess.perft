@@ -73,12 +73,12 @@ public final class Generator {
 
    private void whiteEnPassant(int direction) {
       int from = enPassantField() + direction;
-      if (c.isWhitePawn(from)) addMove(from, enPassantField());
+      if (c.isWhitePawn(from)) addCaptureMove(from, enPassantField());
    }
 
    private void blackEnPassant(int direction) {
       int from = enPassantField() + direction;
-      if (c.isBlackPawn(from)) addMove(from, enPassantField());
+      if (c.isBlackPawn(from)) addCaptureMove(from, enPassantField());
    }
 
    private void genCastling() {
@@ -135,7 +135,7 @@ public final class Generator {
          if (c.isEmpty(to))
             addMove(from, to);
          else if (c.isOpponent(to)) {
-            addMove(from, to);
+            addCaptureMove(from, to);
             return;
          }
          else
@@ -153,11 +153,22 @@ public final class Generator {
       }
    }
 
-   private void addMove(int from, int to) {
+   private void addMove(int from, int to, int score) {
       c.moveList[c.mc].from = from;
       c.moveList[c.mc].to = to;
       c.moveList[c.mc].promotion = empty;
+      c.moveList[c.mc].score = score;
       c.mc++;
+   }
+
+   private void addMove(int from, int to) {
+      addMove(from, to, 0);
+   }
+
+   private static final int CAPTURE_SCORE = 10_000_000;
+
+   private void addCaptureMove(int from, int to) {
+      addMove(from, to, CAPTURE_SCORE);
    }
 
    private void addPawnMove(int from, int to) {
@@ -166,8 +177,10 @@ public final class Generator {
          addPromotion(from, to, rook);
          addPromotion(from, to, bishop);
          addPromotion(from, to, knight);
-      } else
-         addMove(from, to);
+      }
+      else if (c.isOpponent(to))
+         addCaptureMove(from, to);
+      else addMove(from, to);
    }
 
    private void addPromotion(int from, int to, int piece) {

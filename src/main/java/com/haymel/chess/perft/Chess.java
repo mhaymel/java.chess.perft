@@ -137,4 +137,17 @@ public final class Chess {
    }
 
    public boolean isKnight(int field) { return board[field] == Piece.knight; }
+
+   public void swapMoves(int from, int bi) {
+      int a = moveIndex(from);
+      int b = moveIndex(bi);
+
+      Move g = moveList[a];
+      moveList[a] = moveList[b];
+      moveList[b] = g;
+   }
+
+   private int moveIndex(int i) {
+      return firstMove[ply] + i;
+   }
 }

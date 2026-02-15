@@ -66,6 +66,7 @@ public final class Search {
 
       int moveCount = chess.moveCount();
       for (int i = 0; i < moveCount; i++) {
+         sort(i);
          Move move = chess.move(i);
          if (makeMove(move)) {
             validMovesCount++;
@@ -227,6 +228,23 @@ public final class Search {
 
    private int LowestAttacker(int side, int field) {
       return lowestAttacker.calculate(side, field);
+   }
+
+   /*
+   Sort searches the move list for the move with the highest score.
+   It is moved to the top of the list so that it will be played next.
+   */
+   private void sort(int from) {
+      int moveCount = chess.moveCount();
+      int bs = chess.move(from).score;
+      int bi = from;
+      for (int i = from + 1; i < moveCount; ++i) {
+         if (chess.move(i).score > bs) {
+            bs = chess.move(i).score;
+            bi = i;
+         }
+      }
+      chess.swapMoves(from, bi);
    }
 
 }
