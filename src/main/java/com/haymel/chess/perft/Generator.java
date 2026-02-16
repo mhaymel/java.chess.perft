@@ -162,7 +162,8 @@ public final class Generator {
    }
 
    private void addMove(int from, int to) {
-      addMove(from, to, 0);
+      addMove(from, to, c.history[from][to]);
+//      addMove(from, to, 0);
    }
 
    private static final int CAPTURE_SCORE = 10_000_000;

@@ -1,5 +1,7 @@
 package com.haymel.chess.perft;
 
+import java.util.Arrays;
+
 import static com.haymel.chess.perft.Color.*;
 import static com.haymel.chess.perft.Piece.king;
 import static com.haymel.chess.perft.Piece.pawn;
@@ -16,6 +18,7 @@ public final class Chess {
    public final int[] board = new int[64];
    public final int[] color = new int[64];
    public final int[] kingloc = new int[2];
+   public final int[][] history = new int[64][64];
    public int hplyOffset;
    public int ply;
    public int hply;
@@ -68,7 +71,7 @@ public final class Chess {
       gameList[hply].castle.queenside[white] = false;
       gameList[hply].castle.kingside[black] = false;
       gameList[hply].castle.queenside[black] = false;
-
+      initHistory();
    }
 
    public boolean itsWhitesTurn() {
@@ -150,4 +153,11 @@ public final class Chess {
    private int moveIndex(int i) {
       return firstMove[ply] + i;
    }
+
+   public void initHistory() { for (int[] ints : history) Arrays.fill(ints, 0); }
+
+   public void addHistory(Move move, int value) {
+      history[move.from][move.to] += value;
+   }
+
 }

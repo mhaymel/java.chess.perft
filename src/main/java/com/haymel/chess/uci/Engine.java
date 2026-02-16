@@ -73,6 +73,7 @@ public class Engine {
    }
 
    private void searchLoop() {
+      chess.initHistory();
       long start = System.currentTimeMillis();
       String betMoveString = "0000";
       Set<String> moves = generateLegalMoves();
