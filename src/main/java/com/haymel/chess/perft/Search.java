@@ -86,10 +86,10 @@ public final class Search {
             }
             if (score > alpha) {
                if (score >= beta) {
-//                  if (move.score > 0 && move.score < 10_000_000)
-//                     System.out.println(move.uci() + " " + move.score);
-                  if (chess.isEmpty(move.to))
+                  if (chess.isEmpty(move.to)) {
+                     chess.addKillerMove(move);
                      chess.addHistory(move, depth);
+                  }
                   return beta;
                }
                alpha = score;

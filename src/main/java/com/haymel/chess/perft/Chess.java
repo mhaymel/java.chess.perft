@@ -19,6 +19,7 @@ public final class Chess {
    public final int[] color = new int[64];
    public final int[] kingloc = new int[2];
    public final int[][] history = new int[64][64];
+   public final Move[] killer = new Move[maxPly];
    public int hplyOffset;
    public int ply;
    public int hply;
@@ -72,6 +73,12 @@ public final class Chess {
       gameList[hply].castle.kingside[black] = false;
       gameList[hply].castle.queenside[black] = false;
       initHistory();
+      initKiller();
+   }
+
+   private void initKiller() {
+      for (int i = 0; i < killer.length; i++)
+         killer[i] = new Move();
    }
 
    public boolean itsWhitesTurn() {
@@ -160,4 +167,12 @@ public final class Chess {
       history[move.from][move.to] += value;
    }
 
+   public boolean isKiller(int from, int to) {
+      return killer[ply].from == from && killer[ply].to == to;
+   }
+
+   public void addKillerMove(Move move) {
+      killer[ply].from = move.from;
+      killer[ply].to = move.to;
+   }
 }
