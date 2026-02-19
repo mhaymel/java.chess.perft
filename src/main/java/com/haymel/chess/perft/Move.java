@@ -34,4 +34,10 @@ public final class Move {
    public String toString() {
       return uci();
    }
+
+   public void invalidate() {
+      from = invalid;
+      to = invalid;
+      promotion = Piece.empty;
+   }
 }

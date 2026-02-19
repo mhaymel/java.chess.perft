@@ -162,14 +162,14 @@ public final class Generator {
    }
 
    private void addMove(int from, int to) {
-      if (c.isKiller(from, to))
-         addMove(from, to, KILLER_SCORE);
-      else
+//      if (c.isKiller(from, to))
+//         addMove(from, to, KILLER_SCORE);
+//      else
          addMove(from, to, c.history[from][to]);
    }
 
    public static final int CAPTURE_SCORE = 10_000_000;
-   public static final int KILLER_SCORE =  1_000_000;
+   public static final int KILLER_SCORE =   1_000_000;
 
    private void addCaptureMove(int from, int to) {
       addMove(from, to, CAPTURE_SCORE);

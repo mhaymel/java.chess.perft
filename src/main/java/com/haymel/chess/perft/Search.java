@@ -68,13 +68,17 @@ public final class Search {
       for (int i = 0; i < moveCount; i++) {
          sort(i);
          Move move = chess.move(i);
+
+         print(i, moveCount, move);
+
          if (makeMove(move)) {
             validMovesCount++;
 
-            int d = depth - 2;
-            if (isInCheck()) d = depth;
-            else if (check || validMovesCount == 1) d = depth - 1;
-            int score = -searchImpl(-beta, -alpha, d);
+//            int d = depth - 2;
+//            if (isInCheck()) d = depth;
+//            else if (check || validMovesCount == 1) d = depth - 1;
+//            int score = -searchImpl(-beta, -alpha, d);
+            int score = -searchImpl(-beta, -alpha, depth - 1);
 
             unMakeMove();
             if (score > localBestScore) {
@@ -87,6 +91,7 @@ public final class Search {
             if (score > alpha) {
                if (score >= beta) {
                   if (chess.isEmpty(move.to)) {
+//                     System.out.println("killer");
                      chess.addKillerMove(move);
                      chess.addHistory(move, depth);
                   }
@@ -103,6 +108,12 @@ public final class Search {
       if (chess.fiftyMoveCounter >= 100) return 0;
 
       return localBestScore;
+   }
+
+   private void print(int moveNumber, int moveCount, Move move) {
+      String indent = "    ".repeat(chess.ply);
+      String message = String.format("%sply: %d %d/%d %s", indent, chess.ply, moveNumber, moveCount, move);
+      System.out.println(message);
    }
 
    private boolean isInCheck() {

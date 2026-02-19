@@ -3,6 +3,7 @@ package com.haymel.chess.perft;
 import java.util.Arrays;
 
 import static com.haymel.chess.perft.Color.*;
+import static com.haymel.chess.perft.Field.invalid;
 import static com.haymel.chess.perft.Piece.king;
 import static com.haymel.chess.perft.Piece.pawn;
 import static com.haymel.chess.perft.Update.isPawnCapture;
@@ -19,7 +20,7 @@ public final class Chess {
    public final int[] color = new int[64];
    public final int[] kingloc = new int[2];
    public final int[][] history = new int[64][64];
-   public final Move[] killer = new Move[maxPly];
+   public final Move[][] killer = newKiller();
    public int hplyOffset;
    public int ply;
    public int hply;
@@ -27,14 +28,12 @@ public final class Chess {
    public int fiftyMoveCounter;
    public int mc;
 
-   public static Chess NewChess() { return new Chess(); }
+   public static Chess NewChess() {
+      return new Chess();
+   }
 
    public static int other(int side) {
       return side ^ 1;
-   }
-
-   public boolean isEnPassant(Move move) {
-      return isPawn(move.from) && isEmpty(move.to) && isPawnCapture(move.from, move.to);
    }
 
    private static Move[] newMove(int size) {
@@ -51,6 +50,10 @@ public final class Chess {
       return game;
    }
 
+   public boolean isEnPassant(Move move) {
+      return isPawn(move.from) && isEmpty(move.to) && isPawnCapture(move.from, move.to);
+   }
+
    public void emptyBoard() {
       for (int x = 0; x < 64; ++x) {
          color[x] = empty;
@@ -63,9 +66,9 @@ public final class Chess {
       hply = 0;
       fiftyMoveCounter = 0;
       firstMove[0] = 0;
-      kingloc[white] = Field.invalid;
-      kingloc[black] = Field.invalid;
-      gameList[hply].enPassantField = Field.invalid;
+      kingloc[white] = invalid;
+      kingloc[black] = invalid;
+      gameList[hply].enPassantField = invalid;
       mc = 0;
 
       gameList[hply].castle.kingside[white] = false;
@@ -77,8 +80,9 @@ public final class Chess {
    }
 
    private void initKiller() {
-      for (int i = 0; i < killer.length; i++)
-         killer[i] = new Move();
+      for (Move[] moves : killer)
+         for (Move move : moves)
+            move.invalidate();
    }
 
    public boolean itsWhitesTurn() {
@@ -146,7 +150,9 @@ public final class Chess {
       return moveList[index];
    }
 
-   public boolean isKnight(int field) { return board[field] == Piece.knight; }
+   public boolean isKnight(int field) {
+      return board[field] == Piece.knight;
+   }
 
    public void swapMoves(int from, int bi) {
       int a = moveIndex(from);
@@ -161,18 +167,43 @@ public final class Chess {
       return firstMove[ply] + i;
    }
 
-   public void initHistory() { for (int[] ints : history) Arrays.fill(ints, 0); }
+   public void initHistory() {
+      for (int[] ints : history) Arrays.fill(ints, 0);
+   }
 
    public void addHistory(Move move, int value) {
       history[move.from][move.to] += value;
    }
 
    public boolean isKiller(int from, int to) {
-      return killer[ply].from == from && killer[ply].to == to;
+      Move[] moves = killer[ply];
+      for (Move move : moves)
+         if (move.from == from && move.to == to) return true;
+      return false;
    }
 
    public void addKillerMove(Move move) {
-      killer[ply].from = move.from;
-      killer[ply].to = move.to;
+//      if (isMoveFromToEqual(move, killer[ply][0])) return;
+//      if (isMoveFromToEqual(move, killer[ply][1])) return;
+//
+//      Move tmp = killer[ply][1];
+//      killer[ply][1] = killer[ply][0];
+//      tmp.from = move.from;
+//      tmp.to = move.to;
+//      killer[ply][0] = tmp;
    }
+
+   private static Move[][] newKiller() {
+      Move[][] killer = new Move[maxPly][2];
+      for (int i = 0; i < killer.length; i++)
+         for (int j = 0; j < killer[i].length; j++)
+            killer[i][j] = new Move();
+
+      return killer;
+   }
+
+   private static boolean isMoveFromToEqual(Move a, Move b) {
+      return a.from == b.from && a.to == b.to;
+   }
+
 }

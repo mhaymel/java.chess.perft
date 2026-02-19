@@ -95,7 +95,21 @@ final class SearchTest {
       Chess chess = Fen.load(Fen.initial);
       Search search = new Search(chess);
       //when
-      int score = search.search(8);
+      int score = search.search(3);
+      Move bestMove = search.bestMove();
+      //then
+      System.out.println("nodes: " + search.nodes);
+      System.out.println("score: " + score);
+      assertThat(bestMove).isNotNull();
+   }
+
+   @Test
+   void testSearch5() {
+      //given
+      Chess chess = Fen.load(kiwipete);
+      Search search = new Search(chess);
+      //when
+      int score = search.search(5);
       Move bestMove = search.bestMove();
       //then
       System.out.println("nodes: " + search.nodes);
