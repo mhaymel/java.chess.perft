@@ -1,6 +1,7 @@
 package com.haymel.chess.uci;
 
 import com.haymel.chess.perft.*;
+import com.haymel.chess.util.Util;
 import com.haymel.chess.util.ValidMoves;
 
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.haymel.chess.util.MoveFromString.NewMoveFromString;
+import static com.haymel.chess.util.Util.withDots;
 
 public class Engine {
 
@@ -84,9 +86,7 @@ public class Engine {
 
       Search search = new Search(chess, stopRequested);
       for (int depth = 1; !stopRequested(); depth++) {
-         System.out.println("# searching at depth " + depth);
          search.search(depth);
-         System.out.println("# nodes searched: " + search.nodes);
          Move move = search.bestMove();
          if (!stopRequested() || betMoveString == null) betMoveString = move.uci();
       }

@@ -1,10 +1,10 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.eval.Evaluation.mvvLva;
 import static com.haymel.chess.perft.Field.isValid;
 import static com.haymel.chess.perft.File.A;
 import static com.haymel.chess.perft.File.H;
-import static com.haymel.chess.perft.Generator.leftCapture;
-import static com.haymel.chess.perft.Generator.rightCapture;
+import static com.haymel.chess.perft.Generator.*;
 import static com.haymel.chess.perft.Init.file;
 import static com.haymel.chess.perft.MoveTables.*;
 import static com.haymel.chess.perft.Piece.*;
@@ -83,8 +83,9 @@ public final class CaptureGenerator {
    private void addMove(int from, int to) {
       c.moveList[c.mc].from = from;
       c.moveList[c.mc].to = to;
-      c.moveList[c.mc].promotion = empty;
+      c.moveList[c.mc].score = CAPTURE_SCORE + mvvLva[c.board[from]][c.board[to]];
       c.mc++;
+
    }
 
 }

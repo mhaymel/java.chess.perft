@@ -1,6 +1,7 @@
 package com.haymel.chess.perft;
 
 import com.haymel.chess.eval.Evaluation;
+import com.haymel.chess.util.Util;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -9,6 +10,7 @@ import static com.haymel.chess.eval.Evaluation.pieceValue;
 import static com.haymel.chess.perft.CaptureGenerator.NewCaptureGenerator;
 import static com.haymel.chess.perft.Generator.NewGenerator;
 import static com.haymel.chess.perft.LowestAttacker.NewLowestAttacker;
+import static com.haymel.chess.util.Util.withDots;
 
 public final class Search {
 
@@ -43,10 +45,14 @@ public final class Search {
    private static final int initialBetaValue = -initialAlphaValue;
 
    public int search(int depth) {
+      System.out.println("# start search. depth " + depth);
       nodes = 0;
       stop.set(false);
       bestMove = null;
-      return searchImpl(initialAlphaValue, initialBetaValue, depth);
+      int score = searchImpl(initialAlphaValue, initialBetaValue, depth);
+      System.out.println("# nodes searched: " + withDots(nodes));
+      return score;
+
    }
 
    private int searchImpl(int alpha, int beta, int depth) {
@@ -81,7 +87,7 @@ public final class Search {
                localBestScore = score;
                if (chess.ply == 0) {
                   bestMove = move;
-                  System.out.println("# New best move: " + bestMove + " score: " + score);
+                  System.out.println("# " +withDots(nodes) + " New best move: " + bestMove + " score: " + score);
                }
             }
             if (score > alpha) {
@@ -165,6 +171,7 @@ public final class Search {
 
       int moveCount = chess.moveCount();
       for (int i = 0; i < moveCount; i++) {
+         sort(i);
          Move move = chess.move(i);
          int score = ReCaptureSearch(move);
          if (score > best) best = score;

@@ -1,5 +1,6 @@
 package com.haymel.chess.perft;
 
+import static com.haymel.chess.eval.Evaluation.mvvLva;
 import static com.haymel.chess.perft.Color.black;
 import static com.haymel.chess.perft.Color.white;
 import static com.haymel.chess.perft.Field.*;
@@ -7,6 +8,7 @@ import static com.haymel.chess.perft.File.A;
 import static com.haymel.chess.perft.File.H;
 import static com.haymel.chess.perft.Init.file;
 import static com.haymel.chess.perft.Init.rank;
+import static com.haymel.chess.perft.Move.NewMove;
 import static com.haymel.chess.perft.MoveTables.*;
 import static com.haymel.chess.perft.Piece.*;
 
@@ -24,6 +26,12 @@ public final class Generator {
    private static final int[] pawnStep = {up, down};
    public static final int doubleStep = 2*up;
    private static final int[] pawnDoubleStep = {doubleStep, -doubleStep};
+   public static final int px[] = {0, 10, 20, 30, 40, 0};
+   public static final int nx[] = {-3, 7, 17, 27, 37, 0};
+   public static final int bx[] = {-3, 7, 17, 27, 37, 0};
+   public static final int rx[] = {-5, 5, 15, 25, 35, 0};
+   public static final int qx[] = {-9, 1, 11, 21, 31, 0};
+   public static final int kx[] = {0, 10, 20, 30, 40, 0};
 
    private final Chess c;
 
@@ -166,10 +174,10 @@ public final class Generator {
 //      addMove(from, to, 0);
    }
 
-   private static final int CAPTURE_SCORE = 10_000_000;
+   public static final int CAPTURE_SCORE = 10_000_000;
 
    private void addCaptureMove(int from, int to) {
-      addMove(from, to, CAPTURE_SCORE);
+      addMove(from, to, CAPTURE_SCORE + mvvLva[c.board[from]][c.board[to]]);
    }
 
    private void addPawnMove(int from, int to) {

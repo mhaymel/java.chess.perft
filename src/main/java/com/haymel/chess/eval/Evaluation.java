@@ -98,7 +98,17 @@ public final class Evaluation {
       a8, b8, c8, d8, e8, f8, g8, h8
    };
 
-   private static final int[][] flipped = {flipFlipped, flip};
+   public static final int[][] mvvLva =  {
+                             //enpassant
+      {0, 10, 20, 30, 40, 0, 0},    //pawn
+      {-3, 7, 17, 27, 37, 0},       //knight
+      {-3, 7, 17, 27, 37, 0},       //bishop
+      {-5, 5, 15, 25, 35, 0},       //rook
+      {-9, 1, 11, 21, 31, 0},       //queen
+      {0, 10, 20, 30, 40, 0},       //king
+   };
+
+   private static final int[][] flipped = {flip, flipFlipped};
 
    private static int evaluate(int[] board, int[] color) {
       int[] score = new int[] { 0, 0 };
